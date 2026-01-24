@@ -287,9 +287,31 @@
   data-skip-node-update
   data-scroll-direction="none"
 >
-  <div class="marquee-container">
-    <p class="marquee-text">Welcome to our store!&nbsp;&nbsp;Thank you for visiting! &nbsp;&nbsp;We’re so glad you’re here.&nbsp;&nbsp;At our Store, we offer a wide selection of high-quality products, designed to bring you the best in fashion, tech, home goods, or whatever you need.</p>
+  <div class="marquee-container" >
+    <p class="marquee-text" >Welcome to our store!&nbsp;&nbsp;Thank you for visiting! &nbsp;&nbsp;We’re so glad you’re here.&nbsp;&nbsp;At our Store, we offer a wide selection of high-quality products, designed to bring you the best in fashion, tech, home goods, or whatever you need.</p>
   </div>
+  <button onclick="getCart()">Get Cart</button>
+  <script>
+    // Define the getCart function
+    function getCart() {
+      //get the cart data from shopify
+      fetch('/cart.js')
+        .then(response => response.json())
+        .then(cart => {
+          console.log(cart); // Logs the entire cart data
+          // Example: Accessing the cart's total price
+          console.log('Total Price: ', cart.total_price / 100); // Shopify's total price is in cents
+
+          // Example of accessing the cart items
+          cart.items.forEach(item => {
+            console.log('Item: ', item.title, 'Quantity: ', item.quantity);
+          });
+        })
+        .catch(error => {
+          console.error('Error fetching cart:', error);
+        });
+    }
+  </script>
   {%- if request.page_type == 'index' -%}
     <h1 class="visually-hidden">{{ shop.name }}</h1>
   {%- endif -%}
@@ -393,7 +415,8 @@
 <script
   src="{{ 'header.js' | asset_url }}"
   type="module"
-></script>
+>
+</script>
 {% stylesheet %}
   body {
     --header-height: 60px;
@@ -783,6 +806,7 @@
     hydrate('{{ section.id }}', url);
   </script>
 {% endunless %}
+
 
 {% schema %}
 {

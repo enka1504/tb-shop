@@ -6,7 +6,7 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */ {
   "sections": {
     "hero_RkimKJ": {
       "type": "hero",
@@ -88,15 +88,10 @@
               "blocks": {}
             }
           },
-          "block_order": [
-            "text_KxeJ6r",
-            "button_nazDaa"
-          ]
+          "block_order": ["text_KxeJ6r", "button_nazDaa"]
         }
       },
-      "block_order": [
-        "group_3cB4GW"
-      ],
+      "block_order": ["group_3cB4GW"],
       "settings": {
         "media_type_1": "image",
         "media_type_2": "image",
@@ -319,10 +314,7 @@
                       "blocks": {}
                     }
                   },
-                  "block_order": [
-                    "product_title_gtg38q",
-                    "price_Vz3EzL"
-                  ]
+                  "block_order": ["product_title_gtg38q", "price_Vz3EzL"]
                 },
                 "group_3Fwdtp": {
                   "type": "_product-card-group",
@@ -389,21 +381,13 @@
                       "blocks": {}
                     }
                   },
-                  "block_order": [
-                    "text_JHMjjF"
-                  ]
+                  "block_order": ["text_JHMjjF"]
                 }
               },
-              "block_order": [
-                "group_pLH7Cd",
-                "group_3Fwdtp"
-              ]
+              "block_order": ["group_pLH7Cd", "group_3Fwdtp"]
             }
           },
-          "block_order": [
-            "product_card_gallery_Gn6P7T",
-            "group_AUJmQt"
-          ]
+          "block_order": ["product_card_gallery_Gn6P7T", "group_AUJmQt"]
         }
       },
       "name": "Featured collection",
@@ -544,16 +528,10 @@
               "blocks": {}
             }
           },
-          "block_order": [
-            "text_BRFzjN",
-            "text_tKxhbY"
-          ]
+          "block_order": ["text_BRFzjN", "text_tKxhbY"]
         }
       },
-      "block_order": [
-        "video_NqWNaD",
-        "group_TEanyT"
-      ],
+      "block_order": ["video_NqWNaD", "group_TEanyT"],
       "name": "t:names.video_section",
       "settings": {
         "content_direction": "row",
@@ -584,9 +562,5 @@
       }
     }
   },
-  "order": [
-    "hero_RkimKJ",
-    "product_list_X8Q7bi",
-    "section_RhpYRt"
-  ]
+  "order": ["hero_RkimKJ", "product_list_X8Q7bi", "section_RhpYRt"]
 }
