@@ -26,3 +26,6 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [ "https://example.com/api/auth" ]
+
+
+
