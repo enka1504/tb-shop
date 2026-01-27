@@ -1,5 +1,5 @@
 {
-  "name": "amortizable-upside-app",
+  "name": "focused-customer-app",
   "private": true,
   "scripts": {
     "build": "react-router build",

@@ -1,7 +1,7 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "f6157c02618d9f81b6c5186b7fefba9f"
-name = "amortizable-upside-app"
+client_id = "d2e77937365097d80c04f08f2139858f"
+name = "new-app1"
 application_url = "https://example.com"
 embedded = true
 
@@ -12,20 +12,9 @@ include_config_on_deploy = true
 [webhooks]
 api_version = "2026-04"
 
-  [[webhooks.subscriptions]]
-  topics = [ "app/uninstalled" ]
-  uri = "/webhooks/app/uninstalled"
-
-  [[webhooks.subscriptions]]
-  topics = [ "app/scopes_update" ]
-  uri = "/webhooks/app/scopes_update"
-
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
 scopes = "write_products"
 
 [auth]
 redirect_urls = [ "https://example.com/api/auth" ]
-
-
-
