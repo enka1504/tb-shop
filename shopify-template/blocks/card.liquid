@@ -1,0 +1,37 @@
+
+{% schema %}
+{
+  "name": "Card",
+  "blocks": [{"type": "@theme"}],
+  "presets": [
+    {
+      "name": "Product Card",
+      "blocks": [
+        {
+          "type": "group",
+          "blocks": [
+            {
+              "type": "text",
+              "settings": {
+                "text": "<p>{{ closest.product.title }}</p>"
+              }
+            },
+            {
+              "type": "price",
+              "settings": {
+                "product": "{{ closest.product }}"
+              }
+            },
+            {
+              "type": "product-medias",
+              "settings": {
+                "product": "{{ closest.product }}"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
