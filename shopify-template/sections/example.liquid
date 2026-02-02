@@ -182,14 +182,15 @@
             <h1>📝 Liquid String Filters Master Reference</h1>
             <p class="subtitle">Complete demonstration of all Liquid string manipulation filters</p>
         </header>
+
         {% comment %} 
             BASIC STRING VARIABLES FOR DEMONSTRATION 
         {% endcomment %}
         {% assign sample_string = "  Hello WORLD!  " %}
         {% assign html_string = "<p>Visit our <strong>website</strong> at example.com</p>" %}
         {% assign multiline_text = "First line
-        Second line
-        Third line" %}
+Second line
+Third line" %}
         {% assign product_name = "Premium Coffee Mug - 12oz | Ceramic" %}
         {% assign url_string = "Hello World! How's it going?" %}
         {% assign secret_message = "mySecretMessage123" %}
@@ -741,4 +742,61 @@ Line 3{% endcapture %}
         </div>
 
         <footer>
-<p>📚 <strong>Complete Liquid String Filters Reference</strong> | Filters demonstrated: 30+ | Last updated: {{ "now" | date:
+<p>📚 <strong>Complete Liquid String Filters Reference</strong> | Filters demonstrated: 30+ | Last updated: {{ "now" | date : "%Y-%m-%d" }}
+{% schema %}
+{
+  "name": "Slideshow",
+  "tag": "section",
+  "class": "slideshow",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Slideshow"
+    }
+  ],
+  "max_blocks": 5,
+  "blocks": [
+     {
+       "name": "Slide",
+       "type": "slide",
+       "settings": [
+         {
+           "type": "image_picker",
+           "id": "image",
+           "label": "Image"
+         }
+       ]
+     }
+  ],
+  "presets": [
+    {
+      "name": "Slideshow",
+      "settings": {
+        "title": "Slideshow"
+      },
+      "blocks": [
+        {
+          "type": "slide"
+        },
+        {
+          "type": "slide"
+        }
+      ]
+    }
+  ],
+  "locales": {
+    "en": {
+      "title": "Slideshow"
+    },
+    "fr": {
+      "title": "Diaporama"
+    }
+  },
+  "enabled_on": {
+    "templates": ["*"],
+    "groups": ["footer"]
+  }
+}
+{% endschema %}
