@@ -1,0 +1,51 @@
+{% content_for "block", type: "collapsible-row-summary", id: "collapsible-row" %}
+
+<div>
+  {% content_for "blocks" %}
+</div>
+
+{% schema %}
+{
+  "name": "Collapsible row",
+  "tag": "details",
+  "class": "details",
+  "blocks": [{ "type": "@theme" }, { "type": "@app" }],
+  "settings": [],
+  "presets": [
+    {
+      "name": "Collapsible row",
+      "blocks": [
+        {
+          "type": "collapsible-row-summary",
+          "static": true,
+          "id": "collapsible-row",
+          "blocks": [
+            {
+              "type": "icon",
+              "id": "collapsible-row-icon",
+              "static": true,
+              "settings": {
+                "icon": "check_mark",
+                "size": {
+                  "width": "22px"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "blocks": [
+            {
+              "type": "heading"
+            },
+            {
+              "type": "text"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
