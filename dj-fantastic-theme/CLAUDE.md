@@ -1,0 +1,1 @@
+D:/Shopify/my project/3shopify/dj-fantastic-theme/AGENTS.md
