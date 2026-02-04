@@ -343,25 +343,146 @@
     "dietary_icons": {
       "type": "dietary-icons",
       "blocks": {
+        "item_h3AkMx": {
+          "type": "item",
+          "settings": {
+            "label": "Organic",
+            "link": "#"
+          }
+        },
+        "item_ic4tEH": {
+          "type": "item",
+          "settings": {
+            "label": "Keto-friendly",
+            "link": "#"
+          }
+        },
+        "item_JDWQWk": {
+          "type": "item",
+          "settings": {
+            "label": "Non-GMO",
+            "link": "#"
+          }
+        },
+        "item_i8tqnH": {
+          "type": "item",
+          "settings": {
+            "label": "No Preservatives",
+            "link": "#"
+          }
+        },
+        "item_CLTjrz": {
+          "type": "item",
+          "settings": {
+            "icon": "shopify://shop_images/beverages_1_2509a95e-795f-497c-8ae4-89af8f589994.jpg",
+            "label": "Allergen-Friendly",
+            "link": "#"
+          }
+        },
+        "item_hEKz3r": {
+          "type": "item",
+          "settings": {
+            "label": "Vegetarian",
+            "link": "shopify://collections/vegetables"
+          }
+        },
+        "item_xzcBz7": {
+          "type": "item",
+          "settings": {
+            "label": "Dairy-free",
+            "link": "shopify://collections/diary"
+          }
+        },
+        "item_CbRjtC": {
+          "type": "item",
+          "settings": {
+            "label": "Sugar-free",
+            "link": "#"
+          }
+        },
+        "item_ate49j": {
+          "type": "item",
+          "settings": {
+            "label": "Low Carb",
+            "link": "#"
+          }
+        }
       },
       "block_order": [
+        "item_h3AkMx",
+        "item_ic4tEH",
+        "item_JDWQWk",
+        "item_i8tqnH",
+        "item_CLTjrz",
+        "item_hEKz3r",
+        "item_xzcBz7",
+        "item_CbRjtC",
+        "item_ate49j"
       ],
       "name": "Price Hits Week",
       "settings": {
+        "heading": "Shop By Dietary Need"
       }
     },
     "deal_bundle": {
       "type": "deal-bundle",
       "blocks": {
+        "bundle_UkefVL": {
+          "type": "bundle",
+          "settings": {
+            "bg_color": "#d7d6f4",
+            "price_text": "9 for $18",
+            "subtitle": "Bakery & Breads",
+            "more_link": "shopify://collections/bakery",
+            "mini_title_1": "Bakery",
+            "mini_bg_color_1": "#dfdff2",
+            "mini_link_1": "shopify://collections/bakery",
+            "mini_title_2": "Breads",
+            "mini_bg_color_2": "#dfdff2",
+            "mini_link_2": "shopify://collections/baverages"
+          }
+        },
+        "bundle_RWzDTn": {
+          "type": "bundle",
+          "settings": {
+            "bg_color": "#ddca9c",
+            "price_text": "9 for $18",
+            "subtitle": "Chicken, Meat & Fish",
+            "more_link": "shopify://collections/fish-seafood",
+            "mini_title_1": "Meat",
+            "mini_bg_color_1": "#e7ddc3",
+            "mini_link_1": "shopify://collections/meat-poultry",
+            "mini_title_2": "Fish",
+            "mini_bg_color_2": "#e7ddc3",
+            "mini_link_2": "shopify://collections/fish-seafood"
+          }
+        },
+        "bundle_jJAQ8b": {
+          "type": "bundle",
+          "settings": {
+            "bg_color": "#c1eace",
+            "price_text": "9 for $18",
+            "subtitle": "Fruit & Vegetables, Salad",
+            "more_link": "shopify://collections/processed-fruit-vegetables",
+            "mini_title_1": "Fruit",
+            "mini_bg_color_1": "#e1f7e8",
+            "mini_link_1": "shopify://collections/processed-fruit-vegetables",
+            "mini_title_2": "Vegetables",
+            "mini_bg_color_2": "#e1f7e8",
+            "mini_link_2": "shopify://collections/vegetables"
+          }
+        }
       },
       "block_order": [
+        "bundle_UkefVL",
+        "bundle_RWzDTn",
+        "bundle_jJAQ8b"
       ],
       "name": "Deal Bundle",
       "settings": {
+        "heading": ""
       }
-    },
-
-    
+    }
   },
   "order": [
     "category_chips",

@@ -22,8 +22,9 @@
                 {% assign t = 'mini_title_' | append: i %}
                 {% assign img = 'mini_img_' | append: i %}
                 {% assign link = 'mini_link_' | append: i %}
+                {%assign mini_bg = 'mini_bg_color_' | append: i %}
                 {% if block.settings[t] != blank %}
-                  <a class="hvMini" href="{{ block.settings[link] }}">
+                  <a class="hvMini" href="{{ block.settings[link] }}" style="background: {{ block.settings[mini_bg] }};">
                     <span class="hvMini__t">{{ block.settings[t] | escape }}</span>
                     {% if block.settings[img] != blank %}
                       {{ block.settings[img] | image_url: width: 120 | image_tag: class: 'hvMini__img', loading: 'lazy' }}
@@ -57,10 +58,12 @@
 
         { "type": "text", "id": "mini_title_1", "label": "Mini 1 title", "default": "Breads" },
         { "type": "image_picker", "id": "mini_img_1", "label": "Mini 1 image" },
+        { "type": "color", "id": "mini_bg_color_1", "label": "Mini background", "default": "#d7d6f4" },
         { "type": "url", "id": "mini_link_1", "label": "Mini 1 link" },
 
         { "type": "text", "id": "mini_title_2", "label": "Mini 2 title", "default": "Cookies" },
         { "type": "image_picker", "id": "mini_img_2", "label": "Mini 2 image" },
+        { "type": "color", "id": "mini_bg_color_2", "label": "Mini background", "default": "#d7d6f4" },
         { "type": "url", "id": "mini_link_2", "label": "Mini 2 link" }
       ]
     }
