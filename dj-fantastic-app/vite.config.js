@@ -37,6 +37,8 @@ if (host === "localhost") {
 
 export default defineConfig({
   server: {
+    host: true, // ✅ IMPORTANT: allow Cloudflare tunnel to reach the local server
+
     allowedHosts: [host],
     cors: {
       preflightContinue: true,
@@ -44,7 +46,6 @@ export default defineConfig({
     port: Number(process.env.PORT || 3000),
     hmr: hmrConfig,
     fs: {
-      // See https://vitejs.dev/config/server-options.html#server-fs-allow for more information
       allow: ["app", "node_modules"],
     },
   },
