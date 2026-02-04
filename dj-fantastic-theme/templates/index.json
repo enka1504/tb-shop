@@ -244,20 +244,120 @@
         "radius": 18
       }
     },
+    "price_hits_week": {
+      "type": "price-hits-week",
+      "blocks": {
+        "product_q6aPnE": {
+          "type": "product",
+          "settings": {
+            "product": "bakery-1",
+            "badge_1": "Highly rated",
+            "badge_2": "Best Buy",
+            "badge_3": ""
+          }
+        },
+        "product_AACqK3": {
+          "type": "product",
+          "settings": {
+            "product": "fish-seafood",
+            "badge_1": "Highly rated",
+            "badge_2": "Best Buy",
+            "badge_3": "Deal"
+          }
+        },
+        "product_ar6e6y": {
+          "type": "product",
+          "settings": {
+            "product": "meat-poultry",
+            "badge_1": "Deal",
+            "badge_2": "Best Buy",
+            "badge_3": ""
+          }
+        },
+        "product_JyLnex": {
+          "type": "product",
+          "settings": {
+            "product": "fruit-1",
+            "badge_1": "Highly rated",
+            "badge_2": "Best Buy",
+            "badge_3": "Deal"
+          }
+        },
+        "product_iRKHcc": {
+          "type": "product",
+          "settings": {
+            "product": "seafood",
+            "badge_1": "Highly rated",
+            "badge_2": "",
+            "badge_3": ""
+          }
+        },
+        "product_hKYMMD": {
+          "type": "product",
+          "settings": {
+            "product": "sample-coconut-bar-soap",
+            "badge_1": "Best Buy",
+            "badge_2": "",
+            "badge_3": ""
+          }
+        },
+        "product_NzNV4q": {
+          "type": "product",
+          "settings": {
+            "product": "bakery-1",
+            "badge_1": "Highly rated",
+            "badge_2": "Best Buy",
+            "badge_3": "Deal"
+          }
+        }
+      },
+      "block_order": [
+        "product_q6aPnE",
+        "product_AACqK3",
+        "product_ar6e6y",
+        "product_JyLnex",
+        "product_iRKHcc",
+        "product_hKYMMD",
+        "product_NzNV4q"
+      ],
+      "name": "Price Hits Week",
+      "settings": {
+        "heading": "Price hits of the week",
+        "show_rating": true,
+        "show_shipping_note": true,
+        "shipping_days": "5 days",
+        "countdown_label": "Gone in 24 Hours",
+        "ends_at": "2026-12-31 23:59",
+        "view_all_link": ""
+      }
+    },
     "collections_ff8Ccj": {
       "type": "collections",
+      "disabled": true,
       "name": "t:general.collections_grid",
       "settings": {
         "grid_item_width": "collections--full",
         "grid_gap": 10
       }
-    }
+    },
+    "dietary_icons": {
+      "type": "dietary-icons",
+      "blocks": {
+      },
+      "block_order": [
+      ],
+      "name": "Price Hits Week",
+      "settings": {
+      }
+    },
   },
   "order": [
     "category_chips",
     "hero_grid",
     "today_deals_9rYkaX",
     "browse_by_category",
-    "collections_ff8Ccj"
+    "price_hits_week",
+    "collections_ff8Ccj",
+    "dietary_icons"
   ]
 }

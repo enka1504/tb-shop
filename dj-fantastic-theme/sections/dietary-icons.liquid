@@ -1,0 +1,48 @@
+{{ 'home-various.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'home-various.js' | asset_url }}" defer></script>
+
+<section class="hv hvDietary" data-hv-section>
+  <div class="page-width">
+    <h2 class="hv__title">{{ section.settings.heading | escape }}</h2>
+
+    <div class="hvDietary__row">
+      {% for block in section.blocks %}
+        {% if block.type == 'item' %}
+          <a class="hvDietary__item" href="{{ block.settings.link }}" {{ block.shopify_attributes }}>
+            <div class="hvDietary__icon">
+              {% if block.settings.icon != blank %}
+                {{ block.settings.icon | image_url: width: 120 | image_tag: loading: 'lazy', alt: block.settings.label }}
+              {% else %}
+                <span style="font-weight:900;color:var(--hv-blue)">★</span>
+              {% endif %}
+            </div>
+            <div class="hvDietary__label">{{ block.settings.label | escape }}</div>
+          </a>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Shop by dietary need",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Shop By Dietary Need" }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Dietary item",
+      "settings": [
+        { "type": "image_picker", "id": "icon", "label": "Icon image (PNG/SVG)" },
+        { "type": "text", "id": "label", "label": "Label", "default": "Vegan" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Shop by dietary need", "blocks": [{ "type": "item" }, { "type": "item" }, { "type": "item" }, { "type": "item" }] }
+  ]
+}
+{% endschema %}
