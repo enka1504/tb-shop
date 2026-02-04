@@ -1,123 +1,134 @@
 {% comment %}
-  OS 2.0 Footer section (sample-theme style)
-  - Top: newsletter + 3 link columns
-  - Middle: 5 category link columns
+  Premium-style Footer (OS 2.0)
+  - Top row: newsletter left + email form right
+  - Row: 3 link columns (Company / Top collections / Help & support)
+  - Row: Brand/contact left + 5 category columns right
   - Big slogan
   - Bottom bar: copyright + payment icons
 {% endcomment %}
 
-<footer class="ft" role="contentinfo">
-  <div class="ft__inner page-width">
+<footer class="footerX" role="contentinfo">
+  <div class="footerX__container page-width">
 
-    {%- if section.settings.show_newsletter or section.settings.show_top_columns -%}
-      <div class="ft__top">
-        {%- if section.settings.show_newsletter -%}
-          <div class="ft__newsletter">
-            {%- if section.settings.newsletter_kicker != blank -%}
-              <div class="ft__kicker">{{ section.settings.newsletter_kicker }}</div>
+    {%- if section.settings.show_top_newsletter -%}
+      <div class="footerX__newsletter">
+        <div class="footerX__newsletterText">
+          {%- if section.settings.newsletter_kicker != blank -%}
+            <div class="footerX__kicker">{{ section.settings.newsletter_kicker | escape }}</div>
+          {%- endif -%}
+          {%- if section.settings.newsletter_heading != blank -%}
+            <h2 class="footerX__title">{{ section.settings.newsletter_heading | escape }}</h2>
+          {%- endif -%}
+        </div>
+
+        <div class="footerX__newsletterForm">
+          {%- form 'customer', id: 'FooterXNewsletter', class: 'footerX__form' -%}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <label class="visually-hidden" for="FooterXNewsletterEmail">Email</label>
+            <input
+              id="FooterXNewsletterEmail"
+              class="footerX__input"
+              type="email"
+              name="contact[email]"
+              autocomplete="email"
+              placeholder="{{ section.settings.newsletter_placeholder | default: 'Your email' | escape }}"
+              required
+            >
+            <button class="footerX__btn" type="submit">
+              {{ section.settings.newsletter_button | default: 'Subscribe' | escape }}
+            </button>
+
+            {%- if form.posted_successfully? -%}
+              <p class="footerX__msg footerX__msg--success">
+                {{ section.settings.newsletter_success | default: "Thanks! You're subscribed." | escape }}
+              </p>
+            {%- elsif form.errors -%}
+              <p class="footerX__msg footerX__msg--error">
+                {{ section.settings.newsletter_error | default: "Please enter a valid email." | escape }}
+              </p>
             {%- endif -%}
-            {%- if section.settings.newsletter_heading != blank -%}
-              <h2 class="ft__heading">{{ section.settings.newsletter_heading }}</h2>
-            {%- endif -%}
-          </div>
-
-          <div class="ft__newsletter-form">
-            {%- form 'customer', id: 'FooterNewsletter', class: 'ft__form' -%}
-              <input type="hidden" name="contact[tags]" value="newsletter">
-              <label class="visually-hidden" for="FooterNewsletterEmail">{{ 'newsletter.label' | t | default: 'Email' }}</label>
-              <input
-                id="FooterNewsletterEmail"
-                class="ft__input"
-                type="email"
-                name="contact[email]"
-                autocomplete="email"
-                placeholder="{{ section.settings.newsletter_placeholder | escape }}"
-                required
-              >
-              <button class="ft__btn" type="submit">
-                {{ section.settings.newsletter_button | escape }}
-              </button>
-
-              {%- if form.posted_successfully? -%}
-                <p class="ft__msg ft__msg--success">{{ 'newsletter.success' | t | default: 'Thanks for subscribing!' }}</p>
-              {%- elsif form.errors -%}
-                <p class="ft__msg ft__msg--error">{{ form.errors.messages['email'] | default: 'Please enter a valid email.' }}</p>
-              {%- endif -%}
-            {%- endform -%}
-          </div>
-        {%- endif -%}
-
-        {%- if section.settings.show_top_columns -%}
-          <div class="ft__top-cols">
-            {%- for block in section.blocks -%}
-              {%- if block.type == 'top_menu' -%}
-                <div class="ft__col" {{ block.shopify_attributes }}>
-                  {%- if block.settings.title != blank -%}
-                    <h3 class="ft__col-title">{{ block.settings.title }}</h3>
-                  {%- endif -%}
-
-                  {%- assign menu = block.settings.menu -%}
-                  {%- if menu != blank and menu.links.size > 0 -%}
-                    <ul class="ft__links" role="list">
-                      {%- for link in menu.links -%}
-                        <li class="ft__item">
-                          <a class="ft__link" href="{{ link.url }}">{{ link.title | escape }}</a>
-                        </li>
-                      {%- endfor -%}
-                    </ul>
-                  {%- endif -%}
-                </div>
-              {%- endif -%}
-            {%- endfor -%}
-          </div>
-        {%- endif -%}
+          {%- endform -%}
+        </div>
       </div>
     {%- endif -%}
 
-    <div class="ft__middle">
-      <div class="ft__brand">
+    {%- if section.settings.show_top_menus -%}
+      <div class="footerX__topMenus">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'top_menu' -%}
+            {%- assign menu = block.settings.menu -%}
+            <div class="footerX__menuCol" {{ block.shopify_attributes }}>
+              {%- if block.settings.title != blank -%}
+                <h3 class="footerX__menuTitle">{{ block.settings.title | escape }}</h3>
+              {%- endif -%}
+
+              {%- if menu != blank and menu.links.size > 0 -%}
+                <ul class="footerX__links" role="list">
+                  {%- for link in menu.links -%}
+                    <li class="footerX__li">
+                      <a class="footerX__a" href="{{ link.url }}">{{ link.title | escape }}</a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              {%- else -%}
+                {%- if section.settings.show_menu_placeholders -%}
+                  <div class="footerX__placeholder">Assign a menu in Theme Editor.</div>
+                {%- endif -%}
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    <div class="footerX__main">
+      <div class="footerX__brand">
         {%- if section.settings.logo != blank -%}
-          <a class="ft__logo" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
+          <a class="footerX__logo" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
             {{ section.settings.logo | image_url: width: 420 | image_tag: loading: 'lazy', widths: '200,260,320,420', alt: shop.name }}
           </a>
         {%- else -%}
-          <a class="ft__brand-name" href="{{ routes.root_url }}">{{ shop.name | escape }}</a>
+          <a class="footerX__brandName" href="{{ routes.root_url }}">{{ shop.name | escape }}</a>
         {%- endif -%}
 
         {%- if section.settings.phone != blank -%}
-          <div class="ft__phone">{{ section.settings.phone | escape }}</div>
+          <div class="footerX__phone">{{ section.settings.phone | escape }}</div>
         {%- endif -%}
 
-        <div class="ft__contact">
+        <div class="footerX__meta">
           {%- if section.settings.address != blank -%}
-            <div class="ft__meta"><strong>Address:</strong> {{ section.settings.address | escape }}</div>
+            <div><strong>Address:</strong> {{ section.settings.address | escape }}</div>
           {%- endif -%}
           {%- if section.settings.email != blank -%}
-            <div class="ft__meta"><strong>Email:</strong> <a class="ft__link" href="mailto:{{ section.settings.email | escape }}">{{ section.settings.email | escape }}</a></div>
+            <div><strong>Email:</strong> <a class="footerX__a" href="mailto:{{ section.settings.email | escape }}">{{ section.settings.email | escape }}</a></div>
           {%- endif -%}
           {%- if section.settings.hours != blank -%}
-            <div class="ft__meta"><strong>Mon-Sat:</strong> {{ section.settings.hours | escape }}</div>
+            <div><strong>Mon–Sat:</strong> {{ section.settings.hours | escape }}</div>
           {%- endif -%}
         </div>
       </div>
 
-      <div class="ft__cats">
+      <div class="footerX__categories">
         {%- for block in section.blocks -%}
           {%- if block.type == 'category_menu' -%}
-            <div class="ft__cat" {{ block.shopify_attributes }}>
+            {%- assign menu = block.settings.menu -%}
+            <div class="footerX__catCol" {{ block.shopify_attributes }}>
               {%- if block.settings.title != blank -%}
-                <h3 class="ft__cat-title">{{ block.settings.title }}</h3>
+                <h3 class="footerX__menuTitle">{{ block.settings.title | escape }}</h3>
               {%- endif -%}
 
-              {%- assign menu = block.settings.menu -%}
               {%- if menu != blank and menu.links.size > 0 -%}
-                <ul class="ft__links" role="list">
+                <ul class="footerX__links" role="list">
                   {%- for link in menu.links -%}
-                    <li class="ft__item">
-                      <a class="ft__link" href="{{ link.url }}">{{ link.title | escape }}</a>
+                    <li class="footerX__li">
+                      <a class="footerX__a" href="{{ link.url }}">{{ link.title | escape }}</a>
                     </li>
                   {%- endfor -%}
                 </ul>
+              {%- else -%}
+                {%- if section.settings.show_menu_placeholders -%}
+                  <div class="footerX__placeholder">Assign a menu in Theme Editor.</div>
+                {%- endif -%}
               {%- endif -%}
             </div>
           {%- endif -%}
@@ -126,97 +137,270 @@
     </div>
 
     {%- if section.settings.slogan != blank -%}
-      <div class="ft__slogan">
-        <div class="ft__slogan-text">{{ section.settings.slogan }}</div>
+      <div class="footerX__slogan">
+        <div class="footerX__sloganInner">{{ section.settings.slogan }}</div>
       </div>
     {%- endif -%}
 
-    <div class="ft__bottom">
-      <div class="ft__copyright">
+    <div class="footerX__bottom">
+      <div class="footerX__copy">
         <small>
-          &copy; {{ 'now' | date: '%Y' }}, {{ shop.name | escape }}.
+          &copy; {{ 'now' | date: '%Y' }}, {{ shop.name | escape }}
           {%- if section.settings.show_powered_by -%}
-            {{ powered_by_link }}
+            . {{ powered_by_link }}
           {%- endif -%}
         </small>
       </div>
 
       {%- if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
-        <ul class="ft__payments" role="list" aria-label="Payment methods">
+        <ul class="footerX__payments" role="list" aria-label="Payment methods">
           {%- for type in shop.enabled_payment_types -%}
-            <li class="ft__pay">{{ type | payment_type_svg_tag: class: 'ft__pay-icon' }}</li>
+            <li class="footerX__payItem">
+              {{ type | payment_type_svg_tag: class: 'footerX__payIcon' }}
+            </li>
           {%- endfor -%}
         </ul>
       {%- endif -%}
     </div>
+
   </div>
 
   <style>
-    .ft{background: #f6f2ea;}
-    .ft__inner{padding: 48px 0 24px;}
-    .ft__top{display:grid;grid-template-columns: 1.2fr 1.8fr;gap: 24px;align-items:center;margin-bottom: 28px;}
-    .ft__newsletter{max-width: 520px;}
-    .ft__kicker{font-size: 12px;letter-spacing:.02em;margin-bottom: 6px;}
-    .ft__heading{font-size: 20px;line-height: 1.2;margin:0;}
-    .ft__newsletter-form{justify-self:end;width: min(720px, 100%);}
-    .ft__form{display:flex;gap: 10px;align-items:center;}
-    .ft__input{flex:1;min-width: 220px;border:1px solid rgba(0,0,0,.14);border-radius: 6px;padding: 12px 14px;background:#fff;}
-    .ft__btn{border:0;border-radius: 6px;padding: 12px 16px;cursor:pointer;background:#0b5cab;color:#fff;font-weight:600;}
-    .ft__msg{margin: 10px 0 0;font-size: 13px;}
-    .ft__msg--success{opacity:.9;}
-    .ft__msg--error{color:#b42318;}
+    .footerX{
+      background: {{ section.settings.bg_color }};
+      color: {{ section.settings.text_color }};
+    }
+    .footerX__container{
+      padding: 52px 0 22px;
+    }
 
-    .ft__top-cols{display:grid;grid-template-columns: repeat(3, minmax(160px, 1fr));gap: 34px;justify-self:end;width: min(840px, 100%);}
-    .ft__col-title{font-size: 14px;margin: 0 0 10px;font-weight: 700;}
-    .ft__links{margin:0;padding:0;list-style:none;}
-    .ft__item{margin: 0 0 8px;}
-    .ft__link{text-decoration:none;color: inherit;opacity:.85;}
-    .ft__link:hover{opacity:1;text-decoration:underline;}
+    /* Newsletter */
+    .footerX__newsletter{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 24px;
+      padding-bottom: 26px;
+      border-bottom: 1px solid rgba(0,0,0,.08);
+      margin-bottom: 26px;
+    }
+    .footerX__kicker{
+      font-size: 12px;
+      letter-spacing: .02em;
+      opacity: .75;
+      margin-bottom: 6px;
+    }
+    .footerX__title{
+      font-size: clamp(18px, 2.0vw, 22px);
+      line-height: 1.25;
+      margin: 0;
+      font-weight: 700;
+    }
+    .footerX__newsletterForm{
+      width: min(760px, 100%);
+      display:flex;
+      justify-content:flex-end;
+    }
+    .footerX__form{
+      width: 100%;
+      display:flex;
+      gap: 10px;
+      align-items:center;
+    }
+    .footerX__input{
+      flex: 1;
+      min-width: 220px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(0,0,0,.14);
+      background: rgba(255,255,255,.75);
+      color: inherit;
+      outline: none;
+    }
+    .footerX__input:focus{
+      border-color: rgba(0,0,0,.28);
+      box-shadow: 0 0 0 4px rgba(0,0,0,.06);
+      background: #fff;
+    }
+    .footerX__btn{
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 0;
+      cursor: pointer;
+      background: {{ section.settings.accent_color }};
+      color: #fff;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .footerX__btn:hover{ filter: brightness(.96); }
+    .footerX__msg{ margin: 10px 0 0; font-size: 13px; }
+    .footerX__msg--success{ opacity:.85; }
+    .footerX__msg--error{ color:#b42318; }
 
-    .ft__middle{display:grid;grid-template-columns: 1.1fr 2fr;gap: 40px;margin-top: 10px;}
-    .ft__brand{max-width: 420px;}
-    .ft__brand-name{font-size: 34px;font-weight: 800;text-decoration:none;color:inherit;display:inline-block;margin-bottom: 10px;}
-    .ft__logo img{height:auto;max-width: 240px;display:block;}
-    .ft__phone{font-size: 18px;font-weight: 700;margin: 12px 0;}
-    .ft__contact .ft__meta{font-size: 12px;opacity:.9;margin: 4px 0;}
-    .ft__cats{display:grid;grid-template-columns: repeat(5, minmax(150px, 1fr));gap: 34px;align-content:start;}
-    .ft__cat-title{font-size: 14px;margin: 0 0 10px;font-weight: 700;}
+    /* Top menus (3 columns) */
+    .footerX__topMenus{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(160px, 1fr));
+      gap: 34px;
+      margin-bottom: 34px;
+    }
 
-    .ft__slogan{padding: 36px 0 10px;text-align:center;}
-    .ft__slogan-text{font-size: clamp(26px, 4vw, 56px);font-weight: 700;line-height:1.05;}
+    /* Main area */
+    .footerX__main{
+      display:grid;
+      grid-template-columns: 1.05fr 2fr;
+      gap: 42px;
+      align-items:start;
+    }
 
-    .ft__bottom{display:flex;justify-content:space-between;align-items:center;border-top: 1px solid rgba(0,0,0,.1);padding-top: 14px;margin-top: 18px;gap: 14px;flex-wrap:wrap;}
-    .ft__payments{display:flex;gap: 10px;align-items:center;justify-content:flex-end;margin:0;padding:0;list-style:none;}
-    .ft__pay-icon{height: 22px;width:auto;display:block;}
+    .footerX__brandName{
+      font-size: 36px;
+      font-weight: 900;
+      text-decoration:none;
+      color: inherit;
+      display:inline-block;
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+    .footerX__logo img{
+      max-width: 240px;
+      height: auto;
+      display:block;
+    }
+    .footerX__phone{
+      margin-top: 14px;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: .01em;
+    }
+    .footerX__meta{
+      margin-top: 12px;
+      font-size: 12px;
+      line-height: 1.8;
+      opacity: .85;
+    }
 
+    .footerX__categories{
+      display:grid;
+      grid-template-columns: repeat(5, minmax(150px, 1fr));
+      gap: 34px;
+    }
+
+    .footerX__menuTitle{
+      font-size: 13px;
+      font-weight: 800;
+      margin: 0 0 12px;
+      letter-spacing: .01em;
+    }
+
+    .footerX__links{
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+    }
+
+    .footerX__a{
+      color: inherit;
+      text-decoration: none;
+      opacity: .78;
+      transition: opacity .15s ease, transform .15s ease;
+    }
+    .footerX__a:hover{
+      opacity: 1;
+      transform: translateX(2px);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .footerX__placeholder{
+      font-size: 12px;
+      opacity: .55;
+    }
+
+    /* Slogan */
+    .footerX__slogan{
+      padding: 40px 0 18px;
+      text-align:center;
+    }
+    .footerX__sloganInner{
+      font-size: clamp(28px, 4.2vw, 60px);
+      font-weight: 900;
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+      opacity: .92;
+    }
+
+    /* Bottom bar */
+    .footerX__bottom{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap: 14px;
+      border-top: 1px solid rgba(0,0,0,.08);
+      padding-top: 14px;
+      margin-top: 18px;
+    }
+    .footerX__copy{
+      opacity: .82;
+    }
+    .footerX__payments{
+      list-style:none;
+      padding:0;
+      margin:0;
+      display:flex;
+      align-items:center;
+      gap: 10px;
+    }
+    .footerX__payIcon{
+      height: 22px;
+      width: auto;
+      display:block;
+    }
+
+    /* Responsive */
+    @media (max-width: 1100px){
+      .footerX__categories{ grid-template-columns: repeat(3, minmax(160px, 1fr)); }
+    }
     @media (max-width: 990px){
-      .ft__top{grid-template-columns: 1fr;align-items:start;}
-      .ft__newsletter-form{justify-self:start;}
-      .ft__top-cols{grid-template-columns: repeat(3, 1fr);justify-self:start;}
-      .ft__middle{grid-template-columns: 1fr;gap: 24px;}
-      .ft__cats{grid-template-columns: repeat(2, minmax(140px, 1fr));}
+      .footerX__newsletter{ flex-direction:column; align-items:flex-start; }
+      .footerX__newsletterForm{ justify-content:flex-start; }
+      .footerX__topMenus{ grid-template-columns: repeat(2, minmax(160px, 1fr)); }
+      .footerX__main{ grid-template-columns: 1fr; }
+      .footerX__categories{ grid-template-columns: repeat(2, minmax(160px, 1fr)); }
     }
     @media (max-width: 640px){
-      .ft__form{flex-direction:column;align-items:stretch;}
-      .ft__input{min-width: 0;width:100%;}
-      .ft__top-cols{grid-template-columns: 1fr;gap: 18px;}
-      .ft__cats{grid-template-columns: 1fr;gap: 18px;}
-      .ft__slogan{padding: 26px 0 10px;}
+      .footerX__topMenus{ grid-template-columns: 1fr; }
+      .footerX__form{ flex-direction:column; align-items:stretch; }
+      .footerX__input{ width: 100%; min-width: 0; }
+      .footerX__btn{ width: 100%; }
+      .footerX__categories{ grid-template-columns: 1fr; }
+      .footerX__container{ padding: 38px 20px 18px 20px; }
     }
   </style>
 </footer>
 
 {% schema %}
 {
-  "name": "Footer (Sample style)",
+  "name": "Footer (Premium style)",
   "settings": [
-    { "type": "checkbox", "id": "show_newsletter", "label": "Show newsletter", "default": true },
+    { "type": "color", "id": "bg_color", "label": "Background color", "default": "#F6F2EA" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#141414" },
+    { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#0B5CAB" },
+
+    { "type": "checkbox", "id": "show_top_newsletter", "label": "Show newsletter row", "default": true },
     { "type": "text", "id": "newsletter_kicker", "label": "Newsletter kicker", "default": "Join our newsletter" },
     { "type": "text", "id": "newsletter_heading", "label": "Newsletter heading", "default": "Get all latest information on events, sales and offers." },
     { "type": "text", "id": "newsletter_placeholder", "label": "Email placeholder", "default": "Your email" },
     { "type": "text", "id": "newsletter_button", "label": "Button label", "default": "Subscribe" },
+    { "type": "text", "id": "newsletter_success", "label": "Success message", "default": "Thanks! You're subscribed." },
+    { "type": "text", "id": "newsletter_error", "label": "Error message", "default": "Please enter a valid email." },
 
-    { "type": "checkbox", "id": "show_top_columns", "label": "Show top menu columns", "default": true },
+    { "type": "checkbox", "id": "show_top_menus", "label": "Show top menu columns", "default": true },
+    { "type": "checkbox", "id": "show_menu_placeholders", "label": "Show placeholder when menu is not assigned", "default": false },
 
     { "type": "image_picker", "id": "logo", "label": "Footer logo" },
     { "type": "text", "id": "phone", "label": "Phone", "default": "(+84) 123 4567 89" },
@@ -250,6 +434,6 @@
     }
   ],
   "max_blocks": 8,
-  "presets": [{ "name": "Footer (Sample style)" }]
+  "presets": [{ "name": "Footer (Premium style)" }]
 }
 {% endschema %}

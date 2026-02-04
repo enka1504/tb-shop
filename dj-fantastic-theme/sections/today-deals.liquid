@@ -1,0 +1,213 @@
+{% comment %}
+  Today's Deals (Tabbed collections) - OS 2.0 Section
+  Files required:
+  - assets/todays-deals.css
+  - assets/todays-deals.js
+{% endcomment %}
+
+{{ 'today-deals.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'today-deals.js' | asset_url }}" defer></script>
+
+{%- liquid
+  assign section_id = section.id
+  assign limit = section.settings.products_limit | default: 6
+-%}
+
+<section class="td" data-td-section data-section-id="{{ section_id }}">
+  <div class="page-width td__wrap">
+    <header class="td__header">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="td__title">{{ section.settings.heading | escape }}</h2>
+      {%- endif -%}
+
+      <div class="td__tabs" role="tablist" aria-label="Today's deals tabs">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'tab' and block.settings.collection != blank -%}
+            <button
+              class="td__tab"
+              type="button"
+              role="tab"
+              aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+              aria-controls="td-panel-{{ section_id }}-{{ block.id }}"
+              id="td-tab-{{ section_id }}-{{ block.id }}"
+              data-td-tab
+              data-target="td-panel-{{ section_id }}-{{ block.id }}"
+              {% if forloop.first %}data-active="true"{% endif %}
+            >
+              {{ block.settings.label | default: block.settings.collection.title | escape }}
+            </button>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </header>
+
+    <div class="td__panels">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'tab' and block.settings.collection != blank -%}
+          {%- assign col = block.settings.collection -%}
+
+          <div
+            id="td-panel-{{ section_id }}-{{ block.id }}"
+            class="td__panel"
+            role="tabpanel"
+            aria-labelledby="td-tab-{{ section_id }}-{{ block.id }}"
+            {% if forloop.first %}data-active="true"{% else %}hidden{% endif %}
+            data-td-panel
+          >
+            <div class="td__grid">
+              {%- for product in col.products limit: limit -%}
+                {%- liquid
+                  assign v = product.selected_or_first_available_variant
+                  assign available = product.available
+                  assign compare = v.compare_at_price
+                  assign price = v.price
+                  assign has_sale = false
+                  if compare and compare > price
+                    assign has_sale = true
+                  endif
+
+                  assign pct = 0
+                  if has_sale
+                    assign diff = compare | minus: price
+                    assign pct = diff | times: 100.0 | divided_by: compare | round
+                  endif
+
+                  assign badge_text = ''
+                  if product.tags contains 'Highly rated'
+                    assign badge_text = 'Highly rated'
+                  elsif product.tags contains 'Best Buy'
+                    assign badge_text = 'Best Buy'
+                  endif
+                -%}
+
+                <article class="td__card" data-product-handle="{{ product.handle }}">
+                  <a class="td__media" href="{{ product.url }}">
+                    {%- if badge_text != blank -%}
+                      <span class="td__badge">{{ badge_text }}</span>
+                    {%- elsif has_sale -%}
+                      <span class="td__badge td__badge--sale">Best Buy</span>
+                    {%- endif -%}
+
+                    {%- if product.featured_image -%}
+                      {{ product.featured_image
+                        | image_url: width: 800
+                        | image_tag: loading: 'lazy', class: 'td__img', alt: product.title
+                      }}
+                    {%- else -%}
+                      <div class="td__img td__img--placeholder"></div>
+                    {%- endif -%}
+                  </a>
+
+                  <div class="td__body">
+                    <div class="td__vendor">{{ product.vendor | escape }}</div>
+
+                    <a class="td__name" href="{{ product.url }}">
+                      {{ product.title | escape }}
+                    </a>
+
+                    {%- if section.settings.show_rating -%}
+                      <div class="td__rating" aria-label="Rating">
+                        <span class="td__stars">★★★★★</span>
+                        <span class="td__reviews">(0)</span>
+                      </div>
+                    {%- endif -%}
+
+                    <div class="td__priceRow">
+                      <span class="td__price">{{ price | money }}</span>
+
+                      {%- if has_sale -%}
+                        <span class="td__compare">{{ compare | money }}</span>
+                        <span class="td__off">-{{ pct }}%</span>
+                      {%- endif -%}
+                    </div>
+
+                    {%- if v.unit_price_measurement and v.unit_price -%}
+                      <div class="td__unit">
+                        {{ v.unit_price | money }} /
+                        {{ v.unit_price_measurement.reference_value }}
+                        {{ v.unit_price_measurement.reference_unit }}
+                      </div>
+                    {%- endif -%}
+
+                    <div class="td__meta">
+                      <div class="td__stock">
+                        <span class="td__dot" aria-hidden="true"></span>
+                        <span>
+                          {% if available %}In stock{% else %}Sold out{% endif %}
+                        </span>
+                      </div>
+
+                      {%- if section.settings.show_shipping_note -%}
+                        <div class="td__ship">Receives in <strong>{{ section.settings.shipping_days }}</strong>.</div>
+                      {%- endif -%}
+                    </div>
+
+                    <div class="td__actions">
+                      <div class="td__qty" data-td-qty>
+                        <button class="td__qtyBtn" type="button" data-qty-minus aria-label="Decrease quantity">−</button>
+                        <input class="td__qtyInput" type="number" min="1" value="1" inputmode="numeric" aria-label="Quantity">
+                        <button class="td__qtyBtn" type="button" data-qty-plus aria-label="Increase quantity">+</button>
+                      </div>
+
+                      <button
+                        class="td__add"
+                        type="button"
+                        data-td-add
+                        data-variant-id="{{ v.id }}"
+                        {% unless available %}disabled{% endunless %}
+                      >
+                        Add to cart
+                      </button>
+                    </div>
+
+                    <div class="td__msg" aria-live="polite" data-td-msg></div>
+                  </div>
+                </article>
+              {%- else -%}
+                <p class="td__empty">No products found in this collection.</p>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Today's Deals (Tabs)",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Today's Deals" },
+    { "type": "range", "id": "products_limit", "label": "Products per tab", "min": 4, "max": 12, "step": 1, "default": 6 },
+
+    { "type": "checkbox", "id": "show_rating", "label": "Show rating placeholder", "default": true },
+
+    { "type": "checkbox", "id": "show_shipping_note", "label": "Show shipping note", "default": true },
+    { "type": "text", "id": "shipping_days", "label": "Shipping text (example: 5 days)", "default": "5 days" }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Tab (collection)",
+      "limit": 5,
+      "settings": [
+        { "type": "text", "id": "label", "label": "Tab label", "default": "Cookies" },
+        { "type": "collection", "id": "collection", "label": "Collection" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Today's Deals (Tabs)",
+      "blocks": [
+        { "type": "tab" },
+        { "type": "tab" },
+        { "type": "tab" },
+        { "type": "tab" },
+        { "type": "tab" }
+      ]
+    }
+  ]
+}
+{% endschema %}
