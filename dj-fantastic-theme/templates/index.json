@@ -146,6 +146,104 @@
         "shipping_days": "5 days"
       }
     },
+    "browse_by_category": {
+      "type": "browse-by-category",
+      "blocks": {
+        "category_9EBiAr": {
+          "type": "category",
+          "settings": {
+            "label": "Vegetables",
+            "image": "shopify://shop_images/vegetables_2.webp",
+            "link": "shopify://collections/vegetables",
+            "bg_color": "#dfeaf6"
+          }
+        },
+        "category_TiyzwJ": {
+          "type": "category",
+          "settings": {
+            "label": "Fish & Seafood",
+            "image": "shopify://shop_images/fish_seafood_3.webp",
+            "link": "shopify://collections/fish-seafood",
+            "bg_color": "#dfeaf6"
+          }
+        },
+        "category_MKBHc3": {
+          "type": "category",
+          "settings": {
+            "label": "Coffe & tea",
+            "image": "shopify://shop_images/beverages_3_d019ee1b-7e89-4e40-9d23-ce29b4183d61.jpg",
+            "link": "shopify://collections/baverages",
+            "bg_color": "#dfeaf6"
+          }
+        },
+        "category_wkLCix": {
+          "type": "category",
+          "settings": {
+            "label": "Bakery",
+            "image": "shopify://shop_images/bakery_3_5e47533e-5f83-48fb-9caf-972e34d4d80d.jpg",
+            "link": "shopify://collections/bakery",
+            "bg_color": "#dfeaf6"
+          }
+        },
+        "category_eXxQiy": {
+          "type": "category",
+          "settings": {
+            "label": "Meat & Poultry",
+            "image": "shopify://shop_images/meat_poultry_1.jpg",
+            "link": "shopify://collections/meat-poultry",
+            "bg_color": "#dfeaf6"
+          }
+        },
+        "category_cb9mVN": {
+          "type": "category",
+          "settings": {
+            "label": "Salad",
+            "image": "shopify://shop_images/salad_1.png",
+            "link": "shopify://collections/salad",
+            "bg_color": "#dfeaf6"
+          }
+        },
+        "category_cjFxNx": {
+          "type": "category",
+          "settings": {
+            "label": "Processed Food",
+            "image": "shopify://shop_images/processed_food_1.jpg",
+            "link": "shopify://collections/processed-food",
+            "bg_color": "#dfeaf6"
+          }
+        },
+        "category_yN36tP": {
+          "type": "category",
+          "settings": {
+            "label": "Frozen products",
+            "image": "shopify://shop_images/frozenproduct_1.jpg",
+            "link": "shopify://collections/frozen-products",
+            "bg_color": "#dfeaf6"
+          }
+        }
+      },
+      "block_order": [
+        "category_9EBiAr",
+        "category_TiyzwJ",
+        "category_MKBHc3",
+        "category_wkLCix",
+        "category_eXxQiy",
+        "category_cb9mVN",
+        "category_cjFxNx",
+        "category_yN36tP"
+      ],
+      "settings": {
+        "heading": "Browse by category",
+        "title_size": 34,
+        "max_width": 1400,
+        "page_padding": 24,
+        "gap": 22,
+        "card_width": 140,
+        "card_height": 100,
+        "image_size": 78,
+        "radius": 18
+      }
+    },
     "collections_ff8Ccj": {
       "type": "collections",
       "name": "t:general.collections_grid",
@@ -159,6 +257,7 @@
     "category_chips",
     "hero_grid",
     "today_deals_9rYkaX",
+    "browse_by_category",
     "collections_ff8Ccj"
   ]
 }
