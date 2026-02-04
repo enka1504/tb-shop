@@ -105,7 +105,6 @@ body {
   grid-template-columns: var(--content-grid);
   display: grid;
   width: 100%;
-  padding: 0 20px;
 }
 
 /* Child elements, by default, are constrained to the central column of the grid. */

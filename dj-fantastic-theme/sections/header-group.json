@@ -1,11 +1,77 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "type": "header",
   "name": "Header group",
   "sections": {
     "main_header": {
       "type": "header",
-      "settings": {}
+      "blocks": {
+        "top_link_nQzjfA": {
+          "type": "top_link",
+          "settings": {
+            "label": "About us",
+            "url": "/"
+          }
+        },
+        "top_link_6fdjbN": {
+          "type": "top_link",
+          "settings": {
+            "label": "About us",
+            "url": "/"
+          }
+        },
+        "top_link_y9cDCJ": {
+          "type": "top_link",
+          "settings": {
+            "label": "About us",
+            "url": "/"
+          }
+        }
+      },
+      "block_order": [
+        "top_link_nQzjfA",
+        "top_link_6fdjbN",
+        "top_link_y9cDCJ"
+      ],
+      "settings": {
+        "enable_announcement": true,
+        "announce_text": "Hurry up! 30% OFF Sale Ends Soon",
+        "announce_bg": "#0b4c7a",
+        "announce_fg": "#ffffff",
+        "announce_left_icon": "‹",
+        "announce_right_icon": "›",
+        "enable_countdown": true,
+        "countdown_label": "Sale ends in",
+        "countdown_end": "2026-12-31T23:59:59Z",
+        "enable_topbar": true,
+        "email": "example@shopify.com",
+        "phone": "(+1) 2345678901",
+        "show_localization": true,
+        "menu_label": "Menu",
+        "enable_search": true,
+        "enable_category_select": true,
+        "search_placeholder": "What are you searching for?",
+        "show_theme_toggle": true,
+        "show_location": true,
+        "location_link": "/",
+        "show_account": true,
+        "show_cart": true,
+        "enable_navrow": true,
+        "enable_drawer": true,
+        "drawer_title": "Menu",
+        "drawer_menu": ""
+      }
     }
   },
-  "order": [ "main_header"]
+  "order": [
+    "main_header"
+  ]
 }

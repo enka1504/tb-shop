@@ -1,6 +1,6 @@
 {% comment %}
-  Today's Deals (Tabbed collections) - OS 2.0 Section
-  Files required:
+  Today's Deals (Tabbed Collections + Carousel + Quick View Modal)
+  Requires:
   - assets/todays-deals.css
   - assets/todays-deals.js
 {% endcomment %}
@@ -10,7 +10,7 @@
 
 {%- liquid
   assign section_id = section.id
-  assign limit = section.settings.products_limit | default: 6
+  assign limit = section.settings.products_limit | default: 12
 -%}
 
 <section class="td" data-td-section data-section-id="{{ section_id }}">
@@ -54,135 +54,227 @@
             {% if forloop.first %}data-active="true"{% else %}hidden{% endif %}
             data-td-panel
           >
-            <div class="td__grid">
-              {%- for product in col.products limit: limit -%}
-                {%- liquid
-                  assign v = product.selected_or_first_available_variant
-                  assign available = product.available
-                  assign compare = v.compare_at_price
-                  assign price = v.price
-                  assign has_sale = false
-                  if compare and compare > price
-                    assign has_sale = true
-                  endif
+            <div class="td__carousel" data-td-carousel>
+              <button class="td__nav td__nav--prev" type="button" aria-label="Previous" data-td-prev>
+                ‹
+              </button>
 
-                  assign pct = 0
-                  if has_sale
-                    assign diff = compare | minus: price
-                    assign pct = diff | times: 100.0 | divided_by: compare | round
-                  endif
+              <div class="td__track" data-td-track>
+                {%- for product in col.products limit: limit -%}
+                  {%- liquid
+                    assign v = product.selected_or_first_available_variant
+                    assign available = product.available
+                    assign compare = v.compare_at_price
+                    assign price = v.price
+                    assign has_sale = false
+                    if compare and compare > price
+                      assign has_sale = true
+                    endif
 
-                  assign badge_text = ''
-                  if product.tags contains 'Highly rated'
-                    assign badge_text = 'Highly rated'
-                  elsif product.tags contains 'Best Buy'
-                    assign badge_text = 'Best Buy'
-                  endif
-                -%}
+                    assign pct = 0
+                    if has_sale
+                      assign diff = compare | minus: price
+                      assign pct = diff | times: 100.0 | divided_by: compare | round
+                    endif
 
-                <article class="td__card" data-product-handle="{{ product.handle }}">
-                  <a class="td__media" href="{{ product.url }}">
-                    {%- if badge_text != blank -%}
-                      <span class="td__badge">{{ badge_text }}</span>
-                    {%- elsif has_sale -%}
-                      <span class="td__badge td__badge--sale">Best Buy</span>
-                    {%- endif -%}
+                    assign badge_text = ''
+                    if product.tags contains 'Highly rated'
+                      assign badge_text = 'Highly rated'
+                    elsif product.tags contains 'Best Buy'
+                      assign badge_text = 'Best Buy'
+                    elsif product.tags contains 'Deal'
+                      assign badge_text = 'Deal'
+                    endif
+                  -%}
 
-                    {%- if product.featured_image -%}
-                      {{ product.featured_image
-                        | image_url: width: 800
-                        | image_tag: loading: 'lazy', class: 'td__img', alt: product.title
-                      }}
-                    {%- else -%}
-                      <div class="td__img td__img--placeholder"></div>
-                    {%- endif -%}
-                  </a>
-
-                  <div class="td__body">
-                    <div class="td__vendor">{{ product.vendor | escape }}</div>
-
-                    <a class="td__name" href="{{ product.url }}">
-                      {{ product.title | escape }}
-                    </a>
-
-                    {%- if section.settings.show_rating -%}
-                      <div class="td__rating" aria-label="Rating">
-                        <span class="td__stars">★★★★★</span>
-                        <span class="td__reviews">(0)</span>
-                      </div>
-                    {%- endif -%}
-
-                    <div class="td__priceRow">
-                      <span class="td__price">{{ price | money }}</span>
-
-                      {%- if has_sale -%}
-                        <span class="td__compare">{{ compare | money }}</span>
-                        <span class="td__off">-{{ pct }}%</span>
-                      {%- endif -%}
-                    </div>
-
-                    {%- if v.unit_price_measurement and v.unit_price -%}
-                      <div class="td__unit">
-                        {{ v.unit_price | money }} /
-                        {{ v.unit_price_measurement.reference_value }}
-                        {{ v.unit_price_measurement.reference_unit }}
-                      </div>
-                    {%- endif -%}
-
-                    <div class="td__meta">
-                      <div class="td__stock">
-                        <span class="td__dot" aria-hidden="true"></span>
-                        <span>
-                          {% if available %}In stock{% else %}Sold out{% endif %}
+                  <article
+                    class="td__card"
+                    data-product-handle="{{ product.handle }}"
+                    data-product-url="{{ product.url }}"
+                    data-initial-variant="{{ v.id }}"
+                  >
+                    <div class="td__media">
+                      {%- if badge_text != blank -%}
+                        <span class="td__badge {% if badge_text == 'Deal' %}td__badge--deal{% endif %}">
+                          {{ badge_text }}
                         </span>
-                      </div>
-
-                      {%- if section.settings.show_shipping_note -%}
-                        <div class="td__ship">Receives in <strong>{{ section.settings.shipping_days }}</strong>.</div>
+                      {%- elsif has_sale -%}
+                        <span class="td__badge td__badge--sale">Best Buy</span>
                       {%- endif -%}
-                    </div>
-
-                    <div class="td__actions">
-                      <div class="td__qty" data-td-qty>
-                        <button class="td__qtyBtn" type="button" data-qty-minus aria-label="Decrease quantity">−</button>
-                        <input class="td__qtyInput" type="number" min="1" value="1" inputmode="numeric" aria-label="Quantity">
-                        <button class="td__qtyBtn" type="button" data-qty-plus aria-label="Increase quantity">+</button>
-                      </div>
 
                       <button
-                        class="td__add"
+                        class="td__eye"
                         type="button"
-                        data-td-add
-                        data-variant-id="{{ v.id }}"
-                        {% unless available %}disabled{% endunless %}
+                        aria-label="Quick view"
+                        data-td-eye
                       >
-                        Add to cart
+                        <!-- simple eye icon -->
+                        <svg viewBox="0 0 24 24" aria-hidden="true" class="td__eyeIcon">
+                          <path d="M12 5c5.5 0 9.7 4.5 10.9 6.1.1.1.1.3 0 .4C21.7 13.1 17.5 17.6 12 17.6S2.3 13.1 1.1 11.5c-.1-.1-.1-.3 0-.4C2.3 9.5 6.5 5 12 5Zm0 2c-3.9 0-7.2 3-8.6 4.8C4.8 13.6 8.1 16.6 12 16.6s7.2-3 8.6-4.8C19.2 10 15.9 7 12 7Zm0 1.8a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 1.6a1.4 1.4 0 1 0 0 2.8 1.4 1.4 0 0 0 0-2.8Z"/>
+                        </svg>
                       </button>
+
+                      <a class="td__mediaLink" href="{{ product.url }}">
+                        {%- if product.featured_image -%}
+                          {{ product.featured_image
+                            | image_url: width: 900
+                            | image_tag: loading: 'lazy', class: 'td__img', alt: product.title
+                          }}
+                        {%- else -%}
+                          <div class="td__img td__img--placeholder"></div>
+                        {%- endif -%}
+                      </a>
                     </div>
 
-                    <div class="td__msg" aria-live="polite" data-td-msg></div>
-                  </div>
-                </article>
-              {%- else -%}
-                <p class="td__empty">No products found in this collection.</p>
-              {%- endfor -%}
+                    <div class="td__body">
+                      <div class="td__vendor">{{ product.vendor | escape }}</div>
+
+                      <a class="td__name" href="{{ product.url }}">
+                        {{ product.title | escape }}
+                      </a>
+
+                      {%- if section.settings.show_rating -%}
+                        <div class="td__rating" aria-label="Rating">
+                          <span class="td__stars">★★★★★</span>
+                          <span class="td__reviews">(0)</span>
+                        </div>
+                      {%- endif -%}
+
+                      <div class="td__priceRow">
+                        <span class="td__price">{{ price | money }}</span>
+
+                        {%- if has_sale -%}
+                          <span class="td__compare">{{ compare | money }}</span>
+                          <span class="td__off">-{{ pct }}%</span>
+                        {%- endif -%}
+                      </div>
+
+                      {%- if v.unit_price_measurement and v.unit_price -%}
+                        <div class="td__unit">
+                          {{ v.unit_price | money }} /
+                          {{ v.unit_price_measurement.reference_value }}
+                          {{ v.unit_price_measurement.reference_unit }}
+                        </div>
+                      {%- endif -%}
+
+                      <div class="td__meta">
+                        <div class="td__stock">
+                          <span class="td__dot" aria-hidden="true"></span>
+                          <span>
+                            {% if available %}In stock{% else %}Sold out{% endif %}
+                          </span>
+                        </div>
+
+                        {%- if section.settings.show_shipping_note -%}
+                          <div class="td__ship">Receives in <strong>{{ section.settings.shipping_days }}</strong>.</div>
+                        {%- endif -%}
+                      </div>
+
+                      <div class="td__actions">
+                        <div class="td__qty" data-td-qty>
+                          <button class="td__qtyBtn" type="button" data-qty-minus aria-label="Decrease quantity">−</button>
+                          <input class="td__qtyInput" type="number" min="1" value="1" inputmode="numeric" aria-label="Quantity">
+                          <button class="td__qtyBtn" type="button" data-qty-plus aria-label="Increase quantity">+</button>
+                        </div>
+
+                        <button
+                          class="td__add"
+                          type="button"
+                          data-td-add
+                          data-variant-id="{{ v.id }}"
+                          {% unless available %}disabled{% endunless %}
+                        >
+                          Add to cart
+                        </button>
+                      </div>
+
+                      <div class="td__msg" aria-live="polite" data-td-msg></div>
+                    </div>
+                  </article>
+                {%- else -%}
+                  <p class="td__empty">No products found in this collection.</p>
+                {%- endfor -%}
+              </div>
+
+              <button class="td__nav td__nav--next" type="button" aria-label="Next" data-td-next>
+                ›
+              </button>
             </div>
           </div>
         {%- endif -%}
       {%- endfor -%}
     </div>
   </div>
+
+  <!-- QUICK VIEW MODAL (one per section) -->
+  <div class="tdqv" data-tdqv hidden>
+    <div class="tdqv__overlay" data-tdqv-close></div>
+
+    <div class="tdqv__panel" role="dialog" aria-modal="true" aria-label="Quick view">
+      <button class="tdqv__close" type="button" aria-label="Close" data-tdqv-close>×</button>
+
+      <div class="tdqv__content">
+        <div class="tdqv__left">
+          <div class="tdqv__mainImgWrap">
+            <img class="tdqv__mainImg" alt="" data-tdqv-main-img>
+          </div>
+
+          <div class="tdqv__thumbRow">
+            <button class="tdqv__thumbNav" type="button" aria-label="Previous image" data-tdqv-prev>‹</button>
+            <div class="tdqv__thumbs" data-tdqv-thumbs></div>
+            <button class="tdqv__thumbNav" type="button" aria-label="Next image" data-tdqv-next>›</button>
+          </div>
+        </div>
+
+        <div class="tdqv__right">
+          <div class="tdqv__vendor" data-tdqv-vendor></div>
+          <h3 class="tdqv__title" data-tdqv-title></h3>
+
+          <div class="tdqv__rating">
+            <span class="tdqv__stars">★★★★★</span>
+            <span class="tdqv__reviews">(0)</span>
+          </div>
+
+          <div class="tdqv__priceRow">
+            <span class="tdqv__price" data-tdqv-price></span>
+            <span class="tdqv__compare" data-tdqv-compare hidden></span>
+            <span class="tdqv__off" data-tdqv-off hidden></span>
+          </div>
+
+          <div class="tdqv__variantRow" data-tdqv-variant-row hidden>
+            <label class="tdqv__label" for="tdqvVariant">Variant</label>
+            <select id="tdqvVariant" class="tdqv__select" data-tdqv-variant></select>
+          </div>
+
+          <div class="tdqv__ctaRow">
+            <div class="tdqv__qty" data-tdqv-qty>
+              <button class="tdqv__qtyBtn" type="button" data-tdqv-minus aria-label="Decrease quantity">−</button>
+              <input class="tdqv__qtyInput" type="number" min="1" value="1" inputmode="numeric" aria-label="Quantity">
+              <button class="tdqv__qtyBtn" type="button" data-tdqv-plus aria-label="Increase quantity">+</button>
+            </div>
+
+            <button class="tdqv__add" type="button" data-tdqv-add>Add to cart</button>
+          </div>
+
+          <button class="tdqv__buy" type="button" data-tdqv-buy>Buy it now</button>
+
+          <div class="tdqv__desc" data-tdqv-desc></div>
+          <a class="tdqv__viewLink" href="#" data-tdqv-link>View full details →</a>
+
+          <div class="tdqv__msg" aria-live="polite" data-tdqv-msg></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
 {% schema %}
 {
-  "name": "Today's Deals (Tabs)",
+  "name": "Today's Deals",
   "settings": [
     { "type": "text", "id": "heading", "label": "Heading", "default": "Today's Deals" },
-    { "type": "range", "id": "products_limit", "label": "Products per tab", "min": 4, "max": 12, "step": 1, "default": 6 },
-
+    { "type": "range", "id": "products_limit", "label": "Products per tab", "min": 6, "max": 24, "step": 1, "default": 12 },
     { "type": "checkbox", "id": "show_rating", "label": "Show rating placeholder", "default": true },
-
     { "type": "checkbox", "id": "show_shipping_note", "label": "Show shipping note", "default": true },
     { "type": "text", "id": "shipping_days", "label": "Shipping text (example: 5 days)", "default": "5 days" }
   ],
@@ -197,17 +289,6 @@
       ]
     }
   ],
-  "presets": [
-    {
-      "name": "Today's Deals (Tabs)",
-      "blocks": [
-        { "type": "tab" },
-        { "type": "tab" },
-        { "type": "tab" },
-        { "type": "tab" },
-        { "type": "tab" }
-      ]
-    }
-  ]
+  "presets": [{ "name": "Today's Deals" }]
 }
 {% endschema %}

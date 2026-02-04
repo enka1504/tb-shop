@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "type": "footer",
   "name": "Footer group",
@@ -7,36 +16,59 @@
       "blocks": {
         "top_menu_1": {
           "type": "top_menu",
-          "settings": { "title": "Company", "menu": "footer" }
+          "settings": {
+            "title": "Company",
+            "menu": "footer"
+          }
         },
         "top_menu_2": {
           "type": "top_menu",
-          "settings": { "title": "Top Collections", "menu": "footer" }
+          "settings": {
+            "title": "Top Collections",
+            "menu": "footer"
+          }
         },
         "top_menu_3": {
           "type": "top_menu",
-          "settings": { "title": "Help and support", "menu": "footer" }
+          "settings": {
+            "title": "Help and support",
+            "menu": "footer"
+          }
         },
-
         "cat_1": {
           "type": "category_menu",
-          "settings": { "title": "Meat & Fish", "menu": "main-menu" }
+          "settings": {
+            "title": "Meat & Fish",
+            "menu": "main-menu"
+          }
         },
         "cat_2": {
           "type": "category_menu",
-          "settings": { "title": "Fruit & Vegetables", "menu": "main-menu" }
+          "settings": {
+            "title": "Fruit & Vegetables",
+            "menu": "main-menu"
+          }
         },
         "cat_3": {
           "type": "category_menu",
-          "settings": { "title": "Pantry staples", "menu": "main-menu" }
+          "settings": {
+            "title": "Pantry staples",
+            "menu": "main-menu"
+          }
         },
         "cat_4": {
           "type": "category_menu",
-          "settings": { "title": "Bakery", "menu": "main-menu" }
+          "settings": {
+            "title": "Bakery",
+            "menu": "main-menu"
+          }
         },
         "cat_5": {
           "type": "category_menu",
-          "settings": { "title": "Beverages", "menu": "main-menu" }
+          "settings": {
+            "title": "Beverages",
+            "menu": "main-menu"
+          }
         }
       },
       "block_order": [
@@ -50,8 +82,6 @@
         "cat_5"
       ],
       "settings": {
-        "show_newsletter": true,
-        "show_top_columns": true,
         "newsletter_kicker": "Join our newsletter",
         "newsletter_heading": "Get all latest information on events, sales and offers.",
         "newsletter_placeholder": "Your email",
@@ -66,5 +96,7 @@
       }
     }
   },
-  "order": ["footer"]
+  "order": [
+    "footer"
+  ]
 }

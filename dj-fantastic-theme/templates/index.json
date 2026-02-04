@@ -1,7 +1,164 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
-    "category_chips": { "type": "category-chips", "settings": { "max_width": 1920 } },
-    "hero_grid": { "type": "hero-grid-3", "settings": { "max_width": 1920, "gap": 16 } }
+    "category_chips": {
+      "type": "category-chips",
+      "blocks": {
+        "chip_FTiFTd": {
+          "type": "chip",
+          "settings": {
+            "title": "Meat & Fish",
+            "link": ""
+          }
+        },
+        "chip_J7bnCh": {
+          "type": "chip",
+          "settings": {
+            "title": "Meat & Fish",
+            "link": ""
+          }
+        },
+        "chip_F7fXEc": {
+          "type": "chip",
+          "settings": {
+            "title": "Meat & Fish",
+            "link": ""
+          }
+        },
+        "chip_mpD6wN": {
+          "type": "chip",
+          "settings": {
+            "title": "Meat & Fish",
+            "link": ""
+          }
+        },
+        "chip_kgiJqn": {
+          "type": "chip",
+          "settings": {
+            "title": "Meat & Fish",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "chip_FTiFTd",
+        "chip_J7bnCh",
+        "chip_F7fXEc",
+        "chip_mpD6wN",
+        "chip_kgiJqn"
+      ],
+      "settings": {
+        "max_width": 1920
+      }
+    },
+    "hero_grid": {
+      "type": "hero-grid-3",
+      "blocks": {
+        "card_right_qjAXRJ": {
+          "type": "card_right",
+          "settings": {
+            "bg": "shopify://shop_images/vegetables_1_94e08dbc-4a48-4c35-a509-b62a5837451b.jpg",
+            "badge": "35%",
+            "title": "Without Science",
+            "text": "Everything for an easier start to the new year",
+            "btn_label": "Shop now",
+            "btn_link": "shopify://collections/processed-food"
+          }
+        },
+        "card_center_j7LDMa": {
+          "type": "card_center",
+          "settings": {
+            "bg": "shopify://shop_images/vegetables_1.webp",
+            "kicker": "Big Discount",
+            "title": "Fresh Vegetables & Fruit Basket",
+            "text": "So you don't have to go anywhere else for freshness",
+            "btn_label": "Shop now",
+            "btn_link": "shopify://collections/baverages"
+          }
+        },
+        "card_left_WXqjXx": {
+          "type": "card_left",
+          "settings": {
+            "bg": "shopify://shop_images/beverages_4_9699db81-9918-44d5-ad83-35ba4e1b4b9e.jpg",
+            "badge": "50%",
+            "kicker": "Get extra 50% off",
+            "title": "Fresh Everyday",
+            "text": "",
+            "btn_label": "Shop now",
+            "btn_link": "shopify://collections/meat-poultry"
+          }
+        }
+      },
+      "block_order": [
+        "card_right_qjAXRJ",
+        "card_center_j7LDMa",
+        "card_left_WXqjXx"
+      ],
+      "settings": {
+        "max_width": 1920,
+        "gap": 16
+      }
+    },
+    "today_deals_9rYkaX": {
+      "type": "today-deals",
+      "blocks": {
+        "tab_MWUdg7": {
+          "type": "tab",
+          "settings": {
+            "label": "Diary",
+            "collection": "diary"
+          }
+        },
+        "tab_tCTbCY": {
+          "type": "tab",
+          "settings": {
+            "label": "Fish & Seafood",
+            "collection": "fish-seafood"
+          }
+        },
+        "tab_9pwqyF": {
+          "type": "tab",
+          "settings": {
+            "label": "Cookies",
+            "collection": ""
+          }
+        }
+      },
+      "block_order": [
+        "tab_MWUdg7",
+        "tab_tCTbCY",
+        "tab_9pwqyF"
+      ],
+      "name": "Today's Deals",
+      "settings": {
+        "heading": "Today's Deals",
+        "products_limit": 12,
+        "show_rating": true,
+        "show_shipping_note": true,
+        "shipping_days": "5 days"
+      }
+    },
+    "collections_ff8Ccj": {
+      "type": "collections",
+      "name": "t:general.collections_grid",
+      "settings": {
+        "grid_item_width": "collections--full",
+        "grid_gap": 10
+      }
+    }
   },
-  "order": [ "category_chips", "hero_grid"]
+  "order": [
+    "category_chips",
+    "hero_grid",
+    "today_deals_9rYkaX",
+    "collections_ff8Ccj"
+  ]
 }
