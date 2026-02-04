@@ -1,50 +1,234 @@
 {% comment %}
-  This section is used in the collection template to render collection page
-  listing all products within a collection.
-
-  https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
+  Main collection with Grid/List toggle
 {% endcomment %}
 
-<h1 class="collection-title">{{ collection.title }}</h1>
+{{ 'collection-toggle.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'collection-toggle.js' | asset_url }}" defer></script>
+{{ 'fantastic-overlays.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'fantastic-overlays.js' | asset_url }}" defer></script>
 
-<div class="collection-products">
-  {% paginate collection.products by 20 %}
-    {% for product in collection.products %}
-      <div class="collection-product">
-        {% if product.featured_image %}
-          {% render 'image',
-            class: 'collection-product__image',
-            image: product.featured_image,
-            url: product.url,
-            width: 400,
-            height: 400,
-            crop: 'center'
-          %}
-        {% endif %}
-        <div class="collection-product__content">
-          <p>{{ product.title | escape | link_to: product.url }}</p>
-          <p>{{ product.price | money }}</p>
-        </div>
+{% render 'collection-filter-drawer' %}
+{% render 'collection-quick-view-modal' %}
+
+{%- liquid
+  assign products_per_page = section.settings.products_per_page
+  assign layout_default = section.settings.default_view
+-%}
+
+<div
+  class="ct-collection"
+  data-collection-toggle
+  data-default-view="{{ layout_default }}"
+>
+  <div class="ct-toolbar">
+    <div class="ct-toolbar__left">
+      {%- if section.settings.show_filter_button -%}
+        <button type="button" class="ct-btn ct-btn--ghost ct-filter-btn" data-open-filters>
+          <span class="ct-icon" aria-hidden="true">⎘</span>
+          <span>Filter</span>
+        </button>
+      {%- endif -%}
+
+      <div class="ct-count">
+        {%- if collection.products_count == 1 -%}
+          1 product
+        {%- else -%}
+          {{ collection.products_count }} products
+        {%- endif -%}
       </div>
-    {% endfor %}
+    </div>
 
-    {{ paginate | default_pagination }}
-  {% endpaginate %}
+    <div class="ct-toolbar__right">
+      {%- if section.settings.show_sort -%}
+        <div class="ct-sort">
+          <label class="ct-sort__label" for="SortBy">Sort by:</label>
+          <select id="SortBy" class="ct-sort__select" name="sort_by" data-sort-by>
+            {%- for option in collection.sort_options -%}
+              <option value="{{ option.value }}" {% if option.value == collection.sort_by %}selected{% endif %}>
+                {{ option.name }}
+              </option>
+            {%- endfor -%}
+          </select>
+        </div>
+      {%- endif -%}
+
+      <div class="ct-view">
+        <button
+          type="button"
+          class="ct-view__btn"
+          aria-label="List view"
+          aria-pressed="false"
+          data-view-btn="list"
+        >
+          <!-- list icon -->
+          <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+            <rect x="2" y="3" width="3" height="3" rx="0.6"></rect>
+            <rect x="7" y="3.6" width="9" height="1.8" rx="0.9"></rect>
+            <rect x="2" y="7.5" width="3" height="3" rx="0.6"></rect>
+            <rect x="7" y="8.1" width="9" height="1.8" rx="0.9"></rect>
+            <rect x="2" y="12" width="3" height="3" rx="0.6"></rect>
+            <rect x="7" y="12.6" width="9" height="1.8" rx="0.9"></rect>
+          </svg>
+        </button>
+
+        <button
+          type="button"
+          class="ct-view__btn"
+          aria-label="Grid view"
+          aria-pressed="true"
+          data-view-btn="grid"
+        >
+          <!-- grid icon -->
+          <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+            <rect x="2" y="2" width="6" height="6" rx="1"></rect>
+            <rect x="10" y="2" width="6" height="6" rx="1"></rect>
+            <rect x="2" y="10" width="6" height="6" rx="1"></rect>
+            <rect x="10" y="10" width="6" height="6" rx="1"></rect>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  {%- paginate collection.products by products_per_page -%}
+
+    <div class="ct-products" data-products-container>
+      {%- for product in collection.products -%}
+        <article class="ct-card" data-product-card data-product-handle="{{ product.handle }}">
+          <a class="ct-card__media" href="{{ product.url }}">
+            {%- if product.featured_image -%}
+              {{ product.featured_image | image_url: width: 900 | image_tag: loading: 'lazy', class: 'ct-card__img', alt: product.title }}
+            {%- else -%}
+              <div class="ct-card__img ct-card__img--placeholder"></div>
+            {%- endif -%}
+
+            {%- if product.available == false -%}
+              <span class="ct-badge ct-badge--muted">Sold out</span>
+            {%- endif -%}
+
+            {%- if product.tags contains 'Highly rated' -%}
+              <span class="ct-badge ct-badge--purple">Highly rated</span>
+            {%- endif -%}
+
+            {%- if product.tags contains 'Best Buy' -%}
+              <span class="ct-badge ct-badge--red">Best Buy</span>
+            {%- endif -%}
+
+            {%- if product.tags contains 'Deal' -%}
+              <span class="ct-badge ct-badge--yellow">Deal</span>
+            {%- endif -%}
+          </a>
+
+          <div class="ct-card__body">
+            {%- if product.vendor != blank -%}
+              <div class="ct-card__vendor">{{ product.vendor }}</div>
+            {%- endif -%}
+
+            <h3 class="ct-card__title">
+              <a href="{{ product.url }}">{{ product.title }}</a>
+            </h3>
+
+            {%- if section.settings.show_excerpt -%}
+              <div class="ct-card__excerpt">
+                {{ product.description | strip_html | truncate: 140 }}
+              </div>
+            {%- endif -%}
+
+            <div class="ct-card__meta">
+              <div class="ct-price">
+                {%- if product.price_varies -%}
+                  <span class="ct-price__from">From</span>
+                {%- endif -%}
+                <span class="ct-price__current">{{ product.price | money }}</span>
+
+                {%- if product.compare_at_price_max > product.price -%}
+                  <span class="ct-price__compare">{{ product.compare_at_price_max | money }}</span>
+                  {%- assign savings = product.compare_at_price_max | minus: product.price -%}
+                  {%- assign pct = savings | times: 100.0 | divided_by: product.compare_at_price_max -%}
+                  <span class="ct-price__badge">-{{ pct | round }}%</span>
+                {%- endif -%}
+              </div>
+
+              <div class="ct-stock">
+                <span class="ct-dot {% if product.available %}ct-dot--in{% else %}ct-dot--out{% endif %}"></span>
+                <span>{% if product.available %}In stock{% else %}Out of stock{% endif %}</span>
+              </div>
+            </div>
+
+            <div class="ct-card__actions">
+              <div class="ct-qty" aria-label="Quantity selector">
+                <button class="ct-qty__btn" type="button" data-qty-minus aria-label="Decrease quantity">−</button>
+                <input class="ct-qty__input" type="number" min="1" value="1" inputmode="numeric" data-qty-input aria-label="Quantity">
+                <button class="ct-qty__btn" type="button" data-qty-plus aria-label="Increase quantity">+</button>
+              </div>
+
+              {%- if product.available == false -%}
+                <button class="ct-btn ct-btn--primary" type="button" disabled>Sold out</button>
+              {%- else -%}
+                {%- if product.has_only_default_variant -%}
+                  <form method="post" action="/cart/add" class="ct-atc">
+                    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                    <input type="hidden" name="quantity" value="1" data-form-qty>
+                    <button type="submit" class="ct-btn ct-btn--primary">Add to cart</button>
+                  </form>
+                {%- else -%}
+                  <a class="ct-btn ct-btn--primary" href="{{ product.url }}">Choose option</a>
+                {%- endif -%}
+              {%- endif -%}
+
+              {%- if section.settings.show_quick_view -%}
+                <button type="button" class="ct-btn ct-btn--secondary" data-quick-view data-product-url="{{ product.url }}">Quick view</button>
+              {%- endif -%}
+            </div>
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+
+    {%- if paginate.pages > 1 -%}
+      <nav class="ct-pagination" role="navigation" aria-label="Pagination">
+        {%- if paginate.previous -%}
+          <a class="ct-page" href="{{ paginate.previous.url }}">←</a>
+        {%- else -%}
+          <span class="ct-page ct-page--disabled">←</span>
+        {%- endif -%}
+
+        {%- for part in paginate.parts -%}
+          {%- if part.is_link -%}
+            <a class="ct-page" href="{{ part.url }}">{{ part.title }}</a>
+          {%- else -%}
+            <span class="ct-page {% if part.title == paginate.current_page %}ct-page--active{% endif %}">
+              {{ part.title }}
+            </span>
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- if paginate.next -%}
+          <a class="ct-page" href="{{ paginate.next.url }}">→</a>
+        {%- else -%}
+          <span class="ct-page ct-page--disabled">→</span>
+        {%- endif -%}
+      </nav>
+    {%- endif -%}
+
+  {%- endpaginate -%}
 </div>
-
-{% stylesheet %}
-  .collection-products {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
-  }
-  .collection-title {
-    padding: 0 20px;
-  }
-{% endstylesheet %}
 
 {% schema %}
 {
-  "name": "t:general.collection",
-  "settings": []
+  "name": "Main collection (toggle)",
+  "settings": [
+    { "type": "range", "id": "products_per_page", "min": 8, "max": 48, "step": 4, "default": 12, "label": "Products per page" },
+    { "type": "select", "id": "default_view", "label": "Default view", "default": "grid",
+      "options": [
+        { "value": "grid", "label": "Grid" },
+        { "value": "list", "label": "List" }
+      ]
+    },
+    { "type": "checkbox", "id": "show_sort", "default": true, "label": "Show sort dropdown" },
+    { "type": "checkbox", "id": "show_filter_button", "default": true, "label": "Show filter button (UI only)" },
+    { "type": "checkbox", "id": "show_excerpt", "default": true, "label": "Show description excerpt (list looks better with this)" },
+    { "type": "checkbox", "id": "show_quick_view", "default": true, "label": "Show quick view button (UI only)" }
+  ]
 }
 {% endschema %}

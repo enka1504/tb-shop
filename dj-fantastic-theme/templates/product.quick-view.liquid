@@ -1,0 +1,57 @@
+{%- layout none -%}
+
+<div class="qv">
+  <div class="qv__media">
+    {%- if product.featured_image -%}
+      {{ product.featured_image | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'qv__img', alt: product.title }}
+    {%- endif -%}
+  </div>
+
+  <div class="qv__info">
+    {%- if product.vendor != blank -%}
+      <div class="qv__vendor">{{ product.vendor }}</div>
+    {%- endif -%}
+
+    <h2 class="qv__title">{{ product.title }}</h2>
+
+    <div class="qv__price">
+      <span class="qv__price-current">{{ product.price | money }}</span>
+      {%- if product.compare_at_price_max > product.price -%}
+        <span class="qv__price-compare">{{ product.compare_at_price_max | money }}</span>
+        {%- assign savings = product.compare_at_price_max | minus: product.price -%}
+        {%- assign pct = savings | times: 100.0 | divided_by: product.compare_at_price_max -%}
+        <span class="qv__discount">-{{ pct | round }}%</span>
+      {%- endif -%}
+    </div>
+
+    <div class="qv__unit">
+      {%- if product.selected_or_first_available_variant.unit_price -%}
+        {{ product.selected_or_first_available_variant.unit_price | money }} / {{ product.selected_or_first_available_variant.unit_price_measurement.reference_value }}{{ product.selected_or_first_available_variant.unit_price_measurement.reference_unit }}
+      {%- endif -%}
+    </div>
+
+    <div class="qv__qty">
+      <button type="button" class="qv-qty-btn" data-qv-qty-minus>−</button>
+      <input type="number" min="1" value="1" class="qv-qty-input" data-qv-qty-input>
+      <button type="button" class="qv-qty-btn" data-qv-qty-plus>+</button>
+    </div>
+
+    {%- if product.available -%}
+      {%- if product.has_only_default_variant -%}
+        <form method="post" action="/cart/add" class="qv__atc">
+          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+          <input type="hidden" name="quantity" value="1" data-qv-form-qty>
+          <button type="submit" class="qv__btn qv__btn--primary">Add to cart</button>
+        </form>
+      {%- else -%}
+        <a class="qv__btn qv__btn--primary" href="{{ product.url }}">Choose options</a>
+      {%- endif -%}
+    {%- else -%}
+      <button class="qv__btn qv__btn--disabled" type="button" disabled>Sold out</button>
+    {%- endif -%}
+
+    <div class="qv__desc">
+      {{ product.description | strip_html | truncate: 520 }}
+    </div>
+  </div>
+</div>

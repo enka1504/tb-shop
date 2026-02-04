@@ -1,0 +1,143 @@
+{%- comment -%} Right-side filter drawer {%- endcomment -%}
+
+<div class="fh-overlay" data-fh-overlay hidden></div>
+
+<aside class="fh-drawer" data-fh-filter-drawer hidden aria-hidden="true" role="dialog" aria-label="Filter">
+  <div class="fh-drawer__panel">
+    <header class="fh-drawer__header">
+      <h2 class="fh-drawer__title">Filter</h2>
+      <button class="fh-icon-btn" type="button" aria-label="Close" data-fh-close>
+        ✕
+      </button>
+    </header>
+
+    <div class="fh-drawer__content">
+      <form id="CollectionFiltersForm" class="fh-filters" method="get" action="{{ collection.url }}" data-fh-filter-form>
+        {%- comment -%} Keep current sort_by if present {%- endcomment -%}
+        {%- if collection.sort_by != blank -%}
+          <input type="hidden" name="sort_by" value="{{ collection.sort_by }}">
+        {%- endif -%}
+
+        {%- for filter in collection.filters -%}
+          {%- case filter.type -%}
+
+            {%- when 'boolean' -%}
+              <div class="fh-filter">
+                <label class="fh-switch">
+                  <input
+                    type="checkbox"
+                    name="{{ filter.param_name }}"
+                    value="1"
+                    {% if filter.active_values.size > 0 %}checked{% endif %}
+                  >
+                  <span class="fh-switch__ui" aria-hidden="true"></span>
+                  <span class="fh-switch__label">{{ filter.label }}</span>
+                </label>
+              </div>
+
+            {%- when 'list' -%}
+              <details class="fh-accordion" open>
+                <summary class="fh-accordion__summary">
+                  <span>{{ filter.label }}</span>
+                  <span class="fh-accordion__chev" aria-hidden="true">▾</span>
+                </summary>
+
+                <div class="fh-accordion__body">
+                  <div class="fh-muted">
+                    {{ filter.active_values.size }} selected
+                    {%- if filter.active_values.size > 0 -%}
+                      <button class="fh-reset-link" type="button" data-fh-reset-filter data-param="{{ filter.param_name }}">Reset</button>
+                    {%- endif -%}
+                  </div>
+
+                  <div class="fh-checklist">
+                    {%- for v in filter.values -%}
+                      <label class="fh-check">
+                        <input
+                          type="checkbox"
+                          name="{{ v.param_name }}"
+                          value="{{ v.value }}"
+                          {% if v.active %}checked{% endif %}
+                          {% if v.count == 0 and v.active == false %}disabled{% endif %}
+                        >
+                        <span class="fh-check__box" aria-hidden="true"></span>
+                        <span class="fh-check__text">{{ v.label }} ({{ v.count }})</span>
+                      </label>
+                    {%- endfor -%}
+                  </div>
+                </div>
+              </details>
+
+            {%- when 'price_range' -%}
+              <details class="fh-accordion" open>
+                <summary class="fh-accordion__summary">
+                  <span>{{ filter.label }}</span>
+                  <span class="fh-accordion__chev" aria-hidden="true">▾</span>
+                </summary>
+
+                <div class="fh-accordion__body">
+                  <div class="fh-muted">
+                    <button class="fh-reset-link" type="button" data-fh-reset-price>Reset</button>
+                  </div>
+
+                  <div class="fh-price">
+                    <div class="fh-price__row">
+                      <label class="fh-field">
+                        <span>$</span>
+                        <input
+                          class="fh-input"
+                          name="{{ filter.min_value.param_name }}"
+                          type="number"
+                          inputmode="numeric"
+                          placeholder="0"
+                          value="{{ filter.min_value.value | default: '' }}"
+                        >
+                      </label>
+
+                      <span class="fh-price__dash">-</span>
+
+                      <label class="fh-field">
+                        <span>$</span>
+                        <input
+                          class="fh-input"
+                          name="{{ filter.max_value.param_name }}"
+                          type="number"
+                          inputmode="numeric"
+                          placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                          value="{{ filter.max_value.value | default: '' }}"
+                        >
+                      </label>
+                    </div>
+
+                    <div class="fh-range">
+                      <input
+                        type="range"
+                        min="0"
+                        max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                        value="{{ filter.min_value.value | default: 0 }}"
+                        data-fh-min-range
+                      >
+                      <input
+                        type="range"
+                        min="0"
+                        max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                        value="{{ filter.max_value.value | default: filter.range_max | money_without_currency | replace: ',', '' }}"
+                        data-fh-max-range
+                      >
+                    </div>
+                  </div>
+                </div>
+              </details>
+
+          {%- endcase -%}
+        {%- endfor -%}
+      </form>
+    </div>
+
+    <footer class="fh-drawer__footer">
+      <button class="fh-apply-btn" type="submit" form="CollectionFiltersForm" data-fh-apply>
+        Apply (<span data-fh-active-count>0</span>)
+      </button>
+    </footer>
+  </div>
+</aside>
