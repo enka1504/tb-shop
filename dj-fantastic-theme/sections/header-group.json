@@ -14,6 +14,69 @@
     "main_header": {
       "type": "header",
       "blocks": {
+        "nav_item_xWyq4h": {
+          "type": "nav_item",
+          "settings": {
+            "label": "Combo & Deals",
+            "url": "/",
+            "badge_text": "New",
+            "badge_style": "deal"
+          }
+        },
+        "nav_item_6KPTUK": {
+          "type": "nav_item",
+          "settings": {
+            "label": "Bundle save",
+            "url": "/",
+            "badge_text": "New",
+            "badge_style": "deal"
+          }
+        },
+        "nav_item_G9yJ4B": {
+          "type": "nav_item",
+          "settings": {
+            "label": "Shop by Category",
+            "url": "/",
+            "badge_text": "New",
+            "badge_style": "deal"
+          }
+        },
+        "nav_item_LBFmgH": {
+          "type": "nav_item",
+          "settings": {
+            "label": "Fruit & Vegetables",
+            "url": "/",
+            "badge_text": "New",
+            "badge_style": "deal"
+          }
+        },
+        "nav_item_QXmTiF": {
+          "type": "nav_item",
+          "settings": {
+            "label": "Meat & Fish",
+            "url": "/",
+            "badge_text": "",
+            "badge_style": "deal"
+          }
+        },
+        "nav_item_pNyEPY": {
+          "type": "nav_item",
+          "settings": {
+            "label": "Fresets",
+            "url": "/",
+            "badge_text": "Deal",
+            "badge_style": "deal"
+          }
+        },
+        "nav_item_QRfrb7": {
+          "type": "nav_item",
+          "settings": {
+            "label": "Templates",
+            "url": "/",
+            "badge_text": "",
+            "badge_style": "deal"
+          }
+        },
         "top_link_nQzjfA": {
           "type": "top_link",
           "settings": {
@@ -24,19 +87,26 @@
         "top_link_6fdjbN": {
           "type": "top_link",
           "settings": {
-            "label": "About us",
-            "url": "/"
+            "label": ".Recipes",
+            "url": "shopify://blogs/recipe"
           }
         },
         "top_link_y9cDCJ": {
           "type": "top_link",
           "settings": {
-            "label": "About us",
-            "url": "/"
+            "label": ".New & Article",
+            "url": "/article"
           }
         }
       },
       "block_order": [
+        "nav_item_xWyq4h",
+        "nav_item_6KPTUK",
+        "nav_item_G9yJ4B",
+        "nav_item_LBFmgH",
+        "nav_item_QXmTiF",
+        "nav_item_pNyEPY",
+        "nav_item_QRfrb7",
         "top_link_nQzjfA",
         "top_link_6fdjbN",
         "top_link_y9cDCJ"
@@ -52,7 +122,7 @@
         "countdown_label": "Sale ends in",
         "countdown_end": "2026-12-31T23:59:59Z",
         "enable_topbar": true,
-        "email": "example@shopify.com",
+        "email": "deanj0125@gmail.com",
         "phone": "(+1) 2345678901",
         "show_localization": true,
         "menu_label": "Menu",
@@ -67,7 +137,7 @@
         "enable_navrow": true,
         "enable_drawer": true,
         "drawer_title": "Menu",
-        "drawer_menu": ""
+        "drawer_menu": "main-menu"
       }
     }
   },

@@ -1,0 +1,495 @@
+/* Lock scroll when overlay open */
+.fh-lock {
+    overflow: hidden;
+}
+
+/* Shared overlay */
+.fh-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.55);
+    z-index: 9990;
+}
+
+/* ---------- FILTER DRAWER ---------- */
+.fh-drawer {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.fh-drawer__panel {
+    width: min(440px, 92vw);
+    height: 92vh;
+    margin: 4vh 12px;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.fh-drawer__header {
+    padding: 16px 18px;
+    border-bottom: 1px solid #e8edf3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.fh-drawer__title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.fh-icon-btn {
+    width: 40px;
+    height: 40px;
+    border: 0;
+    background: #f1f5f9;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.fh-drawer__content {
+    padding: 12px 14px;
+    overflow: auto;
+    flex: 1;
+}
+
+.fh-drawer__footer {
+    border-top: 1px solid #e8edf3;
+    padding: 12px 14px;
+    background: #fff;
+}
+
+.fh-apply-btn {
+    width: 100%;
+    height: 48px;
+    border-radius: 12px;
+    border: 0;
+    background: #0b4a7d;
+    color: #fff;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.fh-filter {
+    padding: 6px 4px 12px;
+    border-bottom: 1px solid #eef2f6;
+}
+
+.fh-switch {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.fh-switch input {
+    display: none;
+}
+
+.fh-switch__ui {
+    width: 44px;
+    height: 24px;
+    background: #e2e8f0;
+    border-radius: 999px;
+    position: relative;
+}
+
+.fh-switch__ui::after {
+    content: "";
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border-radius: 999px;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .15);
+    transition: transform .18s ease;
+}
+
+.fh-switch input:checked+.fh-switch__ui {
+    background: #0b4a7d;
+}
+
+.fh-switch input:checked+.fh-switch__ui::after {
+    transform: translateX(20px);
+}
+
+.fh-switch__label {
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.fh-accordion {
+    border: 1px solid #e8edf3;
+    border-radius: 12px;
+    margin: 10px 0;
+    overflow: hidden;
+    background: #fff;
+}
+
+.fh-accordion__summary {
+    padding: 12px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    font-weight: 800;
+}
+
+.fh-accordion[open] .fh-accordion__chev {
+    transform: rotate(180deg);
+}
+
+.fh-accordion__chev {
+    transition: transform .18s ease;
+}
+
+.fh-accordion__body {
+    padding: 10px 12px 12px;
+    border-top: 1px solid #eef2f6;
+}
+
+.fh-muted {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #64748b;
+    margin-bottom: 10px;
+}
+
+.fh-reset-link {
+    border: 0;
+    background: transparent;
+    color: #64748b;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.fh-checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.fh-check {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.fh-check input {
+    display: none;
+}
+
+.fh-check__box {
+    width: 18px;
+    height: 18px;
+    border: 1px solid #cbd5e1;
+    border-radius: 5px;
+    background: #fff;
+}
+
+.fh-check input:checked+.fh-check__box {
+    background: #0b4a7d;
+    border-color: #0b4a7d;
+}
+
+.fh-check__text {
+    color: #0f172a;
+}
+
+.fh-check input:disabled+.fh-check__box {
+    opacity: .4;
+}
+
+.fh-check input:disabled~.fh-check__text {
+    opacity: .55;
+}
+
+/* price */
+.fh-price__row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.fh-field {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid #e8edf3;
+    border-radius: 10px;
+    padding: 8px 10px;
+    flex: 1;
+}
+
+.fh-input {
+    width: 100%;
+    border: 0;
+    outline: none;
+    font-size: 14px;
+}
+
+.fh-price__dash {
+    color: #94a3b8;
+    font-weight: 800;
+}
+
+.fh-range {
+    margin-top: 10px;
+    display: grid;
+    gap: 8px;
+}
+
+.fh-range input[type="range"] {
+    width: 100%;
+}
+
+/* ---------- QUICK VIEW MODAL ---------- */
+.qv-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 10010;
+    display: flex;
+    justify-content: flex-end;
+    pointer-events: none;
+}
+
+.qv-modal__panel {
+    pointer-events: auto;
+    width: min(980px, 92vw);
+    height: 92vh;
+    margin: 4vh 12px;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    position: relative;
+    overflow: hidden;
+}
+
+.qv-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 44px;
+    height: 44px;
+    border: 0;
+    border-radius: 999px;
+    background: #f1f5f9;
+    cursor: pointer;
+    font-size: 16px;
+    z-index: 2;
+}
+
+.qv-modal__content {
+    height: 100%;
+}
+
+.qv-loading {
+    padding: 24px;
+    color: #64748b;
+    font-weight: 700;
+}
+
+/* quick view content layout */
+.qv {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+}
+
+.qv__media {
+    background: #f8fafc;
+    display: grid;
+    place-items: center;
+    padding: 28px;
+}
+
+.qv__img {
+    width: min(520px, 100%);
+    height: auto;
+    object-fit: contain;
+}
+
+.qv__info {
+    padding: 28px 26px;
+    overflow: auto;
+}
+
+.qv__vendor {
+    color: #94a3b8;
+    font-size: 12px;
+    margin-bottom: 6px;
+}
+
+.qv__title {
+    margin: 0 0 10px;
+    font-size: 28px;
+    font-weight: 900;
+}
+
+.qv__price {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+
+.qv__price-current {
+    font-size: 28px;
+    font-weight: 900;
+    color: #dc2626;
+}
+
+.qv__price-compare {
+    text-decoration: line-through;
+    color: #0f172a;
+    opacity: .7;
+    font-weight: 700;
+}
+
+.qv__discount {
+    font-size: 12px;
+    font-weight: 900;
+    color: #dc2626;
+    background: #fff1f2;
+    border: 1px solid #fecdd3;
+    padding: 3px 6px;
+    border-radius: 8px;
+}
+
+.qv__unit {
+    color: #64748b;
+    font-size: 12px;
+    margin-bottom: 14px;
+}
+
+.qv__qty {
+    display: flex;
+    align-items: center;
+    border: 1px solid #e8edf3;
+    border-radius: 12px;
+    overflow: hidden;
+    width: 160px;
+    height: 44px;
+    margin-bottom: 14px;
+}
+
+.qv-qty-btn {
+    width: 44px;
+    height: 44px;
+    border: 0;
+    background: #fff;
+    cursor: pointer;
+    font-size: 18px;
+    color: #64748b;
+}
+
+.qv-qty-input {
+    width: 72px;
+    height: 44px;
+    border: 0;
+    text-align: center;
+    outline: none;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.qv__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 44px;
+    border-radius: 12px;
+    padding: 0 16px;
+    text-decoration: none;
+    font-weight: 900;
+}
+
+.qv__btn--primary {
+    background: #0b4a7d;
+    color: #fff;
+    border: 0;
+}
+
+.qv__btn--disabled {
+    background: #e2e8f0;
+    color: #475569;
+    border: 0;
+}
+
+.qv__atc {
+    margin: 0 0 16px;
+}
+
+.qv__atc button {
+    width: min(360px, 100%);
+    border: 0;
+}
+
+.qv__desc {
+    color: #334155;
+    font-size: 13px;
+    line-height: 1.6;
+    max-width: 520px;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .qv {
+        grid-template-columns: 1fr;
+    }
+
+    .qv__media {
+        padding: 18px;
+    }
+
+    .qv__info {
+        padding: 18px;
+    }
+
+    .qv__title {
+        font-size: 22px;
+    }
+
+    .qv__price-current {
+        font-size: 22px;
+    }
+}
+
+.qv-modal[hidden],
+.fh-drawer[hidden],
+.fh-overlay[hidden] {
+    display: none !important;
+}
+
+/* Ensure close button is clickable */
+.qv-modal {
+    pointer-events: none;
+}
+
+.qv-modal[aria-hidden="false"] {
+    pointer-events: auto;
+}
+
+.qv-modal__panel {
+    pointer-events: auto;
+}
+
+.qv-close {
+    pointer-events: auto;
+    z-index: 10020;
+}
