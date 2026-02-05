@@ -350,6 +350,18 @@
       "settings": {
       }
     },
+    "deal_bundle": {
+      "type": "deal-bundle",
+      "blocks": {
+      },
+      "block_order": [
+      ],
+      "name": "Deal Bundle",
+      "settings": {
+      }
+    },
+
+    
   },
   "order": [
     "category_chips",
@@ -358,6 +370,7 @@
     "browse_by_category",
     "price_hits_week",
     "collections_ff8Ccj",
-    "dietary_icons"
+    "dietary_icons",
+    "deal_bundle"
   ]
 }

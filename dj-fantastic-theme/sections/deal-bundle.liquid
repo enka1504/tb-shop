@@ -1,0 +1,72 @@
+{{ 'home-various.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'home-various.js' | asset_url }}" defer></script>
+
+<section class="hv" data-hv-section>
+  <div class="page-width">
+    <h2 class="hv__title">{{ section.settings.heading | escape }}</h2>
+
+    <div class="hvBundles">
+      {% for block in section.blocks %}
+        {% if block.type == 'bundle' %}
+          <div class="hvBundle" {{ block.shopify_attributes }}>
+            <div class="hvBundle__top" style="background: {{ block.settings.bg_color }};">
+              <p class="hvBundle__price">{{ block.settings.price_text | escape }}</p>
+              <p class="hvBundle__desc">{{ block.settings.subtitle | escape }}</p>
+              {% if block.settings.more_link != blank %}
+                <a class="hvBundle__more" href="{{ block.settings.more_link }}">More info</a>
+              {% endif %}
+            </div>
+
+            <div class="hvBundle__bottom">
+              {% for i in (1..2) %}
+                {% assign t = 'mini_title_' | append: i %}
+                {% assign img = 'mini_img_' | append: i %}
+                {% assign link = 'mini_link_' | append: i %}
+                {% if block.settings[t] != blank %}
+                  <a class="hvMini" href="{{ block.settings[link] }}">
+                    <span class="hvMini__t">{{ block.settings[t] | escape }}</span>
+                    {% if block.settings[img] != blank %}
+                      {{ block.settings[img] | image_url: width: 120 | image_tag: class: 'hvMini__img', loading: 'lazy' }}
+                    {% endif %}
+                  </a>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Deal bundles tiles",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Deals" }
+  ],
+  "blocks": [
+    {
+      "type": "bundle",
+      "name": "Bundle tile",
+      "settings": [
+        { "type": "color", "id": "bg_color", "label": "Top background", "default": "#d7d6f4" },
+        { "type": "text", "id": "price_text", "label": "Price text", "default": "9 for $18" },
+        { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Bakery, Cookies & Breads" },
+        { "type": "url", "id": "more_link", "label": "More info link" },
+
+        { "type": "text", "id": "mini_title_1", "label": "Mini 1 title", "default": "Breads" },
+        { "type": "image_picker", "id": "mini_img_1", "label": "Mini 1 image" },
+        { "type": "url", "id": "mini_link_1", "label": "Mini 1 link" },
+
+        { "type": "text", "id": "mini_title_2", "label": "Mini 2 title", "default": "Cookies" },
+        { "type": "image_picker", "id": "mini_img_2", "label": "Mini 2 image" },
+        { "type": "url", "id": "mini_link_2", "label": "Mini 2 link" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Deal bundles tiles", "blocks": [{ "type": "bundle" }, { "type": "bundle" }, { "type": "bundle" }] }
+  ]
+}
+{% endschema %}
