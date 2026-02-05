@@ -153,12 +153,19 @@
         "grid_item_width": "collections--full",
         "grid_gap": 10
       }
+    },
+    "browse_by_category": {
+      "type": "browse-by-category",
+      "blocks": {},
+      "block_order": [],
+      "settings": {}
     }
   },
   "order": [
     "category_chips",
     "hero_grid",
     "today_deals_9rYkaX",
+    "browse_by_category",
     "collections_ff8Ccj"
   ]
 }
