@@ -213,10 +213,183 @@
 
   {%- endpaginate -%}
 </div>
+<!-- Related Collections Section -->
+<div class="related-collections">
+  <h2 class="related-collections__title">Related collections</h2>
+  
+  <div class="related-collections__list">
+    {%- for collection in collections -%}
+      <div class="related-collections__item">
+        <a href="{{ collection.url }}" class="related-collections__link">
+          <img src="{{ collection.image | img_url: 'medium' }}" alt="{{ collection.title }}" class="related-collections__image" width="100%" height="200px"/>
+          <div class="related-collections__details">
+            <span class="related-collections__name">{{ collection.title }}</span>
+            <span class="related-collections__item-count">{{ collection.products_count }} items</span>
+          </div>
+        </a>
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
 
+<!-- Promotional Banner Section -->
+<div class="promotional-banner">
+  <div class="promotional-banner__content">
+    <p class="promotional-banner__title">More than groceries, at your door from 1 hour!</p>
+    <p class="promotional-banner__description">Free delivery on your first order over $500.</p>
+    <div class="promotional-banner__features">
+      <div class="feature-item">
+        <span class="feature-icon">⚖️</span>
+        <p>Quality at fair prices</p>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">😊</span>
+        <p>100% satisfaction</p>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">🥇</span>
+        <p>Best online food shop</p>
+      </div>
+    </div>
+  </div>
+  <div class="promotional-banner__image">
+    {% if section.blocks.settings.mini_img_1 != blank %}
+        {{ section.block.settings.mini_img_1 | image_url: width: 120 | image_tag: class: 'hvMini__img', loading: 'lazy' }}
+    {% endif %}
+  </div>
+</div>
+<style>
+  /* Related Collections Section */
+.related-collections {
+  margin: 40px 0;
+  padding: 20px;
+}
+
+.related-collections__title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.related-collections__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+
+.related-collections__item {
+  width: calc(15% - 16px);
+  text-align: center;
+}
+
+.related-collections__link {
+  display: block;
+  text-decoration: none;
+}
+
+.related-collections__image {
+  width: 100%;
+  height: 200px;
+  border-radius: 8px;
+}
+
+.related-collections__details {
+  margin-top: 10px;
+}
+
+.related-collections__name {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.related-collections__item-count {
+  font-size: 14px;
+  color: #64748b;
+}
+
+/* Promotional Banner Section */
+.promotional-banner {
+  background-color: #0b4a7d;
+  color: white;
+  padding: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 8px;
+  margin: 0 20px;
+}
+
+.promotional-banner__content {
+  max-width: 600px;
+  margin-right: 20px;
+}
+
+.promotional-banner__title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.promotional-banner__description {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.promotional-banner__features {
+  display: flex;
+  gap: 20px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.feature-icon {
+  font-size: 20px;
+}
+
+.promotional-banner__image img {
+  max-width: 400px;
+  width: 100%;
+  border-radius: 8px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .related-collections__item {
+    width: calc(50% - 16px);
+  }
+
+  .promotional-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .promotional-banner__content {
+    margin-right: 0;
+  }
+
+  .promotional-banner__image img {
+    max-width: 100%;
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .related-collections__item {
+    width: 100%;
+  }
+}
+
+</style>
 {% schema %}
 {
-  "name": "Main collection (toggle)",
+  "name": "Main collection",
   "settings": [
     { "type": "range", "id": "products_per_page", "min": 8, "max": 48, "step": 4, "default": 12, "label": "Products per page" },
     { "type": "select", "id": "default_view", "label": "Default view", "default": "grid",
@@ -228,7 +401,20 @@
     { "type": "checkbox", "id": "show_sort", "default": true, "label": "Show sort dropdown" },
     { "type": "checkbox", "id": "show_filter_button", "default": true, "label": "Show filter button (UI only)" },
     { "type": "checkbox", "id": "show_excerpt", "default": true, "label": "Show description excerpt (list looks better with this)" },
-    { "type": "checkbox", "id": "show_quick_view", "default": true, "label": "Show quick view button (UI only)" }
+    { "type": "checkbox", "id": "show_quick_view", "default": true, "label": "Show quick view button (UI only)" },
+    { "type": "image_picker", "id": "mini_img_1", "label": "Mini 1 image" },
+  ],
+  "blocks": [
+    {
+      "type": "bundle",
+      "name": "Bundle tile",
+      "settings": [
+        { "type": "image_picker", "id": "mini_img_1", "label": "Mini 1 image" },
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Main collection", "blocks": [{ "type": "bundle" }] }
   ]
 }
 {% endschema %}

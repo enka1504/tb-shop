@@ -1,0 +1,149 @@
+{% schema %}
+{
+  "name": "FAQ Section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "FAQ Item",
+      "settings": [
+        {
+          "type": "text",
+          "label": "Question",
+          "id": "question",
+          "default": "What is the healthiest diet?"
+        },
+        {
+          "type": "textarea",
+          "label": "Answer",
+          "id": "answer",
+          "default": "The healthiest diet includes a variety of foods and is balanced, focusing on whole grains, lean proteins, and healthy fats."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Default",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="faq-section">
+  <h2 class="faq-section__title">Questions and Answers</h2>
+
+  {% for block in section.blocks %}
+    <div class="faq-item">
+      <div class="faq-question">
+        <span class="faq-question__text">{{ block.settings.question }}</span>
+        <button class="faq-toggle-btn" aria-label="Toggle answer">⮟</button>
+      </div>
+      <div class="faq-answer">
+        <p>{{ block.settings.answer }}</p>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+<style>/* FAQ Section */
+.faq-section {
+  margin-top: 40px;
+  padding: 20px;
+  background: #f9fafb;
+}
+
+.faq-section__title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.faq-item {
+  background-color: #ffffff;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.faq-question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.faq-question__text {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.faq-toggle-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #0b4a7d;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.faq-toggle-btn.open {
+  transform: rotate(180deg);
+}
+
+.faq-answer {
+  display: none;
+  padding-top: 10px;
+  font-size: 16px;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .faq-section {
+    padding: 15px;
+  }
+
+  .faq-question__text {
+    font-size: 16px;
+  }
+
+  .faq-answer {
+    font-size: 14px;
+  }
+}
+
+
+</style>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+  const faqItems = document.querySelectorAll('.faq-item');
+
+  faqItems.forEach(item => {
+    const toggleBtn = item.querySelector('.faq-toggle-btn');
+    const answer = item.querySelector('.faq-answer');
+
+    toggleBtn.addEventListener('click', function() {
+      const isOpen = answer.style.display === 'block';
+
+      // Close all answers
+      document.querySelectorAll('.faq-answer').forEach(a => {
+        a.style.display = 'none';
+      });
+      document.querySelectorAll('.faq-toggle-btn').forEach(btn => {
+        btn.classList.remove('open');
+      });
+
+      // Open the clicked answer
+      if (!isOpen) {
+        answer.style.display = 'block';
+        toggleBtn.classList.add('open');
+      } else {
+        answer.style.display = 'none';
+      }
+    });
+  });
+});
+</script>
