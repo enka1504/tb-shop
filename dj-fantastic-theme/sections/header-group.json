@@ -14,69 +14,6 @@
     "main_header": {
       "type": "header",
       "blocks": {
-        "nav_item_xWyq4h": {
-          "type": "nav_item",
-          "settings": {
-            "label": "Combo & Deals",
-            "url": "/",
-            "badge_text": "New",
-            "badge_style": "deal"
-          }
-        },
-        "nav_item_6KPTUK": {
-          "type": "nav_item",
-          "settings": {
-            "label": "Bundle save",
-            "url": "/",
-            "badge_text": "New",
-            "badge_style": "deal"
-          }
-        },
-        "nav_item_G9yJ4B": {
-          "type": "nav_item",
-          "settings": {
-            "label": "Shop by Category",
-            "url": "/",
-            "badge_text": "New",
-            "badge_style": "deal"
-          }
-        },
-        "nav_item_LBFmgH": {
-          "type": "nav_item",
-          "settings": {
-            "label": "Fruit & Vegetables",
-            "url": "/",
-            "badge_text": "New",
-            "badge_style": "deal"
-          }
-        },
-        "nav_item_QXmTiF": {
-          "type": "nav_item",
-          "settings": {
-            "label": "Meat & Fish",
-            "url": "/",
-            "badge_text": "",
-            "badge_style": "deal"
-          }
-        },
-        "nav_item_pNyEPY": {
-          "type": "nav_item",
-          "settings": {
-            "label": "Fresets",
-            "url": "/",
-            "badge_text": "Deal",
-            "badge_style": "deal"
-          }
-        },
-        "nav_item_QRfrb7": {
-          "type": "nav_item",
-          "settings": {
-            "label": "Templates",
-            "url": "/",
-            "badge_text": "",
-            "badge_style": "deal"
-          }
-        },
         "top_link_nQzjfA": {
           "type": "top_link",
           "settings": {
@@ -100,27 +37,13 @@
         }
       },
       "block_order": [
-        "nav_item_xWyq4h",
-        "nav_item_6KPTUK",
-        "nav_item_G9yJ4B",
-        "nav_item_LBFmgH",
-        "nav_item_QXmTiF",
-        "nav_item_pNyEPY",
-        "nav_item_QRfrb7",
         "top_link_nQzjfA",
         "top_link_6fdjbN",
         "top_link_y9cDCJ"
       ],
       "settings": {
         "enable_announcement": true,
-        "announce_text": "Hurry up! 30% OFF Sale Ends Soon",
-        "announce_bg": "#0b4c7a",
-        "announce_fg": "#ffffff",
-        "announce_left_icon": "‹",
-        "announce_right_icon": "›",
-        "enable_countdown": true,
-        "countdown_label": "Sale ends in",
-        "countdown_end": "2026-12-31T23:59:59Z",
+        "announcement_interval": 4,
         "enable_topbar": true,
         "email": "deanj0125@gmail.com",
         "phone": "(+1) 2345678901",
@@ -135,9 +58,13 @@
         "show_account": true,
         "show_cart": true,
         "enable_navrow": true,
-        "enable_drawer": true,
-        "drawer_title": "Menu",
-        "drawer_menu": "main-menu"
+        "nav_menu": "main-menu",
+        "enable_pills": true,
+        "pills_menu": "",
+        "drawer_welcome": "Welcome to Maximize Various",
+        "drawer_menu": "main-menu",
+        "category_menu": "main-menu",
+        "map_embed": ""
       }
     }
   },

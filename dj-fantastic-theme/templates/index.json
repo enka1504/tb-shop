@@ -16,14 +16,18 @@
           "type": "chip",
           "settings": {
             "title": "Meat & Fish",
-            "link": ""
+            "link": "",
+            "image_1": "shopify://shop_images/bakery_1_4689967b-be6f-4f10-9127-489c10f07fc4.avif",
+            "image_2": "shopify://shop_images/bakery_3_5e47533e-5f83-48fb-9caf-972e34d4d80d.jpg"
           }
         },
         "chip_J7bnCh": {
           "type": "chip",
           "settings": {
             "title": "Meat & Fish",
-            "link": ""
+            "link": "",
+            "image_1": "shopify://shop_images/beverages_3_d019ee1b-7e89-4e40-9d23-ce29b4183d61.jpg",
+            "image_2": "shopify://shop_images/beverages_1_2509a95e-795f-497c-8ae4-89af8f589994.jpg"
           }
         },
         "chip_F7fXEc": {
