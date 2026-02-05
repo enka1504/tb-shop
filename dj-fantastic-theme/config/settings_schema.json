@@ -23,6 +23,17 @@
     ]
   },
   {
+    "name": "Cart drawer",
+    "settings": [
+      {
+        "type": "text",
+        "id": "cart_upsell_collection",
+        "label": "Upsell collection handle",
+        "default": ""
+      }
+    ]
+  },
+  {
     "name": "t:general.layout",
     "settings": [
       {

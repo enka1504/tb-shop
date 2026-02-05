@@ -220,7 +220,16 @@
         <tr><th>Brand</th><td>{{ product.vendor }}</td></tr>
         <tr><th>Freshness guarantee</th><td>Keeps for at least 1 day(s) after receipt</td></tr>
         <tr><th>Country of production</th><td>{{ localization.country.name | default: '—' }}</td></tr>
-        <tr><th>Ingredients</th><td>{{ product.metafields.custom.ingredients | default: '—' }}</td></tr>
+        <tr>
+          <th>Ingredients</th>
+          <td>
+            {% if product.metafields.custom.ingredients and product.metafields.custom.ingredients != blank %}
+              {{ product.metafields.custom.ingredients }}
+            {% else %}
+              —
+            {% endif %}
+          </td>
+        </tr>
         <tr><th>Diet</th><td>{{ product.metafields.custom.diet | default: '—' }}</td></tr>
         <tr><th>Article number</th><td>{{ product.id }}</td></tr>
         <tr><th>Miscellaneous</th><td>{{ product.metafields.custom.misc | default: 'Product has been part-baked in a stone oven, frozen and finished in store.' }}</td></tr>
