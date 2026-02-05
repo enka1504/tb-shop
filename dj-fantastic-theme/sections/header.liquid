@@ -22,7 +22,7 @@
 
 <header class="hdr2" data-section-id="{{ section.id }}">
   {%- if show_announcement -%}
-    <div class="hdr2__announce" style="--hdr2-announce-bg: {{ section.settings.announce_bg }}; --hdr2-announce-fg: {{ section.settings.announce_fg }};">
+    {% comment %} <div class="hdr2__announce" style="--hdr2-announce-bg: {{ section.settings.announce_bg }}; --hdr2-announce-fg: {{ section.settings.announce_fg }};">
       <div class="hdr2__container hdr2__announce-inner">
         {%- if section.settings.announce_left_icon != blank -%}
           <span class="hdr2__announce-icon" aria-hidden="true">{{ section.settings.announce_left_icon }}</span>
@@ -46,7 +46,42 @@
           <span class="hdr2__announce-icon" aria-hidden="true">{{ section.settings.announce_right_icon }}</span>
         {%- endif -%}
       </div>
-    </div>
+    </div> {% endcomment %}
+    <div class="announcement-bar"
+      data-announcement
+      data-interval="{{ section.settings.announcement_interval | default: 4 | times: 1000 }}"
+    >
+      <button class="ab-arrow ab-arrow--left" type="button" aria-label="Previous" data-ab-prev>‹</button>
+
+      <div class="ab-viewport">
+        <div class="ab-track" data-ab-track>
+          {% for block in section.blocks %}
+            {% if block.type == 'announcement' %}
+                  <div class="ab-slide" data-ab-slide {{ block.shopify_attributes }}>
+                  
+                    {{ block.settings.text }} 
+                    <span>{% if block.settings.link != blank %}
+                      <a class="ab-link" href="{{ block.settings.link }}"> more</a>
+                    {% else %}
+                    {% endif %}</span>
+
+                    {%- if section.settings.enable_countdown and section.settings.countdown_end != blank -%}
+                      <div class="hdr2__countdown" data-countdown data-end="{{ section.settings.countdown_end }}" aria-label="Sale countdown">
+                        <span class="hdr2__countdown-label">{{ section.settings.countdown_label | escape }}</span>
+                        <span class="hdr2__pill" data-days>00</span><span class="hdr2__sep">:</span>
+                        <span class="hdr2__pill" data-hours>00</span><span class="hdr2__sep">:</span>
+                        <span class="hdr2__pill" data-mins>00</span><span class="hdr2__sep">:</span>
+                        <span class="hdr2__pill" data-secs>00</span>
+                      </div>
+                    {%- endif -%}
+                  </div>
+                {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+
+        <button class="ab-arrow ab-arrow--right" type="button" aria-label="Next" data-ab-next>›</button>
+      </div>
   {%- endif -%}
 
   {%- if show_topbar -%}
@@ -205,11 +240,82 @@
     </div>
   {%- endif -%}
 </header>
+<script>
+  (function () {
+  const bar = document.querySelector('[data-announcement]');
+  if (!bar) return;
 
+  const track = bar.querySelector('[data-ab-track]');
+  const slides = bar.querySelectorAll('[data-ab-slide]');
+  const prevBtn = bar.querySelector('[data-ab-prev]');
+  const nextBtn = bar.querySelector('[data-ab-next]');
+
+  if (!track || slides.length <= 1) return;
+
+  let index = 0;
+  let timer = null;
+
+  // Shopify setting (seconds → ms)
+  const interval =
+    (window.Shopify &&
+      Shopify.designMode === false &&
+      {{ section.settings.announcement_interval | default: 4 }} * 1000)
+    || 4000;
+
+  function update() {
+    track.style.transform = `translateX(-${index * 100}%)`;
+  }
+
+  function next() {
+    index = (index + 1) % slides.length;
+    update();
+  }
+
+  function prev() {
+    index = (index - 1 + slides.length) % slides.length;
+    update();
+  }
+
+  function start() {
+    stop();
+    timer = setInterval(next, interval);
+  }
+
+  function stop() {
+    if (timer) clearInterval(timer);
+  }
+
+  nextBtn.addEventListener('click', () => {
+    next();
+    start();
+  });
+
+  prevBtn.addEventListener('click', () => {
+    prev();
+    start();
+  });
+
+  bar.addEventListener('mouseenter', stop);
+  bar.addEventListener('mouseleave', start);
+
+  // Init
+  update();
+  start();
+})();
+</script>
 {% schema %}
 {
   "name": "Header v2",
   "settings": [
+    {
+      "type": "range",
+      "id": "announcement_interval",
+      "label": "Announcement autoplay (seconds)",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4
+    },
     { "type": "checkbox", "id": "enable_announcement", "label": "Enable announcement bar", "default": true },
     { "type": "text", "id": "announce_text", "label": "Announcement text", "default": "Hurry up! 30% OFF Sale Ends Soon" },
     { "type": "color", "id": "announce_bg", "label": "Announcement background", "default": "#0b4c7a" },
@@ -273,6 +379,23 @@
           ]
         }
       ]
+    },
+     {
+      "type": "announcement",
+      "name": "Announcement slide",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Free shipping on orders over $50"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Optional link"
+        }
+      ]
     }
   ],
   "presets": [
@@ -286,7 +409,8 @@
 
         { "type": "nav_item", "settings": { "label": "Combo & Deals", "url": "/collections/all", "badge_text": "Deal", "badge_style": "deal" } },
         { "type": "nav_item", "settings": { "label": "Bundle save", "url": "/collections/all", "badge_text": "New", "badge_style": "new" } },
-        { "type": "nav_item", "settings": { "label": "Shop by Category", "url": "/collections/all", "badge_text": "" } }
+        { "type": "nav_item", "settings": { "label": "Shop by Category", "url": "/collections/all", "badge_text": "" } },
+        
       ],
     }
   ]

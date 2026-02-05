@@ -9,6 +9,81 @@
   padding: 0 16px;
 }
 
+.announcement-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 44px;
+  background: #0b4ea2;
+  overflow: hidden;
+}
+
+.announcement-bar,
+.announcement-bar * {
+  color: #fff !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.ab-link {
+  color: #ffc56a;
+  cursor: pointer;
+}
+
+.ab-arrow {
+  width: 44px;
+  height: 44px;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font-size: 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: .85;
+}
+
+.ab-arrow:hover {
+  opacity: 1;
+}
+
+.ab-arrow--left {
+  margin-left: 4px;
+}
+
+.ab-arrow--right {
+  margin-right: 4px;
+}
+
+/* Slider viewport */
+.ab-viewport {
+  flex: 1;
+  overflow: hidden;
+  height: 100%;
+}
+
+/* Track */
+.ab-track {
+  display: flex;
+  height: 100%;
+  transition: transform .45s ease;
+  will-change: transform;
+}
+
+/* Slide */
+.ab-slide {
+  min-width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  padding: 0 16px;
+}
+
 .hdr2__announce {
   background: var(--hdr2-announce-bg);
   color: var(--hdr2-announce-fg);
