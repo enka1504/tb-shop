@@ -29,7 +29,7 @@
         "type": "text",
         "id": "cart_upsell_collection",
         "label": "Upsell collection handle",
-        "default": ""
+        "default": "Upsell"
       }
     ]
   },

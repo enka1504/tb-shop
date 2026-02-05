@@ -15,6 +15,9 @@
   assign layout_default = section.settings.default_view
 -%}
 
+{{ 'cart-drawer.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
+  {% render 'cart-drawer' %} 
 <div
   class="ct-collection"
   data-collection-toggle
@@ -259,134 +262,186 @@
   </div>
 </div>
 <style>
-  /* Related Collections Section */
-.related-collections {
-  margin: 40px 0;
-  padding: 20px;
-}
-
-.related-collections__title {
-  font-size: 24px;
-  font-weight: 700;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.related-collections__list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  justify-content: center;
-}
-
-.related-collections__item {
-  width: calc(15% - 16px);
-  text-align: center;
-}
-
-.related-collections__link {
-  display: block;
-  text-decoration: none;
-}
-
-.related-collections__image {
-  width: 100%;
-  height: 200px;
-  border-radius: 8px;
-}
-
-.related-collections__details {
-  margin-top: 10px;
-}
-
-.related-collections__name {
-  font-weight: 600;
-  font-size: 18px;
-}
-
-.related-collections__item-count {
-  font-size: 14px;
-  color: #64748b;
-}
-
-/* Promotional Banner Section */
-.promotional-banner {
-  background-color: #0b4a7d;
-  color: white;
-  padding: 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-radius: 8px;
-  margin: 0 20px;
-}
-
-.promotional-banner__content {
-  max-width: 600px;
-  margin-right: 20px;
-}
-
-.promotional-banner__title {
-  font-size: 28px;
-  font-weight: 700;
-  margin-bottom: 16px;
-}
-
-.promotional-banner__description {
-  font-size: 16px;
-  margin-bottom: 20px;
-}
-
-.promotional-banner__features {
-  display: flex;
-  gap: 20px;
-}
-
-.feature-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 14px;
-}
-
-.feature-icon {
-  font-size: 20px;
-}
-
-.promotional-banner__image img {
-  max-width: 400px;
-  width: 100%;
-  border-radius: 8px;
-}
-
-/* Responsive Styles */
-@media (max-width: 768px) {
-  .related-collections__item {
-    width: calc(50% - 16px);
+    /* Related Collections Section */
+  .related-collections {
+    margin: 40px 0;
+    padding: 20px;
   }
 
+  .related-collections__title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .related-collections__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+  }
+
+  .related-collections__item {
+    width: calc(15% - 16px);
+    text-align: center;
+  }
+
+  .related-collections__link {
+    display: block;
+    text-decoration: none;
+  }
+
+  .related-collections__image {
+    width: 100%;
+    height: 200px;
+    border-radius: 8px;
+  }
+
+  .related-collections__details {
+    margin-top: 10px;
+  }
+
+  .related-collections__name {
+    font-weight: 600;
+    font-size: 18px;
+  }
+
+  .related-collections__item-count {
+    font-size: 14px;
+    color: #64748b;
+  }
+
+  /* Promotional Banner Section */
   .promotional-banner {
-    flex-direction: column;
-    align-items: flex-start;
+    background-color: #0b4a7d;
+    color: white;
+    padding: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 8px;
+    margin: 0 20px;
   }
 
   .promotional-banner__content {
-    margin-right: 0;
+    max-width: 600px;
+    margin-right: 20px;
+  }
+
+  .promotional-banner__title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  .promotional-banner__description {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+
+  .promotional-banner__features {
+    display: flex;
+    gap: 20px;
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+  }
+
+  .feature-icon {
+    font-size: 20px;
   }
 
   .promotional-banner__image img {
-    max-width: 100%;
-    margin-top: 20px;
-  }
-}
-
-@media (max-width: 480px) {
-  .related-collections__item {
+    max-width: 400px;
     width: 100%;
+    border-radius: 8px;
   }
-}
+
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .related-collections__item {
+      width: calc(50% - 16px);
+    }
+
+    .promotional-banner {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .promotional-banner__content {
+      margin-right: 0;
+    }
+
+    .promotional-banner__image img {
+      max-width: 100%;
+      margin-top: 20px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .related-collections__item {
+      width: 100%;
+    }
+  }
 
 </style>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Update a card's hidden form quantity from its visible qty input
+    const syncQtyToForm = (card) => {
+      if (!card) return;
+      const qtyInput = card.querySelector('[data-qty-input]');
+      const formQty = card.querySelector('form.ct-atc [data-form-qty]');
+      if (!qtyInput || !formQty) return;
+
+      const q = Math.max(1, parseInt(qtyInput.value || '1', 10));
+      qtyInput.value = String(q);
+      formQty.value = String(q);
+    };
+
+    // Plus / minus buttons
+    document.addEventListener('click', (e) => {
+      const card = e.target.closest('[data-product-card]');
+      if (!card) return;
+
+      const qtyInput = card.querySelector('[data-qty-input]');
+      if (!qtyInput) return;
+
+      if (e.target.matches('[data-qty-plus]')) {
+        e.preventDefault();
+        qtyInput.value = String((parseInt(qtyInput.value || '1', 10) || 1) + 1);
+        syncQtyToForm(card);
+      }
+
+      if (e.target.matches('[data-qty-minus]')) {
+        e.preventDefault();
+        const next = (parseInt(qtyInput.value || '1', 10) || 1) - 1;
+        qtyInput.value = String(Math.max(1, next));
+        syncQtyToForm(card);
+      }
+    });
+
+    // Typing directly into qty input
+    document.addEventListener('input', (e) => {
+      if (!e.target.matches('[data-qty-input]')) return;
+      const card = e.target.closest('[data-product-card]');
+      syncQtyToForm(card);
+    });
+
+    // Before submit, ensure the hidden quantity matches (important)
+    document.addEventListener('submit', (e) => {
+      const form = e.target;
+      if (!form || !form.matches('form.ct-atc[action*="/cart/add"]')) return;
+      const card = form.closest('[data-product-card]');
+      syncQtyToForm(card);
+    });
+  });
+</script>
 {% schema %}
 {
   "name": "Main collection",

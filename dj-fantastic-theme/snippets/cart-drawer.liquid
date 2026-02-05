@@ -16,9 +16,9 @@
         <span style="width:38px;height:38px;"></span>
       </div>
 
-      <div class="cart-drawer__scroll" data-upsell-list>
+      {% comment %} <div class="cart-drawer__scroll" data-upsell-list>
         {%- assign upsell_collection = collections[settings.cart_upsell_collection] -%}
-        {%- if upsell_collection and upsell_collection.products_count > 0 -%}
+        {%- if upsell_collection != blank and upsell_collection.products_count > 0 -%}
           {%- for p in upsell_collection.products limit: 10 -%}
             {%- assign pv = p.selected_or_first_available_variant -%}
             <div class="cart-drawer__upsellItem">
@@ -33,14 +33,24 @@
                 <p class="cart-drawer__upsellName">{{ p.title }}</p>
                 <div class="cart-drawer__upsellPrice">{{ pv.price | money }}</div>
               </div>
-              <button class="cart-drawer__plus" type="button" data-upsell-add data-variant-id="{{ pv.id }}">+</button>
+              <button
+                class="cart-drawer__plus"
+                type="button"
+                data-upsell-add
+                data-variant-id="{{ pv.id }}"
+              >+</button>
             </div>
           {%- endfor -%}
         {%- else -%}
           <div class="cart-drawer__card" style="color:var(--cd-muted);font-size:13px;">
-            Set a theme setting <strong>cart_upsell_collection</strong> (collection handle) to show upsells.
+            No upsell collection configured.
           </div>
         {%- endif -%}
+      </div> {% endcomment %}
+      <div class="cart-drawer__scroll" data-upsell-list>
+        <div class="cart-drawer__card" style="color:var(--cd-muted);font-size:13px;">
+          Loading recommendations…
+        </div>
       </div>
     </div>
 
@@ -108,5 +118,11 @@
 
   <script type="application/json" data-cart-drawer-initial>
     {{ cart | json }}
+  </script>
+  <script type="application/json" data-upsell-config>
+    {
+      "collectionHandle": {{ settings.cart_upsell_collection | default: "" | json }},
+      "count": 6
+    }
   </script>
 </div>

@@ -4,6 +4,116 @@
 
   const qs = (sel, root = document) => root.querySelector(sel);
   const qsa = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+  const upsellCache = new Map(); // handle -> products array
+
+function shuffleInPlace(arr){
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = (Math.random() * (i + 1)) | 0;
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+async function fetchCollectionProducts(handle){
+  if (!handle) return [];
+  if (upsellCache.has(handle)) return upsellCache.get(handle);
+
+  const res = await fetch(`/collections/${encodeURIComponent(handle)}/products.json?limit=250`, {
+    headers: { 'Accept': 'application/json' }
+  });
+  if (!res.ok) return [];
+  const data = await res.json();
+
+  // Normalize: keep only what we need
+  const products = (data.products || []).map(p => {
+    const variant = (p.variants && p.variants[0]) ? p.variants[0] : null;
+    return {
+      id: p.id,
+      title: p.title,
+      handle: p.handle,
+      image: (p.images && p.images[0]) ? p.images[0].src : '',
+      variantId: variant ? variant.id : null,
+      price: variant ? Number(variant.price) : null,
+      compareAt: variant ? Number(variant.compare_at_price || 0) : 0
+    };
+  }).filter(p => p.variantId);
+
+  upsellCache.set(handle, products);
+  return products;
+}
+
+function renderUpsells(drawer, products){
+  const list = qs('[data-upsell-list]', drawer);
+  if (!list) return;
+
+  if (!products.length){
+    list.innerHTML = `
+      <div class="cart-drawer__card" style="color:var(--cd-muted);font-size:13px;">
+        No recommendations available.
+      </div>
+    `;
+    return;
+  }
+
+  list.innerHTML = products.map(p => {
+    const img = p.image ? p.image.replace(/(\.[a-z]+)(\?.*)?$/i, '_160x$1$2') : '';
+    const priceText = (p.price != null) ? `$${p.price.toFixed(2)}` : '';
+    const compareText = (p.compareAt && p.compareAt > p.price) ? ` <span style="text-decoration:line-through;color:var(--cd-muted);font-weight:600;">$${p.compareAt.toFixed(2)}</span>` : '';
+
+    return `
+      <div class="cart-drawer__upsellItem">
+        <img src="${img}" alt="${(p.title||'').replace(/"/g,'&quot;')}" loading="lazy" width="54" height="54">
+        <div>
+          <p class="cart-drawer__upsellName">${p.title}</p>
+          <div class="cart-drawer__upsellPrice">${priceText}${compareText}</div>
+        </div>
+        <button class="cart-drawer__plus" type="button" data-upsell-add data-variant-id="${p.variantId}">+</button>
+      </div>
+    `;
+  }).join('');
+}
+
+async function refreshUpsells(drawer){
+  const cfgEl = qs('[data-upsell-config]', drawer);
+  if (!cfgEl) return;
+
+  let cfg = { collectionHandle: '', count: 6 };
+  try { cfg = Object.assign(cfg, JSON.parse(cfgEl.textContent || '{}')); } catch(_) {}
+
+  const handle = (cfg.collectionHandle || '').trim();
+  const count = Number(cfg.count || 6);  
+
+  if (!handle){
+    renderUpsells(drawer, []);
+    return;
+  }
+
+  const pool = await fetchCollectionProducts(handle);
+
+  // Optional: avoid recommending items already in cart
+  const cart = await fetchCart();
+  const inCartHandles = new Set((cart.items || []).map(i => i.handle));
+  const filtered = pool.filter(p => !inCartHandles.has(p.handle));
+
+  const picks = shuffleInPlace(filtered.slice()).slice(0, count);
+  renderUpsells(drawer, picks);
+
+  // re-bind upsell add buttons (since we replaced HTML)
+  qsa('[data-upsell-add]', drawer).forEach(btn => {
+    btn.addEventListener('click', async () => {
+      btn.disabled = true;
+      try {
+        await addVariant(btn.getAttribute('data-variant-id'), 1);
+        const updated = await fetchCart();
+        renderItems(updated, drawer);
+        // refresh again to get a new random set after adding an upsell too
+        await refreshUpsells(drawer);
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  });
+}
 
   function getDrawer() {
     return qs('[data-cart-drawer]');
@@ -225,6 +335,7 @@
       try {
         await addVariant(id, qty);
         await refreshDrawer();
+        await refreshUpsells(getDrawer());
         openDrawer();
       } catch (err) {
         // fallback to default behavior if error
@@ -232,7 +343,6 @@
       }
     });
   }
-
   // bootstrap
   function init() {
     const drawer = getDrawer();
@@ -245,7 +355,6 @@
         renderItems(cart, drawer);
       } catch (_) {}
     }
-
     bindDrawerEvents(drawer);
     bindAddToCartInterception();
   }
