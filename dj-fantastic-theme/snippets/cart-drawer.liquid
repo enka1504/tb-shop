@@ -1,0 +1,112 @@
+{%- comment -%}
+  Cart Drawer (2-column) — right-to-left slide-in dialog
+  Requirements:
+  - include cart-drawer.css + cart-drawer.js
+  - include this snippet in theme.liquid (near </body>)
+{%- endcomment -%}
+
+<div class="cart-drawer" data-cart-drawer hidden>
+  <div class="cart-drawer__backdrop" data-cart-drawer-backdrop></div>
+
+  <div class="cart-drawer__panel" role="dialog" aria-modal="true" aria-label="Cart">
+    <!-- LEFT: UPSELL -->
+    <div class="cart-drawer__col cart-drawer__upsell">
+      <div class="cart-drawer__top">
+        <h3 class="cart-drawer__title">You'll love this too</h3>
+        <span style="width:38px;height:38px;"></span>
+      </div>
+
+      <div class="cart-drawer__scroll" data-upsell-list>
+        {%- assign upsell_collection = collections[settings.cart_upsell_collection] -%}
+        {%- if upsell_collection and upsell_collection.products_count > 0 -%}
+          {%- for p in upsell_collection.products limit: 10 -%}
+            {%- assign pv = p.selected_or_first_available_variant -%}
+            <div class="cart-drawer__upsellItem">
+              <img
+                src="{{ p.featured_image | image_url: width: 160 }}"
+                alt="{{ p.title | escape }}"
+                loading="lazy"
+                width="54"
+                height="54"
+              >
+              <div>
+                <p class="cart-drawer__upsellName">{{ p.title }}</p>
+                <div class="cart-drawer__upsellPrice">{{ pv.price | money }}</div>
+              </div>
+              <button class="cart-drawer__plus" type="button" data-upsell-add data-variant-id="{{ pv.id }}">+</button>
+            </div>
+          {%- endfor -%}
+        {%- else -%}
+          <div class="cart-drawer__card" style="color:var(--cd-muted);font-size:13px;">
+            Set a theme setting <strong>cart_upsell_collection</strong> (collection handle) to show upsells.
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <!-- RIGHT: CART -->
+    <div class="cart-drawer__col cart-drawer__cart">
+      <div class="cart-drawer__top">
+        <h3 class="cart-drawer__title">Your cart</h3>
+        <button class="cart-drawer__close" type="button" aria-label="Close" data-cart-drawer-close>
+          ✕
+        </button>
+      </div>
+
+      <div class="cart-drawer__scroll" data-cart-drawer-items></div>
+
+      <div class="cart-drawer__section">
+        <details class="cart-drawer__note">
+          <summary>
+            <span>Cart note</span>
+            <span aria-hidden="true">▾</span>
+          </summary>
+          <textarea placeholder="Add a note to your order" data-cart-note></textarea>
+        </details>
+
+        <div class="cart-drawer__miniActions">
+          <a href="#" data-cart-drawer-discount>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 12l-8 8-8-8 8-8 8 8z"></path><path d="M9 9h.01"></path><path d="M15 15h.01"></path></svg>
+            Discount
+          </a>
+          <a href="{{ routes.cart_url }}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 6h18"></path><path d="M7 6l1 14h8l1-14"></path></svg>
+            Estimate shipping
+          </a>
+          <a href="#" data-cart-drawer-share>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"></path><path d="M16 6l-4-4-4 4"></path><path d="M12 2v14"></path></svg>
+            Share cart
+          </a>
+        </div>
+
+        <div class="cart-drawer__actions">
+          <div class="cart-drawer__totalRow">
+            <div class="cart-drawer__totalLabel">Total</div>
+            <div class="cart-drawer__totalValue" data-cart-drawer-total></div>
+          </div>
+
+          <div style="color:var(--cd-muted);font-size:12px;margin-bottom:10px;">
+            Please use Estimate shipping for more details.
+          </div>
+
+          <div class="cart-drawer__buttons">
+            <a class="cart-drawer__btn cart-drawer__btn--view" href="{{ routes.cart_url }}" style="display:grid;place-items:center;text-decoration:none;">
+              View Cart
+            </a>
+            <a class="cart-drawer__btn cart-drawer__btn--checkout" href="/checkout" style="display:grid;place-items:center;text-decoration:none;">
+              Checkout
+            </a>
+          </div>
+
+          <div class="cart-drawer__payRow">
+            {{ shop.enabled_payment_types | payment_type_svg_tag }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="application/json" data-cart-drawer-initial>
+    {{ cart | json }}
+  </script>
+</div>
