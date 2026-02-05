@@ -14,7 +14,8 @@
 }
 
 .hv .page-width {
-    max-width: 1280px;
+    width: 100%;
+    padding: 0 20px;
 }
 
 .hv__title {
