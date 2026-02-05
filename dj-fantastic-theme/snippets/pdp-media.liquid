@@ -1,0 +1,25 @@
+{%- comment -%}
+  Renders a single product media object.
+  Usage: {% render 'pdp-media', media: some_media %}
+{%- endcomment -%}
+
+{%- if media == blank -%}
+  {%- if product.featured_image -%}
+    <img src="{{ product.featured_image | image_url: width: 1400 }}" width="1400" height="auto" alt="{{ product.title | escape }}" loading="lazy">
+  {%- endif -%}
+{%- else -%}
+  {%- case media.media_type -%}
+    {%- when 'image' -%}
+      <img src="{{ media | image_url: width: 1600 }}" width="1600" height="auto" alt="{{ media.alt | escape }}" loading="eager">
+    {%- when 'video' -%}
+      {{ media | video_tag: controls: true, muted: true, playsinline: true }}
+    {%- when 'external_video' -%}
+      {{ media | external_video_tag }}
+    {%- when 'model' -%}
+      {{ media | model_viewer_tag }}
+    {%- else -%}
+      {%- if media.preview_image -%}
+        <img src="{{ media.preview_image | image_url: width: 1600 }}" width="1600" height="auto" alt="{{ media.alt | escape }}" loading="lazy">
+      {%- endif -%}
+  {%- endcase -%}
+{%- endif -%}

@@ -1,52 +1,941 @@
 {% comment %}
-  This section is used in the product template to render product page with
-  media, content, and add-to-cart form.
-
-  https://shopify.dev/docs/storefronts/themes/architecture/templates/product
+  Custom PDP (single-file template) — screenshot-style layout
+  - Left: 2-up media grid + thumbnail strip (1:1 thumbs)
+  - Right: sticky product info + promo tiles + bundle bar + shipping bullets + ATC
+  - Below: highlights/description + big content image + product info table + accordions (nutrition, ingredients, shipping)
 {% endcomment %}
 
-<div class="product-images">
-  {% for image in product.images %}
-    {% render 'image', class: 'product-image', image: image %}
-  {% endfor %}
-</div>
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+{%- assign featured = current_variant.featured_media | default: product.featured_media -%}
 
-<div class="product-info">
-  <h1>{{ product.title }}</h1>
-  <p>{{ product.price | money }}</p>
-  <p>{{ product.description }}</p>
-</div>
-
-<div class="product-form">
-  {% form 'product', product %}
-    {% assign current_variant = product.selected_or_first_available_variant %}
-
-    <select name="id">
-      {% for variant in product.variants %}
-        <option
-          value="{{ variant.id }}"
-          {% if variant == current_variant %}
-            selected="selected"
-          {% endif %}
-        >
-          {{ variant.title }} - {{ variant.price | money }}
-        </option>
-      {% endfor %}
-    </select>
-
-    <input type="text" name="quantity" min="1" value="1">
-
-    <input type="submit" value="Add to cart">
-    {{ form | payment_button }}
-  {% endform %}
-</div>
-
-{% schema %}
-{
-  "name": "t:general.product",
-  "settings": [],
-  "disabled_on": {
-    "groups": ["header", "footer"]
+<style>
+  :root{
+    --pdp-max: 1240px;
+    --pdp-gap: 28px;
+    --pdp-radius: 18px;
+    --pdp-soft: #f6f4ef;
+    --pdp-line: rgba(17, 24, 39, .12);
+    --pdp-text: #0f172a;
+    --pdp-muted: rgba(15, 23, 42, .70);
+    --pdp-accent: #0b3a68;
+    --pdp-danger: #b91c1c;
+    --pdp-chip: #eef2ff;
+    --pdp-btn: #d9e7ef;
   }
-}
-{% endschema %}
+
+  .pdp-wrap{
+    max-width: var(--pdp-max);
+    margin: 0 auto;
+    padding: 18px 16px 80px;
+    color: var(--pdp-text);
+  }
+
+  .pdp-breadcrumb{
+    font-size: 12px;
+    color: var(--pdp-muted);
+    margin: 6px 0 18px;
+  }
+  .pdp-breadcrumb a{ color: var(--pdp-muted); text-decoration: underline; text-underline-offset: 3px; }
+  .pdp-grid{
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
+    gap: var(--pdp-gap);
+    align-items: start;
+  }
+  @media (max-width: 990px){
+    .pdp-grid{ grid-template-columns: 1fr; }
+  }
+
+  /* MEDIA */
+  .pdp-media{
+    background: #fff;
+  }
+  .pdp-mediaCard{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  @media (max-width: 750px){
+    .pdp-mediaCard{ grid-template-columns: 1fr; }
+  }
+  .pdp-mediaPane{
+    background: #f7f7f7;
+    border-radius: var(--pdp-radius);
+    overflow: hidden;
+    position: relative;
+    min-height: 420px;
+    display: grid;
+    place-items: center;
+  }
+  .pdp-mediaPane img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    padding: 18px;
+  }
+
+  .pdp-thumbs{
+    margin-top: 12px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+  .pdp-thumb{
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    border: 2px solid transparent;
+    background: #fff;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 0 0 1px var(--pdp-line);
+    display: grid;
+    place-items: center;
+  }
+  .pdp-thumb img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .pdp-thumb[aria-current="true"]{
+    border-color: var(--pdp-text);
+  }
+
+  /* RIGHT COLUMN */
+  .pdp-right{
+    position: sticky;
+    top: 18px;
+  }
+  @media (max-width: 990px){
+    .pdp-right{ position: static; }
+  }
+
+  .pdp-vendor{
+    font-size: 12px;
+    color: var(--pdp-muted);
+    margin-bottom: 6px;
+  }
+  .pdp-title{
+    font-size: 34px;
+    line-height: 1.08;
+    margin: 0 0 10px;
+    letter-spacing: -0.02em;
+  }
+  .pdp-rating{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--pdp-muted);
+    font-size: 13px;
+    margin-bottom: 14px;
+  }
+  .pdp-stars{
+    letter-spacing: 1px;
+    font-size: 14px;
+    opacity: .8;
+  }
+
+  .pdp-priceRow{
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin: 6px 0 12px;
+  }
+  .pdp-price{
+    font-size: 28px;
+    color: var(--pdp-danger);
+    font-weight: 750;
+  }
+  .pdp-compare{
+    font-size: 18px;
+    color: var(--pdp-muted);
+    text-decoration: line-through;
+  }
+  .pdp-badge{
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #fee2e2;
+    color: #991b1b;
+    font-weight: 650;
+  }
+
+  .pdp-desc{
+    color: var(--pdp-muted);
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 10px 0 16px;
+  }
+
+  .pdp-tileRow{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 10px 0 14px;
+  }
+  .pdp-tile{
+    border-radius: 14px;
+    background: var(--pdp-soft);
+    border: 1px solid rgba(17,24,39,.08);
+    min-height: 68px;
+    display: grid;
+    place-items: center;
+    padding: 10px;
+  }
+  .pdp-tile svg{ width: 34px; height: 34px; opacity: .9; }
+
+  .pdp-bundle{
+    border-radius: 14px;
+    background: #e9e7f8;
+    padding: 14px 14px;
+    border: 1px solid rgba(17,24,39,.08);
+    display: grid;
+    grid-template-columns: 30px 1fr;
+    gap: 10px;
+    margin: 12px 0 14px;
+  }
+  .pdp-bundle strong{
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+  }
+  .pdp-bundle em{
+    color: #b42318;
+    font-style: italic;
+    font-weight: 650;
+  }
+  .pdp-bundle a{
+    font-size: 13px;
+    color: var(--pdp-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .pdp-bullets{
+    margin: 10px 0 14px;
+    display: grid;
+    gap: 10px;
+    color: var(--pdp-muted);
+    font-size: 13px;
+  }
+  .pdp-bullet{
+    display: grid;
+    grid-template-columns: 18px 1fr;
+    gap: 10px;
+    align-items: start;
+  }
+  .pdp-bullet svg{ width: 18px; height: 18px; opacity: .85; }
+
+  .pdp-stock{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--pdp-accent);
+    margin: 8px 0 12px;
+  }
+  .pdp-dot{
+    width: 8px; height: 8px; border-radius: 999px;
+    background: #2563eb;
+  }
+
+  /* FORM */
+  .pdp-form{
+    display: grid;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .pdp-qtyRow{
+    display: grid;
+    grid-template-columns: 120px 1fr 44px;
+    gap: 10px;
+  }
+  .pdp-qty{
+    display: grid;
+    grid-template-columns: 36px 1fr 36px;
+    border: 1px solid var(--pdp-line);
+    border-radius: 10px;
+    overflow: hidden;
+    height: 44px;
+    background: #fff;
+  }
+  .pdp-qty button{
+    border: 0;
+    background: #fff;
+    cursor: pointer;
+    font-size: 18px;
+  }
+  .pdp-qty input{
+    border: 0;
+    text-align: center;
+    font-size: 14px;
+    outline: none;
+  }
+
+  .pdp-atc{
+    border: 0;
+    border-radius: 10px;
+    height: 44px;
+    background: var(--pdp-btn);
+    cursor: pointer;
+    font-weight: 650;
+    font-size: 14px;
+  }
+  .pdp-iconBtn{
+    border: 1px solid var(--pdp-line);
+    border-radius: 10px;
+    background: #fff;
+    height: 44px;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+  }
+
+  .pdp-buynow{
+    border: 0;
+    border-radius: 10px;
+    height: 44px;
+    background: #0b3a68;
+    color: #fff;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 14px;
+    margin-top: 6px;
+  }
+
+  .pdp-lower{
+    margin-top: 34px;
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
+    gap: var(--pdp-gap);
+  }
+  @media (max-width: 990px){
+    .pdp-lower{ grid-template-columns: 1fr; }
+  }
+
+  .pdp-sectionTitle{
+    font-size: 26px;
+    margin: 0 0 10px;
+    letter-spacing: -0.01em;
+  }
+  .pdp-subTitle{
+    font-size: 14px;
+    margin: 16px 0 8px;
+    font-weight: 700;
+  }
+  .pdp-highlights{
+    margin: 0;
+    padding-left: 18px;
+    color: var(--pdp-muted);
+    line-height: 1.8;
+    font-size: 13px;
+  }
+
+  .pdp-bigImage{
+    margin-top: 18px;
+    border-radius: var(--pdp-radius);
+    overflow: hidden;
+    background: #f4f4f4;
+    min-height: 320px;
+  }
+  .pdp-bigImage img{
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+
+  .pdp-infoTable{
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    color: var(--pdp-muted);
+    margin-top: 18px;
+  }
+  .pdp-infoTable th,
+  .pdp-infoTable td{
+    text-align: left;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--pdp-line);
+    vertical-align: top;
+  }
+  .pdp-infoTable th{
+    width: 210px;
+    color: rgba(15,23,42,.85);
+    font-weight: 650;
+  }
+
+  /* Accordions */
+  .pdp-acc{
+    display: grid;
+    gap: 12px;
+  }
+  .pdp-acc details{
+    border: 1px solid var(--pdp-line);
+    border-radius: 14px;
+    background: #fff;
+    overflow: hidden;
+  }
+  .pdp-acc summary{
+    list-style: none;
+    cursor: pointer;
+    padding: 14px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 650;
+    color: rgba(15,23,42,.92);
+  }
+  .pdp-acc summary::-webkit-details-marker{ display:none; }
+  .pdp-acc .pdp-accBody{
+    padding: 0 14px 14px;
+    color: var(--pdp-muted);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .pdp-pay{
+    border-radius: 14px;
+    background: var(--pdp-soft);
+    border: 1px solid rgba(17,24,39,.08);
+    padding: 14px;
+    margin-top: 14px;
+  }
+  .pdp-pay h4{
+    margin: 0 0 10px;
+    font-size: 14px;
+  }
+  .pdp-payRow{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .pdp-payRow img{ height: 22px; width: auto; display:block; }
+
+  /* Floating coupon */
+  .pdp-coupon{
+    position: fixed;
+    left: 18px;
+    bottom: 18px;
+    background: #e7f5f3;
+    border: 1px solid rgba(17,24,39,.10);
+    border-radius: 14px;
+    padding: 12px 12px;
+    display: see;
+    max-width: 220px;
+    z-index: 50;
+    box-shadow: 0 10px 30px rgba(2,6,23,.10);
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .pdp-coupon p{
+    margin: 0;
+    font-size: 12px;
+    color: rgba(15,23,42,.75);
+  }
+  .pdp-coupon button{
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    opacity: .7;
+  }
+</style>
+
+<div class="pdp-wrap" data-pdp>
+  <nav class="pdp-breadcrumb" aria-label="Breadcrumb">
+    <a href="{{ routes.root_url }}">Home</a>
+    <span aria-hidden="true"> &nbsp;›&nbsp; </span>
+    {% if product.collections.first %}
+      <a href="{{ product.collections.first.url }}">{{ product.collections.first.title }}</a>
+      <span aria-hidden="true"> &nbsp;›&nbsp; </span>
+    {% endif %}
+    <span>{{ product.title }}</span>
+  </nav>
+
+  <div class="pdp-grid">
+    <!-- LEFT: MEDIA -->
+    <div class="pdp-media">
+      <div class="pdp-mediaCard" data-media-grid>
+        {%- comment -%}
+          We render two panes: the active + the next media (or the active again if only 1)
+        {%- endcomment -%}
+        {%- assign media_list = product.media -%}
+        {%- assign active_index = 0 -%}
+        {%- if featured -%}
+          {%- for m in media_list -%}
+            {%- if m.id == featured.id -%}{%- assign active_index = forloop.index0 -%}{%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+        {%- assign second_index = active_index | plus: 1 -%}
+        {%- if second_index >= media_list.size -%}{%- assign second_index = 0 -%}{%- endif -%}
+
+        {%- assign left_media = media_list[active_index] -%}
+        {%- assign right_media = media_list[second_index] -%}
+
+        <div class="pdp-mediaPane" data-pane="0">
+          {% render 'pdp-media', media: left_media %}
+        </div>
+
+        <div class="pdp-mediaPane" data-pane="1">
+          {% render 'pdp-media', media: right_media %}
+        </div>
+      </div>
+
+      <div class="pdp-thumbs" data-thumbs>
+        {%- for m in product.media -%}
+          <button
+            class="pdp-thumb"
+            type="button"
+            aria-label="View media {{ forloop.index }}"
+            data-thumb
+            data-media-id="{{ m.id }}"
+            {% if m.id == left_media.id %}aria-current="true"{% endif %}
+          >
+            {%- if m.preview_image -%}
+              <img
+                src="{{ m.preview_image | image_url: width: 160 }}"
+                alt="{{ m.alt | escape }}"
+                loading="lazy"
+                width="56"
+                height="56"
+              >
+            {%- else -%}
+              <span>•</span>
+            {%- endif -%}
+          </button>
+        {%- endfor -%}
+      </div>
+    </div>
+
+    <!-- RIGHT: INFO -->
+    <aside class="pdp-right">
+      <div class="pdp-vendor">{{ product.vendor }}</div>
+      <h1 class="pdp-title">{{ product.title }}</h1>
+
+      <div class="pdp-rating">
+        <span class="pdp-stars" aria-hidden="true">★★★★★</span>
+        <span>(0)</span>
+      </div>
+
+      <div class="pdp-priceRow">
+        <span class="pdp-price" data-price>{{ current_variant.price | money }}</span>
+
+        {%- if current_variant.compare_at_price and current_variant.compare_at_price > current_variant.price -%}
+          <span class="pdp-compare" data-compare>{{ current_variant.compare_at_price | money }}</span>
+          {%- assign off = current_variant.compare_at_price | minus: current_variant.price | times: 100 | divided_by: current_variant.compare_at_price -%}
+          <span class="pdp-badge">-{{ off | round }}%</span>
+        {%- endif -%}
+      </div>
+
+      <div class="pdp-desc">
+        {{ product.description | strip_html | truncate: 260 }}
+      </div>
+
+      <div class="pdp-tileRow">
+        <div class="pdp-tile" title="Soy free">
+          <!-- simple icon -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M8 8l8 8M16 8l-8 8"></path>
+          </svg>
+        </div>
+        <div class="pdp-tile"></div>
+        <div class="pdp-tile"></div>
+      </div>
+
+      <div class="pdp-bundle">
+        <div aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M12 2l8 4v6c0 5-3.4 9.4-8 10-4.6-.6-8-5-8-10V6l8-4z"></path>
+            <path d="M8.5 12l2.2 2.2 4.8-5"></path>
+          </svg>
+        </div>
+        <div>
+          <div><strong>BUNDLE &amp; SAVE <em>(20% off + free gift)</em></strong></div>
+          <div style="font-size:13px;color:rgba(15,23,42,.72);margin-top:4px;">
+            Change your flavour selection any time, keep breakfast exciting!
+          </div>
+          <div style="margin-top:6px;">
+            <a href="#bundle">Build my bundle</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="pdp-bullets">
+        <div class="pdp-bullet">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M3 7h14l4 4v6H3z"></path><path d="M7 7V3h6v4"></path><path d="M7 17h.01"></path>
+          </svg>
+          <div>Delivered to {{ localization.country.name | default: 'your location' }}, {{ 'now' | date: "%b %d" }} + 7 days</div>
+        </div>
+        <div class="pdp-bullet">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M12 1v22"></path><path d="M17 6H9.5a3.5 3.5 0 0 0 0 7H15a3.5 3.5 0 0 1 0 7H6"></path>
+          </svg>
+          <div>As low as $142/month. Affirm financing</div>
+        </div>
+        <div class="pdp-bullet">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M21 12a9 9 0 1 1-9-9"></path><path d="M21 3v6h-6"></path>
+          </svg>
+          <div>30 days satisfaction guarantee</div>
+        </div>
+      </div>
+
+      <div class="pdp-stock">
+        <span class="pdp-dot"></span>
+        <span>
+          {% if current_variant.available %}In stock{% else %}Out of stock{% endif %}
+        </span>
+      </div>
+
+      <form method="post" action="/cart/add" class="pdp-form" data-product-form>
+        <input type="hidden" name="id" value="{{ current_variant.id }}" data-variant-id>
+
+        {% if product.variants.size > 1 %}
+          <label style="font-size:12px;color:var(--pdp-muted);">Variant</label>
+          <select name="id" data-variant-select style="height:44px;border-radius:10px;border:1px solid var(--pdp-line);padding:0 12px;">
+            {% for v in product.variants %}
+              <option value="{{ v.id }}" {% if v.id == current_variant.id %}selected{% endif %} {% unless v.available %}disabled{% endunless %}>
+                {{ v.title }}{% unless v.available %} — Sold out{% endunless %}
+              </option>
+            {% endfor %}
+          </select>
+        {% endif %}
+
+        <div class="pdp-qtyRow">
+          <div class="pdp-qty" aria-label="Quantity selector">
+            <button type="button" data-qty-dec aria-label="Decrease">−</button>
+            <input type="number" name="quantity" value="1" min="1" inputmode="numeric" data-qty>
+            <button type="button" data-qty-inc aria-label="Increase">+</button>
+          </div>
+
+          <button class="pdp-atc" type="submit" {% unless current_variant.available %}disabled{% endunless %}>
+            Add to cart
+          </button>
+
+          <button class="pdp-iconBtn" type="button" aria-label="Share">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"></path>
+              <path d="M16 6l-4-4-4 4"></path>
+              <path d="M12 2v14"></path>
+            </svg>
+          </button>
+        </div>
+
+        {{ form | payment_button }}
+        <button class="pdp-buynow" type="button" data-buy-now {% unless current_variant.available %}disabled{% endunless %}>
+          Buy it now
+        </button>
+      </form>
+
+      <div class="pdp-pay">
+        <h4>Pay with</h4>
+        <div class="pdp-payRow">
+          {%- comment -%}Use theme payment icons if available; fallback to Shopify provided filter{%- endcomment -%}
+          {{ shop.enabled_payment_types | payment_type_svg_tag }}
+        </div>
+        <p style="margin:10px 0 0;font-size:12px;color:var(--pdp-muted);">
+          Your transaction is protected with advanced security measures to keep your information confidential
+        </p>
+      </div>
+    </aside>
+  </div>
+
+  <!-- LOWER CONTENT -->
+  <div class="pdp-lower">
+    <div>
+      <h2 class="pdp-sectionTitle">About this item</h2>
+
+      <div class="pdp-subTitle">Highlights</div>
+      <ul class="pdp-highlights">
+        <li>Maximize chocolate chip cookies</li>
+        <li>Ready to eat</li>
+        <li>Great tasting cookies at a value</li>
+        <li>An easy treat everyone will love</li>
+        <li>10ct</li>
+      </ul>
+
+      <div class="pdp-subTitle">Description</div>
+      <div class="pdp-desc">
+        {{ product.description }}
+      </div>
+
+      {%- comment -%}
+        Optional: pull a big “content image” from a product metafield.
+        Create metafield: custom.pdp_image (File)
+      {%- endcomment -%}
+      {%- assign pdp_image = product.metafields.custom.pdp_image -%}
+      {% if pdp_image != blank %}
+        <div class="pdp-bigImage">
+          <img
+            src="{{ pdp_image | image_url: width: 1600 }}"
+            alt="{{ product.title | escape }}"
+            loading="lazy" width="1600" height="auto"
+          >
+        </div>
+      {% endif %}
+
+      <h2 class="pdp-sectionTitle" style="margin-top:26px;">Product information</h2>
+      <table class="pdp-infoTable">
+        <tr><th>Brand</th><td>{{ product.vendor }}</td></tr>
+        <tr><th>Freshness guarantee</th><td>Keeps for at least 1 day(s) after receipt</td></tr>
+        <tr><th>Country of production</th><td>{{ localization.country.name | default: '—' }}</td></tr>
+        <tr>
+          <th>Ingredients</th>
+          <td>
+            {%- if product.metafields.custom.ingredients != blank -%}
+              {{ product.metafields.custom.ingredients | escape }}
+            {%- else -%}
+              Add a metafield: <code>custom.ingredients</code>
+            {%- endif -%}
+          </td>
+        </tr>
+        <tr>
+          <th>Diet</th>
+          <td>
+            {%- if product.tags contains 'Vegan' or product.tags contains 'Vegetarian' -%}
+              {%- assign diets = '' -%}
+              {%- if product.tags contains 'Vegan' -%}{%- assign diets = diets | append: 'Vegan' -%}{%- endif -%}
+              {%- if product.tags contains 'Vegetarian' -%}
+                {%- if diets != '' -%}{%- assign diets = diets | append: ', ' -%}{%- endif -%}
+                {%- assign diets = diets | append: 'Vegetarian' -%}
+              {%- endif -%}
+              {{ diets }}
+            {%- else -%}
+              —
+            {%- endif -%}
+          </td>
+        </tr>
+        <tr><th>Article number</th><td>{{ product.id }}</td></tr>
+        <tr>
+          <th>Miscellaneous</th>
+          <td>
+            {%- if product.metafields.custom.misc != blank -%}
+              {{ product.metafields.custom.misc | escape }}
+            {%- else -%}
+              Product has been part-baked in a stone oven, frozen and finished in store.
+            {%- endif -%}
+          </td>
+        </tr>
+        <tr><th>Certification body</th><td>{{ product.metafields.custom.certification_body | default: '—' }}</td></tr>
+      </table>
+
+      <div style="margin-top:18px;background:#e6f0ff;border:1px solid rgba(17,24,39,.08);border-radius:14px;padding:14px;text-align:center;color:rgba(15,23,42,.75);font-size:13px;">
+        Can't wait for your bars to arrive? <a href="#" style="color:rgba(15,23,42,.9);text-decoration:underline;text-underline-offset:3px;">More</a>
+      </div>
+    </div>
+
+    <div class="pdp-acc">
+      <details open>
+        <summary>
+          <span>Nutrition information</span>
+          <span aria-hidden="true">▾</span>
+        </summary>
+        <div class="pdp-accBody">
+          {%- if product.metafields.custom.nutrition_html != blank -%}
+            {{ product.metafields.custom.nutrition_html }}
+          {%- else -%}
+            <div style="border:1px solid var(--pdp-line);border-radius:12px;padding:12px;">
+              <div style="font-weight:700;color:rgba(15,23,42,.9);margin-bottom:10px;">
+                Nutritional values per: 100g | 1 portion (75g)
+              </div>
+              <table class="pdp-infoTable" style="margin:0;">
+                <tr><th>Energy</th><td>ca. 1323</td></tr>
+                <tr><th>Energy</th><td>ca. 313</td></tr>
+                <tr><th>Fat</th><td>ca. 12g</td></tr>
+                <tr><th>&nbsp;&nbsp; saturated fatty acids</th><td>ca. 1g</td></tr>
+                <tr><th>Carbohydrate</th><td>ca. 39</td></tr>
+                <tr><th>&nbsp;&nbsp; of which sugars</th><td>ca. 1.5g</td></tr>
+                <tr><th>Dietary fiber</th><td>ca. 5.7g</td></tr>
+                <tr><th>Protein</th><td>ca. 10g</td></tr>
+                <tr><th>Salt</th><td>ca. 1.2g</td></tr>
+              </table>
+            </div>
+            <p style="margin-top:10px;">Tip: set metafield <code>custom.nutrition_html</code> (Rich text/HTML) to override this.</p>
+          {%- endif -%}
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <span>Ingredients &amp; Nutrition</span>
+          <span aria-hidden="true">▾</span>
+        </summary>
+        <div class="pdp-accBody">
+          {% if product.metafields.custom.ingredients != blank %}
+            <strong>Ingredients</strong><br>
+            {{ product.metafields.custom.ingredients | escape }}
+          {% else %}
+            Add metafield <code>custom.ingredients</code>.
+          {% endif %}
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <span>Shipping and Returns</span>
+          <span aria-hidden="true">▾</span>
+        </summary>
+        <div class="pdp-accBody">
+          {%- if shop.shipping_policy.body != blank -%}
+            {{ shop.shipping_policy.body }}
+          {%- else -%}
+            Standard shipping in 3–7 business days. Returns accepted within 30 days (unused, original packaging).
+          {%- endif -%}
+        </div>
+      </details>
+    </div>
+  </div>
+</div>
+
+<!-- Floating coupon -->
+<div class="pdp-coupon" data-coupon>
+  <p><strong>You've got 25% off</strong></p>
+  <button type="button" aria-label="Close" data-coupon-close>×</button>
+</div>
+
+{% comment %}
+  Helper snippet inline (since user asked for single-file).
+  If your theme doesn't allow render of non-existing snippet "pdp-media",
+  replace the render calls above with the img logic below.
+{% endcomment %}
+{% capture pdp_media_snippet %}
+  {%- if media == blank -%}
+    <img src="{{ product.featured_image | image_url: width: 1200 }}" width="1200" height="auto" alt="{{ product.title | escape }}" loading="lazy">
+  {%- else -%}
+    {%- case media.media_type -%}
+      {%- when 'image' -%}
+        <img src="{{ media | image_url: width: 1400 }}" width="1400" height="auto" alt="{{ media.alt | escape }}" loading="eager">
+      {%- when 'video' -%}
+        {{ media | video_tag: controls: true, muted: true, playsinline: true }}
+      {%- when 'external_video' -%}
+        {{ media | external_video_tag }}
+      {%- when 'model' -%}
+        {{ media | model_viewer_tag }}
+      {%- else -%}
+        <img src="{{ media.preview_image | image_url: width: 1400 }}" width="1400" height="auto"  alt="{{ media.alt | escape }}" loading="lazy">
+    {%- endcase -%}
+  {%- endif -%}
+{% endcapture %}
+
+<script>
+  (function(){
+    const root = document.querySelector('[data-pdp]');
+    if(!root) return;
+
+    // Coupon close
+    const coupon = document.querySelector('[data-coupon]');
+    const couponClose = document.querySelector('[data-coupon-close]');
+    if(coupon && couponClose){
+      couponClose.addEventListener('click', () => coupon.remove());
+    }
+
+    // Quantity
+    const qty = root.querySelector('[data-qty]');
+    const inc = root.querySelector('[data-qty-inc]');
+    const dec = root.querySelector('[data-qty-dec]');
+    if(qty && inc && dec){
+      inc.addEventListener('click', () => qty.value = String(Math.max(1, (parseInt(qty.value||'1',10)+1))));
+      dec.addEventListener('click', () => qty.value = String(Math.max(1, (parseInt(qty.value||'1',10)-1))));
+    }
+
+    // Variant select updates hidden id + price
+    const variantSelect = root.querySelector('[data-variant-select]');
+    const variantIdInput = root.querySelector('[data-variant-id]');
+    const priceEl = root.querySelector('[data-price]');
+    const compareEl = root.querySelector('[data-compare]');
+    const buyNowBtn = root.querySelector('[data-buy-now]');
+
+    const variants = {{ product.variants | json }};
+    function money(cents){
+      // naive formatter; uses shop money_format via Liquid if you want perfection
+      return (cents/100).toLocaleString(undefined,{style:'currency',currency:'{{ shop.currency }}'});
+    }
+    function applyVariant(id){
+      const v = variants.find(x => String(x.id) === String(id));
+      if(!v) return;
+      if(variantIdInput) variantIdInput.value = v.id;
+      if(priceEl) priceEl.textContent = money(v.price);
+      if(compareEl){
+        if(v.compare_at_price && v.compare_at_price > v.price){
+          compareEl.textContent = money(v.compare_at_price);
+          compareEl.style.display = '';
+        } else {
+          compareEl.style.display = 'none';
+        }
+      }
+      if(buyNowBtn){
+        buyNowBtn.disabled = !v.available;
+      }
+      // NOTE: media switching per variant can be added if your variants have featured_media.
+    }
+    if(variantSelect){
+      variantSelect.addEventListener('change', (e) => applyVariant(e.target.value));
+    }
+
+    // Buy now: direct to checkout
+    if(buyNowBtn){
+      buyNowBtn.addEventListener('click', async () => {
+        const id = (variantSelect ? variantSelect.value : (variantIdInput ? variantIdInput.value : null));
+        const quantity = qty ? parseInt(qty.value||'1',10) : 1;
+        if(!id) return;
+
+        try{
+          await fetch('/cart/clear.js', {method:'POST'});
+          await fetch('/cart/add.js', {
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({items:[{id: Number(id), quantity: quantity}]})
+          });
+          window.location.href = '/checkout';
+        }catch(e){
+          // fallback
+          window.location.href = '/cart';
+        }
+      });
+    }
+
+    // Thumbs: update the 2-up panes (pane0=selected, pane1=next)
+    const thumbs = Array.from(root.querySelectorAll('[data-thumb]'));
+    const panes = Array.from(root.querySelectorAll('[data-pane]'));
+
+    const media = {{ product.media | json }};
+    function mediaHtml(m){
+      if(!m) return '';
+      // Images only for the simple DOM swap (most PDPs use images)
+      if(m.media_type === 'image'){
+        const src = m.preview_image ? (m.preview_image.src) : (m.src || '');
+        return `<img src="${src}" alt="${(m.alt||'').replace(/"/g,'&quot;')}" loading="eager" style="width:100%;height:100%;object-fit:contain;padding:18px;display:block;">`;
+      }
+      // fallback to preview image
+      const src = m.preview_image ? m.preview_image.src : '';
+      return `<img src="${src}" alt="${(m.alt||'').replace(/"/g,'&quot;')}" loading="lazy" style="width:100%;height:100%;object-fit:contain;padding:18px;display:block;">`;
+    }
+
+    function setActive(mediaId){
+      const idx = media.findIndex(x => String(x.id) === String(mediaId));
+      if(idx < 0) return;
+      const next = (idx+1 >= media.length) ? 0 : idx+1;
+
+      if(panes[0]) panes[0].innerHTML = mediaHtml(media[idx]);
+      if(panes[1]) panes[1].innerHTML = mediaHtml(media[next]);
+
+      thumbs.forEach(t => t.setAttribute('aria-current', (t.dataset.mediaId === String(mediaId)) ? 'true' : 'false'));
+    }
+
+    thumbs.forEach(t => t.addEventListener('click', () => setActive(t.dataset.mediaId)));
+  })();
+</script>
+
+{% comment %}
+  Inline render fallback:
+  If your theme errors on `{% render 'pdp-media' %}`, do this:
+  1) Search for `{% render 'pdp-media', media: left_media %}` and replace with `{{ pdp_media_snippet }}`
+  2) Same for right_media, but set `media` before capture (or convert to a real snippet).
+{% endcomment %}

@@ -11,7 +11,26 @@
   "sections": {
     "main": {
       "type": "collection",
-      "settings": {}
+      "blocks": {
+        "bundle_GF64NJ": {
+          "type": "bundle",
+          "settings": {
+            "mini_img_1": "shopify://shop_images/bakery_3_5e47533e-5f83-48fb-9caf-972e34d4d80d.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "bundle_GF64NJ"
+      ],
+      "settings": {
+        "products_per_page": 12,
+        "default_view": "grid",
+        "show_sort": true,
+        "show_filter_button": true,
+        "show_excerpt": true,
+        "show_quick_view": true,
+        "mini_img_1": "shopify://shop_images/vegetables_1_94e08dbc-4a48-4c35-a509-b62a5837451b.jpg"
+      }
     }
   },
   "order": [
