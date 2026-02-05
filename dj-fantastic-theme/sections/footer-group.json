@@ -18,56 +18,56 @@
           "type": "top_menu",
           "settings": {
             "title": "Company",
-            "menu": "footer"
+            "menu": "company"
           }
         },
         "top_menu_2": {
           "type": "top_menu",
           "settings": {
             "title": "Top Collections",
-            "menu": "footer"
+            "menu": "top-collections"
           }
         },
         "top_menu_3": {
           "type": "top_menu",
           "settings": {
             "title": "Help and support",
-            "menu": "footer"
+            "menu": "help-and-support"
           }
         },
         "cat_1": {
           "type": "category_menu",
           "settings": {
             "title": "Meat & Fish",
-            "menu": "main-menu"
+            "menu": "meat-fish"
           }
         },
         "cat_2": {
           "type": "category_menu",
           "settings": {
             "title": "Fruit & Vegetables",
-            "menu": "main-menu"
+            "menu": "fruit-vegetables"
           }
         },
         "cat_3": {
           "type": "category_menu",
           "settings": {
             "title": "Pantry staples",
-            "menu": "main-menu"
+            "menu": "pantry-staples"
           }
         },
         "cat_4": {
           "type": "category_menu",
           "settings": {
             "title": "Bakery",
-            "menu": "main-menu"
+            "menu": "bakery"
           }
         },
         "cat_5": {
           "type": "category_menu",
           "settings": {
             "title": "Beverages",
-            "menu": "main-menu"
+            "menu": "beverages"
           }
         }
       },
@@ -82,10 +82,18 @@
         "cat_5"
       ],
       "settings": {
+        "bg_color": "#f6f2ea",
+        "text_color": "#141414",
+        "accent_color": "#0b5cab",
+        "show_top_newsletter": true,
         "newsletter_kicker": "Join our newsletter",
         "newsletter_heading": "Get all latest information on events, sales and offers.",
         "newsletter_placeholder": "Your email",
         "newsletter_button": "Subscribe",
+        "newsletter_success": "Thanks! You're subscribed.",
+        "newsletter_error": "Please enter a valid email.",
+        "show_top_menus": true,
+        "show_menu_placeholders": false,
         "phone": "(+84) 123 4567 89",
         "address": "75 9th Ave, New York, NY 10011-7006",
         "email": "deanj0125@gmail.com",
