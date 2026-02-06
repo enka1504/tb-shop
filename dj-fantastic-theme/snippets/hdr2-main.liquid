@@ -1,15 +1,21 @@
 {%- comment -%} snippets/hdr2-main.liquid (NEW) {%- endcomment -%}
 <div class="hdr2__main">
   <div class="hdr2__container hdr2__main-inner">
-    <button class="hdr2__menu" type="button" aria-label="Open menu" data-hdr2-menu>
-      <span class="hdr2__menu-ico" aria-hidden="true"><span class="hdr2__burger"></span></span>
+    <button
+      class="hdr2__menu"
+      type="button"
+      aria-label="Open menu"
+      data-hdr2-menu>
+      <span class="hdr2__menu-ico" aria-hidden="true">
+        <span class="hdr2__burger"></span>
+      </span>
       <span class="hdr2__menu-text">{{ section.settings.menu_label | escape }}</span>
     </button>
 
     <div class="hdr2__brand">
-      {%- if settings.logo != blank -%}
+      {%- if show_logo != blank -%}
         <a class="hdr2__logo" href="{{ routes.root_url }}">
-          {{ settings.logo | image_url: width: 260 | image_tag: loading: 'lazy', alt: shop.name }}
+          {{ section.settings.logo | image_url: width: 260 | image_tag: loading: 'lazy', alt: shop.name }}
         </a>
       {%- else -%}
         <a class="hdr2__logotext" href="{{ routes.root_url }}">{{ shop.name }}</a>
@@ -18,10 +24,17 @@
 
     {%- if show_search -%}
       <div class="hdr2__search">
-        <form class="hdr2__searchform" action="{{ routes.search_url }}" method="get" role="search">
+        <form
+          class="hdr2__searchform"
+          action="{{ routes.search_url }}"
+          method="get"
+          role="search">
           {%- if show_category_select -%}
             <label class="hdr2__sr" for="hdr2-type-search">Search type</label>
-            <select id="hdr2-type-search" class="hdr2__select hdr2__catselect" name="type">
+            <select
+              id="hdr2-type-search"
+              class="hdr2__select hdr2__catselect"
+              name="type">
               <option value="product" selected>All categories</option>
               <option value="product">Products</option>
               <option value="article">Articles</option>
@@ -30,33 +43,59 @@
           {%- endif -%}
 
           <label class="hdr2__sr" for="hdr2-q">Search</label>
-          <input id="hdr2-q" class="hdr2__input" type="search" name="q"
-            placeholder="{{ section.settings.search_placeholder | escape }}" autocomplete="off" />
+          <input
+            id="hdr2-q"
+            class="hdr2__input"
+            type="search"
+            name="q"
+            placeholder="{{ section.settings.search_placeholder | escape }}"
+            autocomplete="off" />
 
-          <button class="hdr2__iconbtn hdr2__iconbtn--mic" type="button" aria-label="Voice search" data-hdr2-mic>🎤</button>
-          <button class="hdr2__iconbtn hdr2__iconbtn--search" type="submit" aria-label="Search">🔍</button>
+          <button
+            class="hdr2__iconbtn hdr2__iconbtn--mic"
+            type="button"
+            aria-label="Voice search"
+            data-hdr2-mic>🎤</button>
+          <button
+            class="hdr2__iconbtn hdr2__iconbtn--search"
+            type="submit"
+            aria-label="Search">🔍</button>
         </form>
       </div>
     {%- endif -%}
 
     <div class="hdr2__icons">
       {%- if section.settings.show_theme_toggle -%}
-        <button class="hdr2__toggle" type="button" aria-label="Toggle theme" data-theme-toggle>
+        <button
+          class="hdr2__toggle"
+          type="button"
+          aria-label="Toggle theme"
+          data-theme-toggle>
           <span class="hdr2__toggle-dot" aria-hidden="true"></span>
           <span class="hdr2__toggle-ico" aria-hidden="true">☀</span>
         </button>
       {%- endif -%}
 
       {%- if section.settings.show_location -%}
-        <button class="hdr2__iconbtn hdr2__iconbtn--round" type="button" aria-label="Location" data-hdr2-location-open>⌖</button>
+        <button
+          class="hdr2__iconbtn hdr2__iconbtn--round"
+          type="button"
+          aria-label="Location"
+          data-hdr2-location-open>⌖</button>
       {%- endif -%}
 
       {%- if show_account and shop.customer_accounts_enabled -%}
-        <a class="hdr2__iconbtn hdr2__iconbtn--round" href="{{ routes.account_url }}" aria-label="Account">👤</a>
+        <a
+          class="hdr2__iconbtn hdr2__iconbtn--round"
+          href="{{ routes.account_url }}"
+          aria-label="Account">👤</a>
       {%- endif -%}
 
       {%- if show_cart -%}
-        <a class="hdr2__iconbtn hdr2__iconbtn--round hdr2__cart" href="{{ routes.cart_url }}" aria-label="Cart">
+        <a
+          class="hdr2__iconbtn hdr2__iconbtn--round hdr2__cart"
+          href="{{ routes.cart_url }}"
+          aria-label="Cart">
           🛒
           {%- if cart.item_count > 0 -%}
             <span class="hdr2__bubble" aria-label="{{ cart.item_count }} items in cart">{{ cart.item_count }}</span>

@@ -1,12 +1,4 @@
-{% comment %}
-  Premium-style Footer (OS 2.0)
-  - Top row: newsletter left + email form right
-  - Row: 3 link columns (Company / Top collections / Help & support)
-  - Row: Brand/contact left + 5 category columns right
-  - Big slogan
-  - Bottom bar: copyright + payment icons
-{% endcomment %}
-
+{{ 'footer.css' | asset_url | stylesheet_tag }}
 <footer class="footerX" role="contentinfo">
   <div class="footerX__container page-width">
 
@@ -22,8 +14,13 @@
         </div>
 
         <div class="footerX__newsletterForm">
-          {%- form 'customer', id: 'FooterXNewsletter', class: 'footerX__form' -%}
-            <input type="hidden" name="contact[tags]" value="newsletter">
+          {%- form 'customer'
+            , id: 'FooterXNewsletter'
+            , class: 'footerX__form' -%}
+            <input
+              type="hidden"
+              name="contact[tags]"
+              value="newsletter">
             <label class="visually-hidden" for="FooterXNewsletterEmail">Email</label>
             <input
               id="FooterXNewsletterEmail"
@@ -32,8 +29,7 @@
               name="contact[email]"
               autocomplete="email"
               placeholder="{{ section.settings.newsletter_placeholder | default: 'Your email' | escape }}"
-              required
-            >
+              required>
             <button class="footerX__btn" type="submit">
               {{ section.settings.newsletter_button | default: 'Subscribe' | escape }}
             </button>
@@ -54,6 +50,41 @@
 
     {%- if section.settings.show_top_menus -%}
       <div class="footerX__topMenus">
+        <div class="footerX__brand footer-col footer-col-text text-left p-break-words md:col-span-2 lg:col-span-2">
+          {%- if section.settings.logo != blank -%}
+            <a
+              class="footerX__logo"
+              href="{{ routes.root_url }}"
+              aria-label="{{ shop.name | escape }}">
+              {{ section.settings.logo | image_url: width: 420 | image_tag: loading: 'lazy', widths: '200,260,320,420', alt: shop.name }}
+            </a>
+          {%- else -%}
+            <a class="footerX__brandName" href="{{ routes.root_url }}">{{ shop.name | escape }}</a>
+          {%- endif -%}
+
+          {%- if section.settings.phone != blank -%}
+            <div class="footerX__phone">{{ section.settings.phone | escape }}</div>
+          {%- endif -%}
+
+          <div class="footerX__meta">
+            {%- if section.settings.address != blank -%}
+              <div>
+                <strong>Address:</strong>
+                {{ section.settings.address | escape }}</div>
+            {%- endif -%}
+            {%- if section.settings.email != blank -%}
+              <div>
+                <strong>Email:</strong>
+                <a class="footerX__a" href="mailto:{{ section.settings.email | escape }}">{{ section.settings.email | escape }}</a>
+              </div>
+            {%- endif -%}
+            {%- if section.settings.hours != blank -%}
+              <div>
+                <strong>Mon–Sat:</strong>
+                {{ section.settings.hours | escape }}</div>
+            {%- endif -%}
+          </div>
+        </div>
         {%- for block in section.blocks -%}
           {%- if block.type == 'top_menu' -%}
             {%- assign menu = block.settings.menu -%}
@@ -82,32 +113,6 @@
     {%- endif -%}
 
     <div class="footerX__main">
-      <div class="footerX__brand">
-        {%- if section.settings.logo != blank -%}
-          <a class="footerX__logo" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
-            {{ section.settings.logo | image_url: width: 420 | image_tag: loading: 'lazy', widths: '200,260,320,420', alt: shop.name }}
-          </a>
-        {%- else -%}
-          <a class="footerX__brandName" href="{{ routes.root_url }}">{{ shop.name | escape }}</a>
-        {%- endif -%}
-
-        {%- if section.settings.phone != blank -%}
-          <div class="footerX__phone">{{ section.settings.phone | escape }}</div>
-        {%- endif -%}
-
-        <div class="footerX__meta">
-          {%- if section.settings.address != blank -%}
-            <div><strong>Address:</strong> {{ section.settings.address | escape }}</div>
-          {%- endif -%}
-          {%- if section.settings.email != blank -%}
-            <div><strong>Email:</strong> <a class="footerX__a" href="mailto:{{ section.settings.email | escape }}">{{ section.settings.email | escape }}</a></div>
-          {%- endif -%}
-          {%- if section.settings.hours != blank -%}
-            <div><strong>Mon–Sat:</strong> {{ section.settings.hours | escape }}</div>
-          {%- endif -%}
-        </div>
-      </div>
-
       <div class="footerX__categories">
         {%- for block in section.blocks -%}
           {%- if block.type == 'category_menu' -%}
@@ -153,7 +158,10 @@
       </div>
 
       {%- if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
-        <ul class="footerX__payments" role="list" aria-label="Payment methods">
+        <ul
+          class="footerX__payments"
+          role="list"
+          aria-label="Payment methods">
           {%- for type in shop.enabled_payment_types -%}
             <li class="footerX__payItem">
               {{ type | payment_type_svg_tag: class: 'footerX__payIcon' }}
@@ -166,62 +174,13 @@
   </div>
 
   <style>
-    .footerX{
+    .footerX {
       background: {{ section.settings.bg_color }};
       color: {{ section.settings.text_color }};
-    }
-    
-    .footerX__container{ padding: 52px 20px 22px 20px; }
-
-    /* Newsletter */
-    .footerX__newsletter{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 24px;
-      padding-bottom: 26px;
-      border-bottom: 1px solid rgba(0,0,0,.08);
-      margin-bottom: 26px;
-    }
-    .footerX__kicker{
-      font-size: 12px;
-      letter-spacing: .02em;
-      opacity: .75;
-      margin-bottom: 6px;
-    }
-    .footerX__title{
-      font-size: clamp(18px, 2.0vw, 22px);
-      line-height: 1.25;
-      margin: 0;
-      font-weight: 700;
-    }
-    .footerX__newsletterForm{
-      width: min(760px, 100%);
-      display:flex;
-      justify-content:flex-end;
-    }
-    .footerX__form{
-      width: 100%;
-      display:flex;
-      gap: 10px;
-      align-items:center;
-    }
-    .footerX__input{
-      flex: 1;
-      min-width: 220px;
-      padding: 12px 14px;
       border-radius: 10px;
-      border: 1px solid rgba(0,0,0,.14);
-      background: rgba(255,255,255,.75);
-      color: inherit;
-      outline: none;
+      margin: 10px 20px 15px;
     }
-    .footerX__input:focus{
-      border-color: rgba(0,0,0,.28);
-      box-shadow: 0 0 0 4px rgba(0,0,0,.06);
-      background: #fff;
-    }
-    .footerX__btn{
+    .footerX__btn {
       padding: 12px 16px;
       border-radius: 10px;
       border: 0;
@@ -231,208 +190,158 @@
       font-weight: 700;
       white-space: nowrap;
     }
-    .footerX__btn:hover{ filter: brightness(.96); }
-    .footerX__msg{ margin: 10px 0 0; font-size: 13px; }
-    .footerX__msg--success{ opacity:.85; }
-    .footerX__msg--error{ color:#b42318; }
-
-    /* Top menus (3 columns) */
-    .footerX__topMenus{
-      display:grid;
-      grid-template-columns: repeat(3, minmax(160px, 1fr));
-      gap: 34px;
-      margin-bottom: 34px;
-    }
-
-    /* Main area */
-    .footerX__main{
-      display:grid;
-      grid-template-columns: 1.05fr 2fr;
-      gap: 42px;
-      align-items:start;
-    }
-
-    .footerX__brandName{
-      font-size: 36px;
-      font-weight: 900;
-      text-decoration:none;
-      color: inherit;
-      display:inline-block;
-      margin-bottom: 10px;
-      letter-spacing: -0.02em;
-    }
-    .footerX__logo img{
-      max-width: 240px;
-      height: auto;
-      display:block;
-    }
-    .footerX__phone{
-      margin-top: 14px;
-      font-size: 18px;
-      font-weight: 800;
-      letter-spacing: .01em;
-    }
-    .footerX__meta{
-      margin-top: 12px;
-      font-size: 12px;
-      line-height: 1.8;
-      opacity: .85;
-    }
-
-    .footerX__categories{
-      display:grid;
-      grid-template-columns: repeat(5, minmax(150px, 1fr));
-      gap: 34px;
-    }
-
-    .footerX__menuTitle{
-      font-size: 13px;
-      font-weight: 800;
-      margin: 0 0 12px;
-      letter-spacing: .01em;
-    }
-
-    .footerX__links{
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display:flex;
-      flex-direction:column;
-      gap: 10px;
-    }
-
-    .footerX__a{
-      color: inherit;
-      text-decoration: none;
-      opacity: .78;
-      transition: opacity .15s ease, transform .15s ease;
-    }
-    .footerX__a:hover{
-      opacity: 1;
-      transform: translateX(2px);
-      text-decoration: underline;
-      text-underline-offset: 3px;
-    }
-
-    .footerX__placeholder{
-      font-size: 12px;
-      opacity: .55;
-    }
-
-    /* Slogan */
-    .footerX__slogan{
-      padding: 40px 0 18px;
-      text-align:center;
-    }
-    .footerX__sloganInner{
-      font-size: clamp(28px, 4.2vw, 60px);
-      font-weight: 900;
-      line-height: 1.02;
-      letter-spacing: -0.02em;
-      opacity: .92;
-    }
-
-    /* Bottom bar */
-    .footerX__bottom{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      flex-wrap:wrap;
-      gap: 14px;
-      border-top: 1px solid rgba(0,0,0,.08);
-      padding-top: 14px;
-      margin-top: 18px;
-    }
-    .footerX__copy{
-      opacity: .82;
-    }
-    .footerX__payments{
-      list-style:none;
-      padding:0;
-      margin:0;
-      display:flex;
-      align-items:center;
-      gap: 10px;
-    }
-    .footerX__payIcon{
-      height: 22px;
-      width: auto;
-      display:block;
-    }
-
-    /* Responsive */
-    @media (max-width: 1100px){
-      .footerX__categories{ grid-template-columns: repeat(3, minmax(160px, 1fr)); }
-    }
-    @media (max-width: 990px){
-      .footerX__newsletter{ flex-direction:column; align-items:flex-start; }
-      .footerX__newsletterForm{ justify-content:flex-start; }
-      .footerX__topMenus{ grid-template-columns: repeat(2, minmax(160px, 1fr)); }
-      .footerX__main{ grid-template-columns: 1fr; }
-      .footerX__categories{ grid-template-columns: repeat(2, minmax(160px, 1fr)); }
-    }
-    @media (max-width: 640px){
-      .footerX__topMenus{ grid-template-columns: 1fr; }
-      .footerX__form{ flex-direction:column; align-items:stretch; }
-      .footerX__input{ width: 100%; min-width: 0; }
-      .footerX__btn{ width: 100%; }
-      .footerX__categories{ grid-template-columns: 1fr; }
-      .footerX__container{ padding: 38px 20px 18px 20px; }
-    }
   </style>
 </footer>
 
 {% schema %}
-{
-  "name": "Footer (Premium style)",
-  "settings": [
-    { "type": "color", "id": "bg_color", "label": "Background color", "default": "#F6F2EA" },
-    { "type": "color", "id": "text_color", "label": "Text color", "default": "#141414" },
-    { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#0B5CAB" },
+  {
+    "name": "Footer (Premium style)",
+    "settings": [
+      {
+        "type": "color",
+        "id": "bg_color",
+        "label": "Background color",
+        "default": "#F6F2EA"
+      },
+      {
+        "type": "color",
+        "id": "text_color",
+        "label": "Text color",
+        "default": "#141414"
+      },
+      {
+        "type": "color",
+        "id": "accent_color",
+        "label": "Accent color",
+        "default": "#0B5CAB"
+      },
 
-    { "type": "checkbox", "id": "show_top_newsletter", "label": "Show newsletter row", "default": true },
-    { "type": "text", "id": "newsletter_kicker", "label": "Newsletter kicker", "default": "Join our newsletter" },
-    { "type": "text", "id": "newsletter_heading", "label": "Newsletter heading", "default": "Get all latest information on events, sales and offers." },
-    { "type": "text", "id": "newsletter_placeholder", "label": "Email placeholder", "default": "Your email" },
-    { "type": "text", "id": "newsletter_button", "label": "Button label", "default": "Subscribe" },
-    { "type": "text", "id": "newsletter_success", "label": "Success message", "default": "Thanks! You're subscribed." },
-    { "type": "text", "id": "newsletter_error", "label": "Error message", "default": "Please enter a valid email." },
-
-    { "type": "checkbox", "id": "show_top_menus", "label": "Show top menu columns", "default": true },
-    { "type": "checkbox", "id": "show_menu_placeholders", "label": "Show placeholder when menu is not assigned", "default": false },
-
-    { "type": "image_picker", "id": "logo", "label": "Footer logo" },
-    { "type": "text", "id": "phone", "label": "Phone", "default": "(+84) 123 4567 89" },
-    { "type": "text", "id": "address", "label": "Address", "default": "75 9th Ave, New York, NY 10011-7006" },
-    { "type": "text", "id": "email", "label": "Email", "default": "support@example.com" },
-    { "type": "text", "id": "hours", "label": "Hours", "default": "9:00pm - 5:00pm" },
-
-    { "type": "richtext", "id": "slogan", "label": "Big slogan", "default": "<p>This is everything you need in your pantry!</p>" },
-
-    { "type": "checkbox", "id": "show_powered_by", "label": "Show Powered by Shopify", "default": true },
-    { "type": "checkbox", "id": "show_payment_icons", "label": "Show payment icons", "default": true }
-  ],
-  "blocks": [
-    {
-      "type": "top_menu",
-      "name": "Top column menu",
-      "limit": 3,
-      "settings": [
-        { "type": "text", "id": "title", "label": "Title", "default": "Company" },
-        { "type": "link_list", "id": "menu", "label": "Menu" }
-      ]
-    },
-    {
-      "type": "category_menu",
-      "name": "Category menu",
-      "limit": 5,
-      "settings": [
-        { "type": "text", "id": "title", "label": "Title", "default": "Meat & Fish" },
-        { "type": "link_list", "id": "menu", "label": "Menu" }
-      ]
-    }
-  ],
-  "max_blocks": 8,
-  "presets": [{ "name": "Footer (Premium style)" }]
-}
+      {
+        "type": "checkbox",
+        "id": "show_top_newsletter",
+        "label": "Show newsletter row",
+        "default": true
+      }, {
+        "type": "text",
+        "id": "newsletter_kicker",
+        "label": "Newsletter kicker",
+        "default": "Join our newsletter"
+      }, {
+        "type": "text",
+        "id": "newsletter_heading",
+        "label": "Newsletter heading",
+        "default": "Get all latest information on events, sales and offers."
+      }, {
+        "type": "text",
+        "id": "newsletter_placeholder",
+        "label": "Email placeholder",
+        "default": "Your email"
+      }, {
+        "type": "text",
+        "id": "newsletter_button",
+        "label": "Button label",
+        "default": "Subscribe"
+      }, {
+        "type": "text",
+        "id": "newsletter_success",
+        "label": "Success message",
+        "default": "Thanks! You're subscribed."
+      }, {
+        "type": "text",
+        "id": "newsletter_error",
+        "label": "Error message",
+        "default": "Please enter a valid email."
+      }, {
+        "type": "checkbox",
+        "id": "show_top_menus",
+        "label": "Show top menu columns",
+        "default": true
+      }, {
+        "type": "checkbox",
+        "id": "show_menu_placeholders",
+        "label": "Show placeholder when menu is not assigned",
+        "default": false
+      }, {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Footer logo"
+      }, {
+        "type": "text",
+        "id": "phone",
+        "label": "Phone",
+        "default": "(+84) 123 4567 89"
+      }, {
+        "type": "text",
+        "id": "address",
+        "label": "Address",
+        "default": "75 9th Ave, New York, NY 10011-7006"
+      }, {
+        "type": "text",
+        "id": "email",
+        "label": "Email",
+        "default": "support@example.com"
+      }, {
+        "type": "text",
+        "id": "hours",
+        "label": "Hours",
+        "default": "9:00pm - 5:00pm"
+      }, {
+        "type": "richtext",
+        "id": "slogan",
+        "label": "Big slogan",
+        "default": "<p>This is everything you need in your pantry!</p>"
+      }, {
+        "type": "checkbox",
+        "id": "show_powered_by",
+        "label": "Show Powered by Shopify",
+        "default": true
+      }, {
+        "type": "checkbox",
+        "id": "show_payment_icons",
+        "label": "Show payment icons",
+        "default": true
+      }
+    ],
+    "blocks": [
+      {
+        "type": "top_menu",
+        "name": "Top column menu",
+        "limit": 3,
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Company"
+          }, {
+            "type": "link_list",
+            "id": "menu",
+            "label": "Menu"
+          }
+        ]
+      }, {
+        "type": "category_menu",
+        "name": "Category menu",
+        "limit": 5,
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Meat & Fish"
+          }, {
+            "type": "link_list",
+            "id": "menu",
+            "label": "Menu"
+          }
+        ]
+      }
+    ],
+    "max_blocks": 8,
+    "presets": [
+      {
+        "name": "Footer (Premium style)"
+      }
+    ]
+  }
 {% endschema %}

@@ -1,11 +1,11 @@
-{% comment %}
-  Header v2 – “Various” style
-  - Announcement slider (+ optional countdown per slide)
-  - Top bar links + email/phone + localization
-  - Main row: Menu button + logo + search + icons
-  - Nav row: badges above label + chevrons
-  - Mega menu overlay (desktop): left categories + right cards + promos
-  - Mobile: category pills grid + drawer accordions
+{% comment %} 
+                  Header v2 – “Various” style 
+                  - Announcement slider (+ optional countdown per slide) 
+                  - Top bar links + email/phone + localization 
+                  - Main row: Menu button + logo + search + icons 
+                  - Nav row: badges above label + chevrons 
+                  - Mega menu overlay (desktop): left categories + right cards + promos 
+                  - Mobile: category pills grid + drawer accordions 
 {% endcomment %}
 {%- comment -%} sections/header.liquid (UPDATED – split into rendered snippets) {%- endcomment -%}
 
@@ -19,6 +19,7 @@
   assign show_search = section.settings.enable_search
   assign show_category_select = section.settings.enable_category_select
   assign show_localization = section.settings.show_localization
+  assign show_logo = section.settings.logo
   assign show_account = section.settings.show_account
   assign show_cart = section.settings.show_cart
 
@@ -30,144 +31,380 @@
 
 <header class="hdr2" data-hdr2>
   {%- if show_announcement -%}
-    {%- render 'hdr2-announcement', section: section -%}
+    {%- render 'hdr2-announcement'
+      , section: section -%}
   {%- endif -%}
 
   {%- if show_topbar -%}
-    {%- render 'hdr2-topbar', section: section, show_localization: show_localization -%}
+    {%- render 'hdr2-topbar'
+      , section: section
+      , show_localization: show_localization -%}
   {%- endif -%}
 
-  {%- render 'hdr2-main',
-    section: section,
-    show_search: show_search,
-    show_category_select: show_category_select,
-    show_account: show_account,
-    show_cart: show_cart
+  {%- render 'hdr2-main'
+    ,
+ section: section
+    ,
+ show_search: show_search
+    ,
+ show_category_select: show_category_select
+    ,
+ show_account: show_account
+    ,
+ show_cart: show_cart
+    ,
+ show_logo: show_logo
   -%}
 
   {%- if section.settings.enable_pills and pills_menu_handle != blank -%}
-    {%- render 'hdr2-pills', section: section, pills_menu_handle: pills_menu_handle -%}
+    {%- render 'hdr2-pills'
+      , section: section
+      , pills_menu_handle: pills_menu_handle -%}
   {%- endif -%}
 
   {%- if show_navrow and category_menu_handle != blank -%}
-    {%- render 'hdr2-catbar-mega', section: section, category_menu_handle: category_menu_handle -%}
+    {%- render 'hdr2-catbar-mega'
+      , section: section
+      , category_menu_handle: category_menu_handle -%}
   {%- endif -%}
 
-  {%- render 'hdr2-drawer', section: section, drawer_menu_handle: drawer_menu_handle, category_menu_handle: category_menu_handle -%}
+  {%- render 'hdr2-drawer'
+    , section: section
+    , drawer_menu_handle: drawer_menu_handle
+    , category_menu_handle: category_menu_handle -%}
 
-  {%- render 'hdr2-location-modal', section: section -%}
+  {%- render 'hdr2-location-modal'
+    , section: section -%}
 </header>
 
 {% schema %}
-{
-  "name": "Header v2 (Various style)",
-  "settings": [
-    { "type": "checkbox", "id": "enable_announcement", "label": "Enable announcement bar", "default": true },
-    { "type": "range", "id": "announcement_interval", "label": "Announcement autoplay (seconds)", "min": 2, "max": 12, "step": 1, "default": 4 },
+  {
+    "name": "Header v2 (Various style)",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_announcement",
+        "label": "Enable announcement bar",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "announcement_interval",
+        "label": "Announcement autoplay (seconds)",
+        "min": 2,
+        "max": 12,
+        "step": 1,
+        "default": 4
+      },
 
-    { "type": "checkbox", "id": "enable_topbar", "label": "Enable top utility bar", "default": true },
-    { "type": "text", "id": "email", "label": "Email", "default": "example@shopify.com" },
-    { "type": "text", "id": "phone", "label": "Phone", "default": "(+1) 2345678901" },
-    { "type": "checkbox", "id": "show_localization", "label": "Show localization selector", "default": true },
-
-    { "type": "text", "id": "menu_label", "label": "Menu button label", "default": "Menu" },
-
-    { "type": "checkbox", "id": "enable_search", "label": "Enable search", "default": true },
-    { "type": "checkbox", "id": "enable_category_select", "label": "Enable category dropdown", "default": true },
-    { "type": "text", "id": "search_placeholder", "label": "Search placeholder", "default": "What are you searching for?" },
-
-    { "type": "checkbox", "id": "show_theme_toggle", "label": "Show theme toggle", "default": true },
-    { "type": "checkbox", "id": "show_location", "label": "Show location icon", "default": true },
-    { "type": "url", "id": "location_link", "label": "Location link", "default": "/" },
-
-    { "type": "checkbox", "id": "show_account", "label": "Show account icon", "default": true },
-    { "type": "checkbox", "id": "show_cart", "label": "Show cart icon", "default": true },
-
-    { "type": "checkbox", "id": "enable_navrow", "label": "Enable nav row", "default": true },
-    { "type": "link_list", "id": "nav_menu", "label": "Nav row menu (desktop)" },
-
-    { "type": "checkbox", "id": "enable_pills", "label": "Enable mobile category pills", "default": true },
-    { "type": "link_list", "id": "pills_menu", "label": "Pills menu (mobile)" },
-
-    { "type": "text", "id": "drawer_welcome", "label": "Drawer welcome text", "default": "Welcome to Maximize Various" },
-    { "type": "link_list", "id": "drawer_menu", "label": "Drawer main menu" },
-    { "type": "link_list", "id": "category_menu", "label": "Category menu (mega left)" },
-    { "type": "html", "id": "map_embed", "label": "Map embed (iframe HTML)" }
-  ],
-  "blocks": [
-    {
-      "type": "announcement",
-      "name": "Announcement slide",
-      "settings": [
-        { "type": "text", "id": "text", "label": "Text", "default": "Hurry up! 30% OFF Sale Ends Soon" },
-        { "type": "url", "id": "link", "label": "Optional link" },
-        { "type": "checkbox", "id": "show_countdown", "label": "Show countdown", "default": true },
-        { "type": "text", "id": "countdown_to", "label": "Countdown end (YYYY-MM-DDTHH:MM:SSZ)", "default": "2026-12-31T23:59:59Z" }
-      ]
-    },
-    {
-      "type": "top_link",
-      "name": "Top link",
-      "settings": [
-        { "type": "text", "id": "label", "label": "Label", "default": "About us" },
-        { "type": "url", "id": "url", "label": "URL", "default": "/" }
-      ]
-    },
-    {
-      "type": "promo",
-      "name": "Mega promo card",
-      "settings": [
-        { "type": "text", "id": "title", "label": "Title", "default": "Fresh Seafood Selection" },
-        { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Daily catch, fast chilled delivery" },
-        { "type": "text", "id": "link_label", "label": "Link label", "default": "Shop now" },
-        { "type": "url", "id": "url", "label": "URL", "default": "/" },
-        { "type": "image_picker", "id": "image", "label": "Image" }
-      ]
-    },
-    {
-      "type": "mega_promo",
-      "name": "Mega promo (per category)",
-      "settings": [
-        {
-          "type": "number",
-          "id": "category_index",
-          "label": "Category index (0 = first category, 1 = second, ...)",
-          "default": 0
-        },
-        { "type": "text", "id": "title", "label": "Title", "default": "Fresh Seafood Selection" },
-        { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Daily catch, fast chilled delivery" },
-        { "type": "text", "id": "link_label", "label": "Link label", "default": "Shop now" },
-        { "type": "url", "id": "url", "label": "URL", "default": "/" },
-        { "type": "image_picker", "id": "image", "label": "Image" }
-      ]
-    },
-     {
-      "type": "location_store",
-      "name": "Location store",
-      "settings": [
-        { "type": "text", "id": "title", "label": "Title", "default": "Store branch" },
-        { "type": "text", "id": "badge", "label": "Badge (e.g. Free)", "default": "Free" },
-        { "type": "text", "id": "note", "label": "Note", "default": "Usually ready for pickup in 24 hours" },
-        { "type": "textarea", "id": "address", "label": "Address", "default": "75 9th Ave, New York, NY 10011-7006" },
-        { "type": "text", "id": "phone", "label": "Phone", "default": "(+84) 123 456 789" },
-        { "type": "richtext", "id": "hours", "label": "Hours", "default": "<p>Mon - Fri, 8:30am - 10:30pm<br>Saturday, 8:30am - 10:30pm<br>Sunday, Closed</p>" },
-        { "type": "url", "id": "directions_url", "label": "Directions URL" }
-      ]
-    }
-  ],
-  "presets": [
-    {
-      "name": "Header v2 (Various style)",
-      "blocks": [
-        { "type": "announcement" },
-        { "type": "top_link", "settings": { "label": "About us", "url": "/pages/about-us" } },
-        { "type": "top_link", "settings": { "label": "FAQs", "url": "/pages/faqs" } },
-        { "type": "top_link", "settings": { "label": "News & Article", "url": "/blogs/news" } },
-        { "type": "top_link", "settings": { "label": "Recipes", "url": "/blogs/recipes" } },
-        { "type": "promo" },
-        { "type": "promo" }
-      ]
-    }
-  ]
-}
+      {
+        "type": "checkbox",
+        "id": "enable_topbar",
+        "label": "Enable top utility bar",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "email",
+        "label": "Email",
+        "default": "example@shopify.com"
+      }, {
+        "type": "text",
+        "id": "phone",
+        "label": "Phone",
+        "default": "(+1) 2345678901"
+      }, {
+        "type": "checkbox",
+        "id": "show_localization",
+        "label": "Show localization selector",
+        "default": true
+      }, {
+        "type": "text",
+        "id": "menu_label",
+        "label": "Menu button label",
+        "default": "Menu"
+      }, {
+        "type": "checkbox",
+        "id": "enable_search",
+        "label": "Enable search",
+        "default": true
+      }, {
+        "type": "checkbox",
+        "id": "enable_category_select",
+        "label": "Enable category dropdown",
+        "default": true
+      }, {
+        "type": "text",
+        "id": "search_placeholder",
+        "label": "Search placeholder",
+        "default": "What are you searching for?"
+      }, {
+        "type": "checkbox",
+        "id": "show_theme_toggle",
+        "label": "Show theme toggle",
+        "default": true
+      }, {
+        "type": "checkbox",
+        "id": "show_location",
+        "label": "Show location icon",
+        "default": true
+      }, {
+        "type": "url",
+        "id": "location_link",
+        "label": "Location link",
+        "default": "/"
+      }, {
+        "type": "checkbox",
+        "id": "show_account",
+        "label": "Show account icon",
+        "default": true
+      }, {
+        "type": "checkbox",
+        "id": "show_cart",
+        "label": "Show cart icon",
+        "default": true
+      }, {
+        "type": "checkbox",
+        "id": "enable_navrow",
+        "label": "Enable nav row",
+        "default": true
+      }, {
+        "type": "link_list",
+        "id": "nav_menu",
+        "label": "Nav row menu (desktop)"
+      }, {
+        "type": "checkbox",
+        "id": "enable_pills",
+        "label": "Enable mobile category pills",
+        "default": true
+      }, {
+        "type": "link_list",
+        "id": "pills_menu",
+        "label": "Pills menu (mobile)"
+      }, {
+        "type": "text",
+        "id": "drawer_welcome",
+        "label": "Drawer welcome text",
+        "default": "Welcome to Maximize Various"
+      }, {
+        "type": "link_list",
+        "id": "drawer_menu",
+        "label": "Drawer main menu"
+      }, {
+        "type": "link_list",
+        "id": "category_menu",
+        "label": "Category menu (mega left)"
+      }, {
+        "type": "html",
+        "id": "map_embed",
+        "label": "Map embed (iframe HTML)"
+      }, {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Header logo"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "announcement",
+        "name": "Announcement slide",
+        "settings": [
+          {
+            "type": "text",
+            "id": "text",
+            "label": "Text",
+            "default": "Hurry up! 30% OFF Sale Ends Soon"
+          }, {
+            "type": "url",
+            "id": "link",
+            "label": "Optional link"
+          }, {
+            "type": "checkbox",
+            "id": "show_countdown",
+            "label": "Show countdown",
+            "default": true
+          }, {
+            "type": "text",
+            "id": "countdown_to",
+            "label": "Countdown end (YYYY-MM-DDTHH:MM:SSZ)",
+            "default": "2026-12-31T23:59:59Z"
+          }
+        ]
+      },
+      {
+        "type": "top_link",
+        "name": "Top link",
+        "settings": [
+          {
+            "type": "text",
+            "id": "label",
+            "label": "Label",
+            "default": "About us"
+          }, {
+            "type": "url",
+            "id": "url",
+            "label": "URL",
+            "default": "/"
+          }
+        ]
+      },
+      {
+        "type": "promo",
+        "name": "Mega promo card",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Fresh Seafood Selection"
+          },
+          {
+            "type": "text",
+            "id": "subtitle",
+            "label": "Subtitle",
+            "default": "Daily catch, fast chilled delivery"
+          },
+          {
+            "type": "text",
+            "id": "link_label",
+            "label": "Link label",
+            "default": "Shop now"
+          },
+          {
+            "type": "url",
+            "id": "url",
+            "label": "URL",
+            "default": "/"
+          }, {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          }
+        ]
+      },
+      {
+        "type": "mega_promo",
+        "name": "Mega promo (per category)",
+        "settings": [
+          {
+            "type": "number",
+            "id": "category_index",
+            "label": "Category index (0 = first category, 1 = second, ...)",
+            "default": 0
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Fresh Seafood Selection"
+          },
+          {
+            "type": "text",
+            "id": "subtitle",
+            "label": "Subtitle",
+            "default": "Daily catch, fast chilled delivery"
+          },
+          {
+            "type": "text",
+            "id": "link_label",
+            "label": "Link label",
+            "default": "Shop now"
+          }, {
+            "type": "url",
+            "id": "url",
+            "label": "URL",
+            "default": "/"
+          }, {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          }
+        ]
+      }, {
+        "type": "location_store",
+        "name": "Location store",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Store branch"
+          },
+          {
+            "type": "text",
+            "id": "badge",
+            "label": "Badge (e.g. Free)",
+            "default": "Free"
+          },
+          {
+            "type": "text",
+            "id": "note",
+            "label": "Note",
+            "default": "Usually ready for pickup in 24 hours"
+          },
+          {
+            "type": "textarea",
+            "id": "address",
+            "label": "Address",
+            "default": "75 9th Ave, New York, NY 10011-7006"
+          }, {
+            "type": "text",
+            "id": "phone",
+            "label": "Phone",
+            "default": "(+84) 123 456 789"
+          }, {
+            "type": "richtext",
+            "id": "hours",
+            "label": "Hours",
+            "default": "<p>Mon - Fri, 8:30am - 10:30pm<br>Saturday, 8:30am - 10:30pm<br>Sunday, Closed</p>"
+          }, {
+            "type": "url",
+            "id": "directions_url",
+            "label": "Directions URL"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Header v2 (Various style)",
+        "blocks": [
+          {
+            "type": "announcement"
+          },
+          {
+            "type": "top_link",
+            "settings": {
+              "label": "About us",
+              "url": "/pages/about-us"
+            }
+          },
+          {
+            "type": "top_link",
+            "settings": {
+              "label": "FAQs",
+              "url": "/pages/faqs"
+            }
+          },
+          {
+            "type": "top_link",
+            "settings": {
+              "label": "News & Article",
+              "url": "/blogs/news"
+            }
+          }, {
+            "type": "top_link",
+            "settings": {
+              "label": "Recipes",
+              "url": "/blogs/recipes"
+            }
+          }, {
+            "type": "promo"
+          }, {
+            "type": "promo"
+          }
+        ]
+      }
+    ]
+  }
 {% endschema %}

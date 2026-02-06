@@ -4,87 +4,105 @@
     {% # Inlined CSS Variables %}
     {% render 'css-variables' %}
 
-    {% comment %}
-      Font preloading:
-      1. Preconnect to font CDN for faster connection
-      2. Preload only the critical font variant (base weight)
-      3. Additional variants load on-demand via @font-face
-    {% endcomment %}
-      <script src="{{ 'theme-toggle.js' | asset_url }}" defer></script>
-      {{ 'theme.css' |  asset_url |  stylesheet_tag }}
+    {% comment %} 
+                                    Font preloading: 
+                                    1. Preconnect to font CDN for faster connection 
+                                    2. Preload only the critical font variant (base weight) 
+                                    3. Additional variants load on-demand via @font-face 
+                        {% endcomment %}
+    <script src="{{ 'theme-toggle.js' | asset_url }}" defer></script>
 
     {% unless settings.type_primary_font.system? %}
-      <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+    <link
+        rel="preconnect"
+        href="https://fonts.shopifycdn.com"
+        crossorigin>
 
       {% comment %} Preload the base font variant for initial page render {% endcomment %}
       {{ settings.type_primary_font | font_url | preload_tag: as: 'font', crossorigin: 'anonymous' }}
     {% endunless %}
 
-    <style>
-  :root{
-    /* ===== Light theme tokens ===== */
-    --bg: #ffffff;
-    --surface: #ffffff;
-    --surface-2: #f6f8fc;
-    --text: #0d1620;
-    --muted: rgba(0,0,0,.65);
-    --line: rgba(0,0,0,.10);
-    --shadow: 0 18px 50px rgba(0,0,0,.12);
+    <style > :root
+    {
+      /* ===== Light theme tokens ===== */
+      --bg: #ffffff;
+      --surface: #ffffff;
+      --surface-2: #f6f8fc;
+      --text: #0d1620;
+      --muted: rgba(0, 0, 0, 0.65);
+      --line: rgba(0, 0, 0, 0.10);
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.12);
 
-    --primary: #0b4ea2;
-    --primary-2: #2f7df6;
-    --accent: #ffb020;
-    --danger: #e5484d;
-    --success: #2db76d;
+      --primary: #0b4ea2;
+      --primary-2: #2f7df6;
+      --accent: #ffb020;
+      --danger: #e5484d;
+      --success: #2db76d;
 
-    --radius-sm: 10px;
-    --radius-md: 14px;
-    --radius-lg: 18px;
+      --radius-sm: 10px;
+      --radius-md: 14px;
+      --radius-lg: 18px;
 
-    --container: 1400px;
-  }
+      --container: 1400px;
+    }
 
-  html.theme-dark{
-    /* ===== Dark theme tokens ===== */
-    --bg: #0b0f15;
-    --surface: #111826;
-    --surface-2: #0f1724;
-    --text: #e8eef8;
-    --muted: rgba(232,238,248,.72);
-    --line: rgba(255,255,255,.12);
-    --shadow: 0 18px 50px rgba(0,0,0,.50);
+    html.theme-dark {
+      /* ===== Dark theme tokens ===== */
+      --bg: #0b0f15;
+      --surface: #111826;
+      --surface-2: #0f1724;
+      --text: #e8eef8;
+      --muted: rgba(232, 238, 248, 0.72);
+      --line: rgba(255, 255, 255, 0.12);
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.50);
 
-    --primary: #2f7df6;
-    --primary-2: #6aa7ff;
-    --accent: #ffb020;
-    --danger: #ff6b72;
-    --success: #35d07f;
-  }
+      --primary: #2f7df6;
+      --primary-2: #6aa7ff;
+      --accent: #ffb020;
+      --danger: #ff6b72;
+      --success: #35d07f;
+    }
 
-  /* Base page */
-  html,body{ background:var(--bg); color:var(--text); }
-  body{ transition: background 200ms cubic-bezier(.4,0,.2,1), color 200ms cubic-bezier(.4,0,.2,1); }
+    /* Base page */
+    html,
+    body {
+      background: var(--bg);
+      color: var(--text);
+    }
+    body {
+      transition: background 200ms cubic-bezier(0.4,0,0.2,1)
+      , color 200ms cubic-bezier(0.4,0,0.2,1);
+    }
 
-  /* Global surfaces */
-  .shopify-section, .page-width, .container, main, header, footer { color: var(--text); }
-  a{ color: inherit; }
+    /* Global surfaces */
+    .shopify-section,
+    .page-width,
+    .container,
+    main,
+    header,
+    footer {
+      color: var(--text);
+    }
+    a {
+      color: inherit;
+    }
 </style>
-    {% # Load and preload the critical CSS %}
-    {{ 'critical.css' | asset_url | stylesheet_tag: preload: true }}
+  {% # Load and preload the critical CSS %}
+  {{ 'critical.css' | asset_url | stylesheet_tag: preload: true }}
+{{ 'sample-header.css' | asset_url | stylesheet_tag: preload: true }}
 
-    {% # Social, title, etc. %}
-    {% render 'meta-tags' %}
+  {% # Social, title, etc. %}
+  {% render 'meta-tags' %}
 
-    {{ content_for_header }}
-  </head>
-  {% comment %} {{ 'cart-drawer.css' | asset_url | stylesheet_tag }}
-  <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
+  {{ content_for_header }}
+</head>
+{% comment %} {{ 'cart-drawer.css' | asset_url | stylesheet_tag }}
+              <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
   {% render 'cart-drawer' %} {% endcomment %}
-  <body>
-    {% sections 'header-group' %}
+<body>
+  {% sections 'header-group' %}
 
-    {{ content_for_layout }}
+  {{ content_for_layout }}
 
-    {% sections 'footer-group' %}
-  </body>
-</html>
+  {% sections 'footer-group' %}
+</body></html>

@@ -1242,14 +1242,15 @@ html.theme-dark .hdr2__catbar-link:hover {
   }
 
   .hdr2__drawer-right {
+    display: none
+  }
+
+
+  .hdr2__drawer-right {
     display: none !important;
   }
 
   /* hide right panel */
-  .hdr2__drawer-section--categories {
-    display: none !important;
-  }
-
   /* hide category drawer menu */
   .hdr2__drawer-left {
     width: 100%;
@@ -1271,6 +1272,7 @@ html.theme-dark .hdr2__catbar-link:hover {
   .hdr2__catbar {
     display: none;
   }
+
 }
 
 /* desktop drawer layout (keep both columns) */
@@ -1287,5 +1289,9 @@ html.theme-dark .hdr2__catbar-link:hover {
 
   .hdr2__drawer-section--categories {
     display: block;
+  }
+
+  .hdr2__drawer-section--main {
+    display: none !important;
   }
 }

@@ -32,7 +32,7 @@
                     <span class="hdr2__drawerrow-right" aria-hidden="true">›</span>
                   </button>
 
-                  {%- if link.links.size > 0 -%}
+                  {% comment %} {%- if link.links.size > 0 -%}
                     <div class="hdr2__drawer-sub" id="hdr2-cat-{{ forloop.index0 }}" {% unless forloop.first %}hidden{% endunless %}>
                       <ul class="hdr2__sublist">
                         {%- for sub in link.links -%}
@@ -40,13 +40,12 @@
                         {%- endfor -%}
                       </ul>
                     </div>
-                  {%- endif -%}
+                  {%- endif -%} {% endcomment %}
                 </li>
               {%- endfor -%}
             </ul>
           {%- endif -%}
         </div>
-
         {%- comment -%} Main menu (VISIBLE on mobile + desktop) {%- endcomment -%}
         <div class="hdr2__drawer-section hdr2__drawer-section--main">
           <div class="hdr2__drawer-section-title">Main menu</div>

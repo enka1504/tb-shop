@@ -1,6 +1,7 @@
 // Progressive enhancement:
 // - Adds `.js` class to enable CSS behavior
 // - Quantity +/- updates the number input and auto-submits the cart form
+
 (function () {
     document.documentElement.classList.add('js');
 
