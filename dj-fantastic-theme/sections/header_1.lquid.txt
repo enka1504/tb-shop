@@ -1,0 +1,443 @@
+{% comment %}
+  Header v2 (clean)
+  - Announcement bar + optional countdown
+  - Top utility row (links + email/phone + optional localization)
+  - Main header row (menu drawer, logo, category select, search, icons)
+  - Nav row with badges (Deal/New/Best)
+{% endcomment %}
+
+{{ 'header-v2.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'header-v2.js' | asset_url }}" defer></script>
+
+{%- liquid
+  assign show_announcement = section.settings.enable_announcement
+  assign show_topbar = section.settings.enable_topbar
+  assign show_navrow = section.settings.enable_navrow
+  assign show_category_select = section.settings.enable_category_select
+  assign show_search = section.settings.enable_search
+  assign show_account = section.settings.show_account
+  assign show_cart = section.settings.show_cart
+  assign show_localization = section.settings.show_localization
+-%}
+
+<header class="hdr2" data-section-id="{{ section.id }}">
+  {%- if show_announcement -%}
+    <div class="announcement-bar"
+      data-announcement
+      data-interval="{{ section.settings.announcement_interval | default: 4 | times: 1000 }}"
+    >
+      <button class="ab-arrow ab-arrow--left" type="button" aria-label="Previous" data-ab-prev>‹</button>
+
+      <div class="ab-viewport">
+        <div class="ab-track" data-ab-track>
+          {% for block in section.blocks %}
+            {% if block.type == 'announcement' %}
+                  <div class="ab-slide" data-ab-slide {{ block.shopify_attributes }}>
+                  
+                    {{ block.settings.text }} 
+                    <span>{% if block.settings.link != blank %}
+                      <a class="ab-link" href="{{ block.settings.link }}"> more</a>
+                    {% else %}
+                    {% endif %}</span>
+                     {% if block.settings.show_countdown and block.settings.countdown_to != blank %}
+                      <span class="ab-countdown"
+                            data-countdown
+                            data-countdown-to="{{ block.settings.countdown_to | escape }}">
+                        <span class="cd-box" data-cd-days>00</span>
+                        <span class="cd-sep">:</span>
+                        <span class="cd-box" data-cd-hours>00</span>
+                        <span class="cd-sep">:</span>
+                        <span class="cd-box" data-cd-mins>00</span>
+                        <span class="cd-sep">:</span>
+                        <span class="cd-box" data-cd-secs>00</span>
+                      </span>
+                    {% endif %}
+                  </div>
+                {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+
+        <button class="ab-arrow ab-arrow--right" type="button" aria-label="Next" data-ab-next>›</button>
+      </div>
+  {%- endif -%}
+
+  {%- if show_topbar -%}
+    <div class="hdr2__topbar">
+      <div class="hdr2__container hdr2__topbar-inner">
+        <div class="hdr2__topbar-left">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'top_link' -%}
+              <a class="hdr2__toplink" href="{{ block.settings.url }}" {{ block.shopify_attributes }}>
+                {{ block.settings.label | escape }}
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+        <div class="hdr2__topbar-right">
+          {%- if section.settings.email != blank -%}
+            <a class="hdr2__meta" href="mailto:{{ section.settings.email | escape }}">
+              <span class="hdr2__meta-ico" aria-hidden="true">✉</span>
+              <span>{{ section.settings.email | escape }}</span>
+            </a>
+          {%- endif -%}
+
+          {%- if section.settings.phone != blank -%}
+            <a class="hdr2__meta" href="tel:{{ section.settings.phone | remove: ' ' | escape }}">
+              <span class="hdr2__meta-ico" aria-hidden="true">☎</span>
+              <span>{{ section.settings.phone | escape }}</span>
+            </a>
+          {%- endif -%}
+
+          {%- if show_localization and localization.available_countries.size > 1 -%}
+            <div class="hdr2__localization">
+              {%- form 'localization', id: 'hdr2Localization', class: 'hdr2__locform' -%}
+                <select class="hdr2__select" name="country_code" aria-label="Country">
+                  {%- for country in localization.available_countries -%}
+                    <option value="{{ country.iso_code }}" {% if country.iso_code == localization.country.iso_code %}selected{% endif %}>
+                      {{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})
+                    </option>
+                  {%- endfor -%}
+                </select>
+              {%- endform -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  <div class="hdr2__main">
+    <div class="hdr2__container hdr2__main-inner">
+      <button class="hdr2__menu" type="button" aria-label="Menu" data-hdr2-menu>
+        <span class="hdr2__burger" aria-hidden="true"></span>
+        <span class="hdr2__menu-text">{{ section.settings.menu_label | escape }}</span>
+      </button>
+
+      <div class="hdr2__brand">
+        {%- if settings.logo != blank -%}
+          <a class="hdr2__logo" href="{{ routes.root_url }}">
+            {{ settings.logo | image_url: width: 260 | image_tag: loading: 'lazy', alt: shop.name }}
+          </a>
+        {%- else -%}
+          <a class="hdr2__logotext" href="{{ routes.root_url }}">{{ shop.name }}</a>
+        {%- endif -%}
+      </div>
+
+      {%- if show_search -%}
+        <div class="hdr2__search">
+          <form class="hdr2__searchform" action="{{ routes.search_url }}" method="get" role="search">
+            {%- if show_category_select -%}
+              <label class="hdr2__sr" for="hdr2-type-search">Search type</label>
+              <select id="hdr2-type-search" class="hdr2__select hdr2__catselect" name="type">
+                <option value="product" selected>All categories</option>
+                <option value="product">Products</option>
+                <option value="article">Articles</option>
+                <option value="page">Pages</option>
+              </select>
+            {%- endif -%}
+
+            <label class="hdr2__sr" for="hdr2-q">Search</label>
+            <input id="hdr2-q" class="hdr2__input" type="search" name="q"
+              placeholder="{{ section.settings.search_placeholder | escape }}" autocomplete="off" />
+            <button class="hdr2__iconbtn" type="submit" aria-label="Search">🔍</button>
+          </form>
+        </div>
+      {%- endif -%}
+
+      <div class="hdr2__icons">
+        {%- if section.settings.show_theme_toggle -%}
+          <button class="hdr2__iconbtn hdr2__iconbtn--round" type="button" aria-label="Toggle theme" data-hdr2-theme>☼</button>
+        {%- endif -%}
+
+        {%- if section.settings.show_location -%}
+          <a class="hdr2__iconbtn hdr2__iconbtn--round" href="{{ section.settings.location_link }}" aria-label="Location">⌖</a>
+        {%- endif -%}
+
+        {%- if show_account and shop.customer_accounts_enabled -%}
+          <a class="hdr2__iconbtn hdr2__iconbtn--round" href="{{ routes.account_url }}" aria-label="Account">👤</a>
+        {%- endif -%}
+
+        {%- if show_cart -%}
+          <a class="hdr2__iconbtn hdr2__iconbtn--round hdr2__cart" href="{{ routes.cart_url }}" aria-label="Cart">
+            🛒
+            {%- if cart.item_count > 0 -%}
+              <span class="hdr2__bubble" aria-label="{{ cart.item_count }} items in cart">{{ cart.item_count }}</span>
+            {%- endif -%}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  {%- if show_navrow -%}
+    <nav class="hdr2__nav" aria-label="Primary navigation">
+      <div class="hdr2__container">
+        <ul class="hdr2__navlist">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'nav_item' -%}
+              <li class="hdr2__navitem" {{ block.shopify_attributes }}>
+                <a class="hdr2__navlink" href="{{ block.settings.url }}">
+                  <span>{{ block.settings.label | escape }}</span>
+                  {%- if block.settings.badge_text != blank -%}
+                    <span class="hdr2__badge hdr2__badge--{{ block.settings.badge_style }}">
+                      {{ block.settings.badge_text | escape }}
+                    </span>
+                  {%- endif -%}
+                </a>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </div>
+    </nav>
+  {%- endif -%}
+
+  {%- if section.settings.enable_drawer -%}
+    <div class="hdr2__drawer" data-hdr2-drawer hidden>
+      <div class="hdr2__drawer-bg" data-hdr2-close></div>
+      <div class="hdr2__drawer-panel" role="dialog" aria-modal="true" aria-label="Menu">
+        <div class="hdr2__drawer-head">
+          <span class="hdr2__drawer-title">{{ section.settings.drawer_title | escape }}</span>
+          <button class="hdr2__iconbtn" type="button" aria-label="Close" data-hdr2-close>✕</button>
+        </div>
+
+        {%- if section.settings.drawer_menu != blank -%}
+          <ul class="hdr2__drawerlist">
+            {%- for link in linklists[section.settings.drawer_menu].links -%}
+              <li class="hdr2__draweritem">
+                <a class="hdr2__drawerlink" href="{{ link.url }}">{{ link.title }}</a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- else -%}
+          <div class="hdr2__drawerempty">Select a drawer menu in the header settings.</div>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+</header>
+<script>
+  (function () {
+  const bar = document.querySelector('[data-announcement]');
+  if (!bar) return;
+
+  const track = bar.querySelector('[data-ab-track]');
+  const slides = bar.querySelectorAll('[data-ab-slide]');
+  const prevBtn = bar.querySelector('[data-ab-prev]');
+  const nextBtn = bar.querySelector('[data-ab-next]');
+
+  if (!track || slides.length <= 1) return;
+
+  let index = 0;
+  let timer = null;
+
+  // Shopify setting (seconds → ms)
+  const interval =
+    (window.Shopify &&
+      Shopify.designMode === false &&
+      {{ section.settings.announcement_interval | default: 4 }} * 1000)
+    || 4000;
+
+  function update() {
+    track.style.transform = `translateX(-${index * 100}%)`;
+  }
+
+  function next() {
+    index = (index + 1) % slides.length;
+    update();
+  }
+
+  function prev() {
+    index = (index - 1 + slides.length) % slides.length;
+    update();
+  }
+
+  function start() {
+    stop();
+    timer = setInterval(next, interval);
+  }
+
+  function stop() {
+    if (timer) clearInterval(timer);
+  }
+
+  nextBtn.addEventListener('click', () => {
+    next();
+    start();
+  });
+
+  prevBtn.addEventListener('click', () => {
+    prev();
+    start();
+  });
+
+  bar.addEventListener('mouseenter', stop);
+  bar.addEventListener('mouseleave', start);
+
+  // Init
+  update();
+  start();
+})();
+
+(function () {
+  function pad(n){ return String(n).padStart(2, '0'); }
+
+  function setCountdown(el){
+    const to = el.dataset.countdownTo;
+    const target = new Date(to);
+    if (isNaN(target.getTime())) {
+      el.style.display = 'none';
+      return;
+    }
+
+    const now = Date.now();
+    let diff = target.getTime() - now;
+    if (diff < 0) diff = 0;
+
+    const totalSec = Math.floor(diff / 1000);
+    const days = Math.floor(totalSec / 86400);
+    const hours = Math.floor((totalSec % 86400) / 3600);
+    const mins = Math.floor((totalSec % 3600) / 60);
+    const secs = totalSec % 60;
+
+    const d = el.querySelector('[data-cd-days]');
+    const h = el.querySelector('[data-cd-hours]');
+    const m = el.querySelector('[data-cd-mins]');
+    const s = el.querySelector('[data-cd-secs]');
+
+    if (d) d.textContent = days;        // like your screenshot: days can be 298 (not padded)
+    if (h) h.textContent = pad(hours);
+    if (m) m.textContent = pad(mins);
+    if (s) s.textContent = pad(secs);
+  }
+
+  function initCountdowns(){
+    const els = document.querySelectorAll('[data-countdown]');
+    if (!els.length) return;
+
+    els.forEach(setCountdown);
+    setInterval(() => els.forEach(setCountdown), 1000);
+  }
+
+  document.addEventListener('DOMContentLoaded', initCountdowns);
+})();
+</script>
+{% schema %}
+{
+  "name": "Header v2",
+  "settings": [
+    {
+      "type": "range",
+      "id": "announcement_interval",
+      "label": "Announcement autoplay (seconds)",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4
+    },
+    { "type": "checkbox", "id": "enable_announcement", "label": "Enable announcement bar", "default": true },
+    { "type": "text", "id": "announce_text", "label": "Announcement text", "default": "Hurry up! 30% OFF Sale Ends Soon" },
+    { "type": "color", "id": "announce_bg", "label": "Announcement background", "default": "#0b4c7a" },
+    { "type": "color", "id": "announce_fg", "label": "Announcement text color", "default": "#ffffff" },
+    { "type": "text", "id": "announce_left_icon", "label": "Left icon (optional)", "default": "‹" },
+    { "type": "text", "id": "announce_right_icon", "label": "Right icon (optional)", "default": "›" },
+
+    { "type": "checkbox", "id": "enable_countdown", "label": "Enable countdown", "default": true },
+    { "type": "text", "id": "countdown_label", "label": "Countdown label", "default": "Sale ends in" },
+    { "type": "text", "id": "countdown_end", "label": "Countdown end (ISO datetime)", "default": "2026-12-31T23:59:59Z" },
+
+    { "type": "checkbox", "id": "enable_topbar", "label": "Enable top utility bar", "default": true },
+    { "type": "text", "id": "email", "label": "Email", "default": "example@shopify.com" },
+    { "type": "text", "id": "phone", "label": "Phone", "default": "(+1) 2345678901" },
+    { "type": "checkbox", "id": "show_localization", "label": "Show localization selector", "default": true },
+
+    { "type": "text", "id": "menu_label", "label": "Menu button label", "default": "Menu" },
+
+    { "type": "checkbox", "id": "enable_search", "label": "Enable search", "default": true },
+    { "type": "checkbox", "id": "enable_category_select", "label": "Enable category dropdown", "default": true },
+    { "type": "text", "id": "search_placeholder", "label": "Search placeholder", "default": "What are you searching for?" },
+
+    { "type": "checkbox", "id": "show_theme_toggle", "label": "Show theme toggle", "default": true },
+    { "type": "checkbox", "id": "show_location", "label": "Show location icon", "default": true },
+    { "type": "url", "id": "location_link", "label": "Location link", "default": "/" },
+
+    { "type": "checkbox", "id": "show_account", "label": "Show account icon", "default": true },
+    { "type": "checkbox", "id": "show_cart", "label": "Show cart icon", "default": true },
+
+    { "type": "checkbox", "id": "enable_navrow", "label": "Enable nav row", "default": true },
+
+    { "type": "checkbox", "id": "enable_drawer", "label": "Enable drawer menu", "default": true },
+    { "type": "text", "id": "drawer_title", "label": "Drawer title", "default": "Menu" },
+    { "type": "link_list", "id": "drawer_menu", "label": "Drawer menu" }
+  ],
+  "blocks": [
+    {
+      "type": "top_link",
+      "name": "Top link",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "About us" },
+        { "type": "url", "id": "url", "label": "URL", "default": "/" }
+      ]
+    },
+    {
+      "type": "nav_item",
+      "name": "Nav item",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Shop by Category" },
+        { "type": "url", "id": "url", "label": "URL", "default": "/" },
+        { "type": "text", "id": "badge_text", "label": "Badge text (optional)", "default": "New" },
+        {
+          "type": "select",
+          "id": "badge_style",
+          "label": "Badge style",
+          "default": "deal",
+          "options": [
+            { "value": "deal", "label": "Deal (orange)" },
+            { "value": "new", "label": "New (purple)" },
+            { "value": "best", "label": "Best (pink)" }
+          ]
+        }
+      ]
+    },
+     {
+      "type": "announcement",
+      "name": "Announcement slide",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Free shipping on orders over $50"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Optional link"
+        },
+        { "type": "checkbox", "id": "show_countdown", "label": "Show countdown", "default": false },
+        { "type": "text", "id": "countdown_label", "label": "Countdown label", "default": "Ends in" },
+        { "type": "text", "id": "countdown_to", "label": "Countdown end (YYYY-MM-DDTHH:MM:SSZ)", "default": "2026-12-31T23:59:59Z" }
+    
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Header v2",
+      "blocks": [
+        { "type": "top_link", "settings": { "label": "About us", "url": "/pages/about-us" } },
+        { "type": "top_link", "settings": { "label": "FAQs", "url": "/pages/faqs" } },
+        { "type": "top_link", "settings": { "label": "News & Article", "url": "/blogs/news" } },
+        { "type": "top_link", "settings": { "label": "Recipes", "url": "/blogs/recipes" } },
+
+        { "type": "nav_item", "settings": { "label": "Combo & Deals", "url": "/collections/all", "badge_text": "Deal", "badge_style": "deal" } },
+        { "type": "nav_item", "settings": { "label": "Bundle save", "url": "/collections/all", "badge_text": "New", "badge_style": "new" } },
+        { "type": "nav_item", "settings": { "label": "Shop by Category", "url": "/collections/all", "badge_text": "" } },
+        
+      ],
+    }
+  ]
+}
+{% endschema %}

@@ -1,9 +1,11 @@
 {% comment %}
-  Header v2 (clean)
-  - Announcement bar + optional countdown
-  - Top utility row (links + email/phone + optional localization)
-  - Main header row (menu drawer, logo, category select, search, icons)
-  - Nav row with badges (Deal/New/Best)
+  Header v2 – “Various” style
+  - Announcement slider (+ optional countdown per slide)
+  - Top bar links + email/phone + localization
+  - Main row: Menu button + logo + search + icons
+  - Nav row: badges above label + chevrons
+  - Mega menu overlay (desktop): left categories + right cards + promos
+  - Mobile: category pills grid + drawer accordions
 {% endcomment %}
 
 {{ 'header-v2.css' | asset_url | stylesheet_tag }}
@@ -13,75 +15,55 @@
   assign show_announcement = section.settings.enable_announcement
   assign show_topbar = section.settings.enable_topbar
   assign show_navrow = section.settings.enable_navrow
-  assign show_category_select = section.settings.enable_category_select
   assign show_search = section.settings.enable_search
+  assign show_category_select = section.settings.enable_category_select
+  assign show_localization = section.settings.show_localization
   assign show_account = section.settings.show_account
   assign show_cart = section.settings.show_cart
-  assign show_localization = section.settings.show_localization
+
+  assign nav_menu_handle = section.settings.nav_menu
+  assign drawer_menu_handle = section.settings.drawer_menu
+  assign category_menu_handle = section.settings.category_menu
+  assign pills_menu_handle = section.settings.pills_menu
 -%}
 
-<header class="hdr2" data-section-id="{{ section.id }}">
+<header class="hdr2" data-hdr2>
   {%- if show_announcement -%}
-    {% comment %} <div class="hdr2__announce" style="--hdr2-announce-bg: {{ section.settings.announce_bg }}; --hdr2-announce-fg: {{ section.settings.announce_fg }};">
-      <div class="hdr2__container hdr2__announce-inner">
-        {%- if section.settings.announce_left_icon != blank -%}
-          <span class="hdr2__announce-icon" aria-hidden="true">{{ section.settings.announce_left_icon }}</span>
-        {%- endif -%}
-
-        <div class="hdr2__announce-msg">
-          {{ section.settings.announce_text | escape }}
-        </div>
-
-        {%- if section.settings.enable_countdown and section.settings.countdown_end != blank -%}
-          <div class="hdr2__countdown" data-countdown data-end="{{ section.settings.countdown_end }}" aria-label="Sale countdown">
-            <span class="hdr2__countdown-label">{{ section.settings.countdown_label | escape }}</span>
-            <span class="hdr2__pill" data-days>00</span><span class="hdr2__sep">:</span>
-            <span class="hdr2__pill" data-hours>00</span><span class="hdr2__sep">:</span>
-            <span class="hdr2__pill" data-mins>00</span><span class="hdr2__sep">:</span>
-            <span class="hdr2__pill" data-secs>00</span>
-          </div>
-        {%- endif -%}
-
-        {%- if section.settings.announce_right_icon != blank -%}
-          <span class="hdr2__announce-icon" aria-hidden="true">{{ section.settings.announce_right_icon }}</span>
-        {%- endif -%}
-      </div>
-    </div> {% endcomment %}
-    <div class="announcement-bar"
-      data-announcement
-      data-interval="{{ section.settings.announcement_interval | default: 4 | times: 1000 }}"
-    >
+    <div class="announcement-bar" data-ab data-interval="{{ section.settings.announcement_interval | default: 4 | times: 1000 }}">
       <button class="ab-arrow ab-arrow--left" type="button" aria-label="Previous" data-ab-prev>‹</button>
 
       <div class="ab-viewport">
         <div class="ab-track" data-ab-track>
-          {% for block in section.blocks %}
-            {% if block.type == 'announcement' %}
-                  <div class="ab-slide" data-ab-slide {{ block.shopify_attributes }}>
-                  
-                    {{ block.settings.text }} 
-                    <span>{% if block.settings.link != blank %}
-                      <a class="ab-link" href="{{ block.settings.link }}"> more</a>
-                    {% else %}
-                    {% endif %}</span>
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'announcement' -%}
+              <div class="ab-slide" data-ab-slide {{ block.shopify_attributes }}>
+                <span class="ab-text">{{ block.settings.text }}</span>
 
-                    {%- if section.settings.enable_countdown and section.settings.countdown_end != blank -%}
-                      <div class="hdr2__countdown" data-countdown data-end="{{ section.settings.countdown_end }}" aria-label="Sale countdown">
-                        <span class="hdr2__countdown-label">{{ section.settings.countdown_label | escape }}</span>
-                        <span class="hdr2__pill" data-days>00</span><span class="hdr2__sep">:</span>
-                        <span class="hdr2__pill" data-hours>00</span><span class="hdr2__sep">:</span>
-                        <span class="hdr2__pill" data-mins>00</span><span class="hdr2__sep">:</span>
-                        <span class="hdr2__pill" data-secs>00</span>
-                      </div>
-                    {%- endif -%}
-                  </div>
-                {% endif %}
-          {% endfor %}
+                {%- if block.settings.link != blank -%}
+                  <a class="ab-link" href="{{ block.settings.link }}">More</a>
+                {%- endif -%}
+
+                {%- if block.settings.show_countdown and block.settings.countdown_to != blank -%}
+                  <span class="ab-countdown"
+                        data-countdown
+                        data-countdown-to="{{ block.settings.countdown_to | escape }}">
+                    <span class="cd-box" data-cd-days>00</span>
+                    <span class="cd-sep">:</span>
+                    <span class="cd-box" data-cd-hours>00</span>
+                    <span class="cd-sep">:</span>
+                    <span class="cd-box" data-cd-mins>00</span>
+                    <span class="cd-sep">:</span>
+                    <span class="cd-box" data-cd-secs>00</span>
+                  </span>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
         </div>
       </div>
 
-        <button class="ab-arrow ab-arrow--right" type="button" aria-label="Next" data-ab-next>›</button>
-      </div>
+      <button class="ab-arrow ab-arrow--right" type="button" aria-label="Next" data-ab-next>›</button>
+    </div>
   {%- endif -%}
 
   {%- if show_topbar -%}
@@ -113,17 +95,15 @@
           {%- endif -%}
 
           {%- if show_localization and localization.available_countries.size > 1 -%}
-            <div class="hdr2__localization">
-              {%- form 'localization', id: 'hdr2Localization', class: 'hdr2__locform' -%}
-                <select class="hdr2__select" name="country_code" aria-label="Country">
-                  {%- for country in localization.available_countries -%}
-                    <option value="{{ country.iso_code }}" {% if country.iso_code == localization.country.iso_code %}selected{% endif %}>
-                      {{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})
-                    </option>
-                  {%- endfor -%}
-                </select>
-              {%- endform -%}
-            </div>
+            {%- form 'localization', id: 'hdr2Localization', class: 'hdr2__locform' -%}
+              <select class="hdr2__select hdr2__locselect" name="country_code" aria-label="Country">
+                {%- for country in localization.available_countries -%}
+                  <option value="{{ country.iso_code }}" {% if country.iso_code == localization.country.iso_code %}selected{% endif %}>
+                    {{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})
+                  </option>
+                {%- endfor -%}
+              </select>
+            {%- endform -%}
           {%- endif -%}
         </div>
       </div>
@@ -132,8 +112,10 @@
 
   <div class="hdr2__main">
     <div class="hdr2__container hdr2__main-inner">
-      <button class="hdr2__menu" type="button" aria-label="Menu" data-hdr2-menu>
-        <span class="hdr2__burger" aria-hidden="true"></span>
+      <button class="hdr2__menu" type="button" aria-label="Open menu" data-hdr2-menu>
+        <span class="hdr2__menu-ico" aria-hidden="true">
+          <span class="hdr2__burger"></span>
+        </span>
         <span class="hdr2__menu-text">{{ section.settings.menu_label | escape }}</span>
       </button>
 
@@ -163,18 +145,33 @@
             <label class="hdr2__sr" for="hdr2-q">Search</label>
             <input id="hdr2-q" class="hdr2__input" type="search" name="q"
               placeholder="{{ section.settings.search_placeholder | escape }}" autocomplete="off" />
-            <button class="hdr2__iconbtn" type="submit" aria-label="Search">🔍</button>
+
+            <button class="hdr2__iconbtn hdr2__iconbtn--mic" type="button" aria-label="Voice search" data-hdr2-mic>🎤</button>
+            <button class="hdr2__iconbtn hdr2__iconbtn--search" type="submit" aria-label="Search">🔍</button>
           </form>
         </div>
       {%- endif -%}
 
       <div class="hdr2__icons">
         {%- if section.settings.show_theme_toggle -%}
-          <button class="hdr2__iconbtn hdr2__iconbtn--round" type="button" aria-label="Toggle theme" data-hdr2-theme>☼</button>
+          <button class="hdr2__toggle" type="button" aria-label="Toggle theme" data-theme-toggle>
+            <span class="hdr2__toggle-dot" aria-hidden="true"></span>
+            <span class="hdr2__toggle-ico" aria-hidden="true">☀</span>
+          </button>
         {%- endif -%}
 
+{% comment %} 
         {%- if section.settings.show_location -%}
           <a class="hdr2__iconbtn hdr2__iconbtn--round" href="{{ section.settings.location_link }}" aria-label="Location">⌖</a>
+        {%- endif -%} {% endcomment %}
+
+        {%- if section.settings.show_location -%}
+          <button
+            class="hdr2__iconbtn hdr2__iconbtn--round"
+            type="button"
+            aria-label="Location"
+            data-hdr2-location-open
+          >⌖</button>
         {%- endif -%}
 
         {%- if show_account and shop.customer_accounts_enabled -%}
@@ -193,139 +190,353 @@
     </div>
   </div>
 
-  {%- if show_navrow -%}
-    <nav class="hdr2__nav" aria-label="Primary navigation">
+  {%- if section.settings.enable_pills and pills_menu_handle != blank -%}
+    <div class="hdr2__pills">
       <div class="hdr2__container">
-        <ul class="hdr2__navlist">
-          {%- for block in section.blocks -%}
-            {%- if block.type == 'nav_item' -%}
-              <li class="hdr2__navitem" {{ block.shopify_attributes }}>
-                <a class="hdr2__navlink" href="{{ block.settings.url }}">
-                  <span>{{ block.settings.label | escape }}</span>
-                  {%- if block.settings.badge_text != blank -%}
-                    <span class="hdr2__badge hdr2__badge--{{ block.settings.badge_style }}">
-                      {{ block.settings.badge_text | escape }}
-                    </span>
-                  {%- endif -%}
-                </a>
-              </li>
-            {%- endif -%}
+        <div class="hdr2__pillsgrid">
+          {%- for link in linklists[pills_menu_handle].links limit: 6 -%}
+            <a class="hdr2__pill" href="{{ link.url }}">
+              <span class="hdr2__pill-title">{{ link.title }}</span>
+              <span class="hdr2__pill-icons" aria-hidden="true">🍽️</span>
+            </a>
           {%- endfor -%}
-        </ul>
-      </div>
-    </nav>
-  {%- endif -%}
-
-  {%- if section.settings.enable_drawer -%}
-    <div class="hdr2__drawer" data-hdr2-drawer hidden>
-      <div class="hdr2__drawer-bg" data-hdr2-close></div>
-      <div class="hdr2__drawer-panel" role="dialog" aria-modal="true" aria-label="Menu">
-        <div class="hdr2__drawer-head">
-          <span class="hdr2__drawer-title">{{ section.settings.drawer_title | escape }}</span>
-          <button class="hdr2__iconbtn" type="button" aria-label="Close" data-hdr2-close>✕</button>
         </div>
-
-        {%- if section.settings.drawer_menu != blank -%}
-          <ul class="hdr2__drawerlist">
-            {%- for link in linklists[section.settings.drawer_menu].links -%}
-              <li class="hdr2__draweritem">
-                <a class="hdr2__drawerlink" href="{{ link.url }}">{{ link.title }}</a>
-              </li>
-            {%- endfor -%}
-          </ul>
-        {%- else -%}
-          <div class="hdr2__drawerempty">Select a drawer menu in the header settings.</div>
-        {%- endif -%}
       </div>
     </div>
   {%- endif -%}
+
+
+
+{%- if show_navrow and category_menu_handle != blank -%}
+  <div class="hdr2__catbar" data-hdr2-catbar>
+    <div class="hdr2__container" style="display: flex; justify-content:center">
+      <ul class="hdr2__catbar-list" role="list">
+        {%- for link in linklists[category_menu_handle].links -%}
+          <li class="hdr2__catbar-item">
+            <a
+              class="hdr2__catbar-link"
+              href="{{ link.url }}"
+              data-hdr2-mega-trigger
+              data-target="hdr2-mega-{{ forloop.index0 }}"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <span class="hdr2__catbar-label">{{ link.title }}</span>
+              {%- if link.links.size > 0 -%}
+                <span class="hdr2__chev" aria-hidden="true">⌄</span>
+              {%- endif -%}
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+
+    <div class="hdr2__mega" data-hdr2-mega hidden>
+      <div class="hdr2__container">
+        <div class="hdr2__mega-inner">
+          {%- for link in linklists[category_menu_handle].links -%}
+            {%- assign idx = forloop.index0 -%}
+
+            <div class="hdr2__mega-panel"
+                 data-hdr2-mega-panel
+                 data-panel="hdr2-mega-{{ idx }}"
+                 hidden>
+              <div class="hdr2__mega-left">
+                <div class="hdr2__mega-title">{{ link.title }}</div>
+
+                {%- if link.links.size > 0 -%}
+                  <ul class="hdr2__mega-links" role="list">
+                    {%- for sub in link.links -%}
+                      <li>
+                        <a class="hdr2__mega-link" href="{{ sub.url }}">{{ sub.title }}</a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {%- else -%}
+                  <div class="hdr2__mega-empty">No children found for this category.</div>
+                {%- endif -%}
+              </div>
+
+              <div class="hdr2__mega-right">
+                <div class="hdr2__cardgrid">
+                  {%- for sub in link.links limit: 6 -%}
+                    {%- liquid
+                      assign img = blank
+                      if sub.type == 'collection_link' and sub.object and sub.object.featured_image
+                        assign img = sub.object.featured_image
+                      endif
+                    -%}
+                    <a class="hdr2__card" href="{{ sub.url }}">
+                      <div class="hdr2__card-img">
+                        {%- if img != blank -%}
+                          {{ img | image_url: width: 640 | image_tag: loading: 'lazy', alt: sub.title }}
+                        {%- else -%}
+                          <div class="hdr2__card-ph"></div>
+                        {%- endif -%}
+                      </div>
+                      <div class="hdr2__card-label">{{ sub.title }}</div>
+                    </a>
+                  {%- endfor -%}
+                </div>
+
+                {%- comment -%}
+                  Promo card(s) per category:
+                  - add blocks type "mega_promo"
+                  - each block has a "category_index" setting that matches this idx
+                {%- endcomment -%}
+                {%- assign promo_count = 0 -%}
+                <div class="hdr2__promos">
+                  {%- for block in section.blocks -%}
+                    {%- if block.type == 'mega_promo' and block.settings.category_index == idx -%}
+                      {%- assign promo_count = promo_count | plus: 1 -%}
+                      <a class="hdr2__promo" href="{{ block.settings.url }}" {{ block.shopify_attributes }}>
+                        <div class="hdr2__promo-text">
+                          <div class="hdr2__promo-title">{{ block.settings.title | escape }}</div>
+                          <div class="hdr2__promo-sub">{{ block.settings.subtitle | escape }}</div>
+                          <span class="hdr2__promo-link">{{ block.settings.link_label | escape }}</span>
+                        </div>
+                        {%- if block.settings.image != blank -%}
+                          <div class="hdr2__promo-img">
+                            {{ block.settings.image | image_url: width: 500 | image_tag: loading: 'lazy', alt: block.settings.title }}
+                          </div>
+                        {%- endif -%}
+                      </a>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+
+                {%- if promo_count == 0 -%}
+                  {%- comment -%} No promo blocks assigned to this category. {%- endcomment -%}
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+  {%- comment %}
+    Mega / Drawer overlay (same container; desktop shows right panel, mobile collapses)
+  {% endcomment %}
+  <div class="hdr2__drawer" data-hdr2-drawer hidden>
+    <div class="hdr2__drawer-bg" data-hdr2-close></div>
+
+    <div class="hdr2__drawer-panel" role="dialog" aria-modal="true" aria-label="Menu">
+      <div class="hdr2__drawer-head">
+        <div class="hdr2__drawer-topline">
+          <span class="hdr2__drawer-welcome">{{ section.settings.drawer_welcome | escape }}</span>
+        </div>
+
+        <button class="hdr2__iconbtn hdr2__iconbtn--close" type="button" aria-label="Close" data-hdr2-close>✕</button>
+      </div>
+
+      <div class="hdr2__drawer-body">
+        <div class="hdr2__drawer-left">
+          <div class="hdr2__drawer-section">
+            <div class="hdr2__drawer-section-title">Drawer menu</div>
+
+            {%- if category_menu_handle != blank -%}
+              <ul class="hdr2__drawerlist" data-hdr2-cats>
+                {%- for link in linklists[category_menu_handle].links -%}
+                  <li class="hdr2__draweritem">
+                    <button class="hdr2__drawerrow" type="button"
+                      data-hdr2-cat-btn
+                      data-target="hdr2-cat-{{ forloop.index0 }}"
+                      aria-controls="hdr2-cat-{{ forloop.index0 }}"
+                      aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}">
+                      <span class="hdr2__drawerrow-left">
+                        <span class="hdr2__drawer-emoji" aria-hidden="true">🍽️</span>
+                        <span class="hdr2__drawerrow-title">{{ link.title }}</span>
+                      </span>
+                      <span class="hdr2__drawerrow-right" aria-hidden="true">›</span>
+                    </button>
+
+                    {%- if link.links.size > 0 -%}
+                      <div class="hdr2__drawer-sub" id="hdr2-cat-{{ forloop.index0 }}" {% unless forloop.first %}hidden{% endunless %}>
+                        <ul class="hdr2__sublist">
+                          {%- for sub in link.links -%}
+                            <li><a class="hdr2__sublink" href="{{ sub.url }}">{{ sub.title }}</a></li>
+                          {%- endfor -%}
+                        </ul>
+                      </div>
+                    {%- endif -%}
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- else -%}
+              <div class="hdr2__drawerempty">Select a Category menu in section settings.</div>
+            {%- endif -%}
+          </div>
+
+          <div class="hdr2__drawer-section">
+            <div class="hdr2__drawer-section-title">Main menu</div>
+
+            {%- if drawer_menu_handle != blank -%}
+              <ul class="hdr2__drawerlist">
+                {%- for link in linklists[drawer_menu_handle].links -%}
+                  <li class="hdr2__draweritem">
+                    {%- if link.links.size > 0 -%}
+                      <button class="hdr2__drawerrow hdr2__drawerrow--accordion" type="button" data-hdr2-acc-btn aria-expanded="false">
+                        <span class="hdr2__drawerrow-title">{{ link.title }}</span>
+                        <span class="hdr2__drawerrow-right" aria-hidden="true">⌄</span>
+                      </button>
+                      <div class="hdr2__acc" hidden>
+                        <ul class="hdr2__sublist">
+                          {%- for sub in link.links -%}
+                            <li><a class="hdr2__sublink" href="{{ sub.url }}">{{ sub.title }}</a></li>
+                          {%- endfor -%}
+                        </ul>
+                      </div>
+                    {%- else -%}
+                      <a class="hdr2__drawerlink" href="{{ link.url }}">{{ link.title }}</a>
+                    {%- endif -%}
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- else -%}
+              <div class="hdr2__drawerempty">Select a Drawer menu in section settings.</div>
+            {%- endif -%}
+          </div>
+        </div>
+
+        <div class="hdr2__drawer-right" data-hdr2-right>
+          {%- if category_menu_handle != blank -%}
+            {%- for link in linklists[category_menu_handle].links -%}
+              <div class="hdr2__panel"
+                   data-hdr2-panel
+                   data-panel="hdr2-cat-{{ forloop.index0 }}"
+                   {% unless forloop.first %}hidden{% endunless %}>
+                <div class="hdr2__panel-title">{{ link.title }}</div>
+
+                <div class="hdr2__cardgrid">
+                  {%- for sub in link.links limit: 4 -%}
+                    {%- liquid
+                      assign img = blank
+                      if sub.type == 'collection_link' and sub.object and sub.object.featured_image
+                        assign img = sub.object.featured_image
+                      endif
+                    -%}
+                    <a class="hdr2__card" href="{{ sub.url }}">
+                      <div class="hdr2__card-img">
+                        {%- if img != blank -%}
+                          {{ img | image_url: width: 640 | image_tag: loading: 'lazy', alt: sub.title }}
+                        {%- else -%}
+                          <div class="hdr2__card-ph"></div>
+                        {%- endif -%}
+                      </div>
+                      <div class="hdr2__card-label">{{ sub.title }}</div>
+                    </a>
+                  {%- endfor -%}
+                </div>
+
+                <div class="hdr2__promos">
+                  {%- for block in section.blocks -%}
+                    {%- if block.type == 'promo' -%}
+                      <a class="hdr2__promo" href="{{ block.settings.url }}" {{ block.shopify_attributes }}>
+                        <div class="hdr2__promo-text">
+                          <div class="hdr2__promo-title">{{ block.settings.title | escape }}</div>
+                          <div class="hdr2__promo-sub">{{ block.settings.subtitle | escape }}</div>
+                          <span class="hdr2__promo-link">{{ block.settings.link_label | escape }}</span>
+                        </div>
+                        {%- if block.settings.image != blank -%}
+                          <div class="hdr2__promo-img">
+                            {{ block.settings.image | image_url: width: 500 | image_tag: loading: 'lazy', alt: block.settings.title }}
+                          </div>
+                        {%- endif -%}
+                      </a>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              </div>
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+{%- comment -%} Location Modal {%- endcomment -%}
+<div class="locmodal" data-locmodal hidden>
+  <div class="locmodal__backdrop" data-locmodal-close></div>
+
+  <div class="locmodal__dialog" role="dialog" aria-modal="true" aria-label="Choose your Location">
+    <button class="locmodal__close" type="button" aria-label="Close" data-locmodal-close>✕</button>
+
+    <div class="locmodal__head">
+      <div class="locmodal__title">Choose your Location</div>
+    </div>
+
+    <div class="locmodal__body">
+      <div class="locmodal__left">
+        <div class="locmodal__list">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'location_store' -%}
+              <div class="locmodal__store">
+                <button class="locmodal__storehead" type="button" data-locmodal-acc>
+                  <span class="locmodal__storetitle">{{ block.settings.title | escape }}</span>
+                  <span class="locmodal__chev" aria-hidden="true">⌄</span>
+                </button>
+
+                <div class="locmodal__storebody" hidden>
+                  {%- if block.settings.badge != blank -%}
+                    <div class="locmodal__badge">{{ block.settings.badge | escape }}</div>
+                  {%- endif -%}
+
+                  {%- if block.settings.note != blank -%}
+                    <div class="locmodal__note">{{ block.settings.note | escape }}</div>
+                  {%- endif -%}
+
+                  <div class="locmodal__meta">
+                    {%- if block.settings.address != blank -%}
+                      <div class="locmodal__line">{{ block.settings.address | escape }}</div>
+                    {%- endif -%}
+                    {%- if block.settings.phone != blank -%}
+                      <div class="locmodal__line">{{ block.settings.phone | escape }}</div>
+                    {%- endif -%}
+                  </div>
+
+                  {%- if block.settings.hours != blank -%}
+                    <div class="locmodal__hours">
+                      <div class="locmodal__hourslabel">Store hours</div>
+                      <div class="locmodal__hourstext">{{ block.settings.hours }}</div>
+                    </div>
+                  {%- endif -%}
+
+                  {%- if block.settings.directions_url != blank -%}
+                    <a class="locmodal__btn" href="{{ block.settings.directions_url }}" target="_blank" rel="noopener">
+                      Get directions
+                    </a>
+                  {%- endif -%}
+                </div>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+        <button class="locmodal__primary" type="button" data-locmodal-select>Select store</button>
+      </div>
+
+      <div class="locmodal__right">
+        {%- if section.settings.map_embed != blank -%}
+          <div class="locmodal__map">{{ section.settings.map_embed }}</div>
+        {%- else -%}
+          <div class="locmodal__mapph">Add Google map iframe in Header settings → Map embed.</div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
 </header>
-<script>
-  (function () {
-  const bar = document.querySelector('[data-announcement]');
-  if (!bar) return;
 
-  const track = bar.querySelector('[data-ab-track]');
-  const slides = bar.querySelectorAll('[data-ab-slide]');
-  const prevBtn = bar.querySelector('[data-ab-prev]');
-  const nextBtn = bar.querySelector('[data-ab-next]');
-
-  if (!track || slides.length <= 1) return;
-
-  let index = 0;
-  let timer = null;
-
-  // Shopify setting (seconds → ms)
-  const interval =
-    (window.Shopify &&
-      Shopify.designMode === false &&
-      {{ section.settings.announcement_interval | default: 4 }} * 1000)
-    || 4000;
-
-  function update() {
-    track.style.transform = `translateX(-${index * 100}%)`;
-  }
-
-  function next() {
-    index = (index + 1) % slides.length;
-    update();
-  }
-
-  function prev() {
-    index = (index - 1 + slides.length) % slides.length;
-    update();
-  }
-
-  function start() {
-    stop();
-    timer = setInterval(next, interval);
-  }
-
-  function stop() {
-    if (timer) clearInterval(timer);
-  }
-
-  nextBtn.addEventListener('click', () => {
-    next();
-    start();
-  });
-
-  prevBtn.addEventListener('click', () => {
-    prev();
-    start();
-  });
-
-  bar.addEventListener('mouseenter', stop);
-  bar.addEventListener('mouseleave', start);
-
-  // Init
-  update();
-  start();
-})();
-</script>
 {% schema %}
 {
-  "name": "Header v2",
+  "name": "Header v2 (Various style)",
   "settings": [
-    {
-      "type": "range",
-      "id": "announcement_interval",
-      "label": "Announcement autoplay (seconds)",
-      "min": 2,
-      "max": 12,
-      "step": 1,
-      "default": 4
-    },
     { "type": "checkbox", "id": "enable_announcement", "label": "Enable announcement bar", "default": true },
-    { "type": "text", "id": "announce_text", "label": "Announcement text", "default": "Hurry up! 30% OFF Sale Ends Soon" },
-    { "type": "color", "id": "announce_bg", "label": "Announcement background", "default": "#0b4c7a" },
-    { "type": "color", "id": "announce_fg", "label": "Announcement text color", "default": "#ffffff" },
-    { "type": "text", "id": "announce_left_icon", "label": "Left icon (optional)", "default": "‹" },
-    { "type": "text", "id": "announce_right_icon", "label": "Right icon (optional)", "default": "›" },
-
-    { "type": "checkbox", "id": "enable_countdown", "label": "Enable countdown", "default": true },
-    { "type": "text", "id": "countdown_label", "label": "Countdown label", "default": "Sale ends in" },
-    { "type": "text", "id": "countdown_end", "label": "Countdown end (ISO datetime)", "default": "2026-12-31T23:59:59Z" },
+    { "type": "range", "id": "announcement_interval", "label": "Announcement autoplay (seconds)", "min": 2, "max": 12, "step": 1, "default": 4 },
 
     { "type": "checkbox", "id": "enable_topbar", "label": "Enable top utility bar", "default": true },
     { "type": "text", "id": "email", "label": "Email", "default": "example@shopify.com" },
@@ -346,12 +557,27 @@
     { "type": "checkbox", "id": "show_cart", "label": "Show cart icon", "default": true },
 
     { "type": "checkbox", "id": "enable_navrow", "label": "Enable nav row", "default": true },
+    { "type": "link_list", "id": "nav_menu", "label": "Nav row menu (desktop)" },
 
-    { "type": "checkbox", "id": "enable_drawer", "label": "Enable drawer menu", "default": true },
-    { "type": "text", "id": "drawer_title", "label": "Drawer title", "default": "Menu" },
-    { "type": "link_list", "id": "drawer_menu", "label": "Drawer menu" }
+    { "type": "checkbox", "id": "enable_pills", "label": "Enable mobile category pills", "default": true },
+    { "type": "link_list", "id": "pills_menu", "label": "Pills menu (mobile)" },
+
+    { "type": "text", "id": "drawer_welcome", "label": "Drawer welcome text", "default": "Welcome to Maximize Various" },
+    { "type": "link_list", "id": "drawer_menu", "label": "Drawer main menu" },
+    { "type": "link_list", "id": "category_menu", "label": "Category menu (mega left)" },
+    { "type": "html", "id": "map_embed", "label": "Map embed (iframe HTML)" }
   ],
   "blocks": [
+    {
+      "type": "announcement",
+      "name": "Announcement slide",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Text", "default": "Hurry up! 30% OFF Sale Ends Soon" },
+        { "type": "url", "id": "link", "label": "Optional link" },
+        { "type": "checkbox", "id": "show_countdown", "label": "Show countdown", "default": true },
+        { "type": "text", "id": "countdown_to", "label": "Countdown end (YYYY-MM-DDTHH:MM:SSZ)", "default": "2026-12-31T23:59:59Z" }
+      ]
+    },
     {
       "type": "top_link",
       "name": "Top link",
@@ -361,57 +587,59 @@
       ]
     },
     {
-      "type": "nav_item",
-      "name": "Nav item",
+      "type": "promo",
+      "name": "Mega promo card",
       "settings": [
-        { "type": "text", "id": "label", "label": "Label", "default": "Shop by Category" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Fresh Seafood Selection" },
+        { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Daily catch, fast chilled delivery" },
+        { "type": "text", "id": "link_label", "label": "Link label", "default": "Shop now" },
         { "type": "url", "id": "url", "label": "URL", "default": "/" },
-        { "type": "text", "id": "badge_text", "label": "Badge text (optional)", "default": "New" },
+        { "type": "image_picker", "id": "image", "label": "Image" }
+      ]
+    },
+    {
+      "type": "mega_promo",
+      "name": "Mega promo (per category)",
+      "settings": [
         {
-          "type": "select",
-          "id": "badge_style",
-          "label": "Badge style",
-          "default": "deal",
-          "options": [
-            { "value": "deal", "label": "Deal (orange)" },
-            { "value": "new", "label": "New (purple)" },
-            { "value": "best", "label": "Best (pink)" }
-          ]
-        }
+          "type": "number",
+          "id": "category_index",
+          "label": "Category index (0 = first category, 1 = second, ...)",
+          "default": 0
+        },
+        { "type": "text", "id": "title", "label": "Title", "default": "Fresh Seafood Selection" },
+        { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Daily catch, fast chilled delivery" },
+        { "type": "text", "id": "link_label", "label": "Link label", "default": "Shop now" },
+        { "type": "url", "id": "url", "label": "URL", "default": "/" },
+        { "type": "image_picker", "id": "image", "label": "Image" }
       ]
     },
      {
-      "type": "announcement",
-      "name": "Announcement slide",
+      "type": "location_store",
+      "name": "Location store",
       "settings": [
-        {
-          "type": "text",
-          "id": "text",
-          "label": "Text",
-          "default": "Free shipping on orders over $50"
-        },
-        {
-          "type": "url",
-          "id": "link",
-          "label": "Optional link"
-        }
+        { "type": "text", "id": "title", "label": "Title", "default": "Store branch" },
+        { "type": "text", "id": "badge", "label": "Badge (e.g. Free)", "default": "Free" },
+        { "type": "text", "id": "note", "label": "Note", "default": "Usually ready for pickup in 24 hours" },
+        { "type": "textarea", "id": "address", "label": "Address", "default": "75 9th Ave, New York, NY 10011-7006" },
+        { "type": "text", "id": "phone", "label": "Phone", "default": "(+84) 123 456 789" },
+        { "type": "richtext", "id": "hours", "label": "Hours", "default": "<p>Mon - Fri, 8:30am - 10:30pm<br>Saturday, 8:30am - 10:30pm<br>Sunday, Closed</p>" },
+        { "type": "url", "id": "directions_url", "label": "Directions URL" }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Header v2",
+      "name": "Header v2 (Various style)",
       "blocks": [
+        { "type": "announcement" },
         { "type": "top_link", "settings": { "label": "About us", "url": "/pages/about-us" } },
         { "type": "top_link", "settings": { "label": "FAQs", "url": "/pages/faqs" } },
         { "type": "top_link", "settings": { "label": "News & Article", "url": "/blogs/news" } },
         { "type": "top_link", "settings": { "label": "Recipes", "url": "/blogs/recipes" } },
-
-        { "type": "nav_item", "settings": { "label": "Combo & Deals", "url": "/collections/all", "badge_text": "Deal", "badge_style": "deal" } },
-        { "type": "nav_item", "settings": { "label": "Bundle save", "url": "/collections/all", "badge_text": "New", "badge_style": "new" } },
-        { "type": "nav_item", "settings": { "label": "Shop by Category", "url": "/collections/all", "badge_text": "" } },
-        
-      ],
+        { "type": "promo" },
+        { "type": "promo" }
+      ]
     }
   ]
 }

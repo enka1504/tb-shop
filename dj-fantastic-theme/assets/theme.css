@@ -1,0 +1,85 @@
+.button,
+.btn,
+button.btn,
+.shopify-payment-button__button {
+    border-radius: var(--radius-md) !important;
+}
+
+/* cards / containers */
+.card,
+.product-card,
+.collection-card,
+.drawer,
+.modal {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+}
+
+/* inputs */
+input,
+select,
+textarea {
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--muted);
+}
+
+/* borders */
+hr {
+    border-color: var(--line);
+}
+
+header,
+footer,
+.announcement-bar,
+.drawer,
+.modal {
+    background: var(--surface);
+    color: var(--text);
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+:where(.color-background-1, .color-background-2, .gradient) {
+    background: var(--bg) !important;
+}
+
+:where(.color-foreground, .color-foreground-1, .color-foreground-2) {
+    color: var(--text) !important;
+}
+
+.section,
+.shopify-section {
+    background: transparent;
+}
+
+.small-text,
+.caption,
+.subdued,
+.rte small {
+    color: var(--muted) !important;
+}
+
+a:hover,
+button:hover {
+    filter: brightness(0.98);
+}
+
+html.theme-dark a:hover,
+html.theme-dark button:hover {
+    filter: brightness(1.08);
+}
