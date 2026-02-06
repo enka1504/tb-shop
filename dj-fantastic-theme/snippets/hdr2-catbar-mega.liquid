@@ -1,0 +1,85 @@
+{%- comment -%} snippets/hdr2-catbar-mega.liquid (UPDATED – Mega promo per category) {%- endcomment -%}
+<div class="hdr2__catbar" data-hdr2-catbar>
+  <div class="hdr2__container" style="display:flex;justify-content:center">
+    <ul class="hdr2__catbar-list" role="list">
+      {%- for link in linklists[category_menu_handle].links -%}
+        <li class="hdr2__catbar-item">
+          <a class="hdr2__catbar-link"
+             href="{{ link.url }}"
+             data-hdr2-mega-trigger
+             data-target="hdr2-mega-{{ forloop.index0 }}"
+             aria-haspopup="true"
+             aria-expanded="false">
+            <span class="hdr2__catbar-label">{{ link.title }}</span>
+            {%- if link.links.size > 0 -%}<span class="hdr2__chev" aria-hidden="true">⌄</span>{%- endif -%}
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+
+  <div class="hdr2__mega" data-hdr2-mega hidden>
+    <div class="hdr2__container">
+      <div class="hdr2__mega-inner">
+        {%- for link in linklists[category_menu_handle].links -%}
+          {%- assign idx = forloop.index0 -%}
+          <div class="hdr2__mega-panel" data-hdr2-mega-panel data-panel="hdr2-mega-{{ idx }}" hidden>
+            <div class="hdr2__mega-left">
+              <div class="hdr2__mega-title">{{ link.title }}</div>
+
+              {%- if link.links.size > 0 -%}
+                <ul class="hdr2__mega-links" role="list">
+                  {%- for sub in link.links -%}
+                    <li><a class="hdr2__mega-link" href="{{ sub.url }}">{{ sub.title }}</a></li>
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+            </div>
+
+            <div class="hdr2__mega-right">
+              <div class="hdr2__cardgrid">
+                {%- for sub in link.links limit: 6 -%}
+                  {%- liquid
+                    assign img = blank
+                    if sub.type == 'collection_link' and sub.object and sub.object.featured_image
+                      assign img = sub.object.featured_image
+                    endif
+                  -%}
+                  <a class="hdr2__card" href="{{ sub.url }}">
+                    <div class="hdr2__card-img">
+                      {%- if img != blank -%}
+                        {{ img | image_url: width: 640 | image_tag: loading: 'lazy', alt: sub.title }}
+                      {%- else -%}
+                        <div class="hdr2__card-ph"></div>
+                      {%- endif -%}
+                    </div>
+                    <div class="hdr2__card-label">{{ sub.title }}</div>
+                  </a>
+                {%- endfor -%}
+              </div>
+
+              <div class="hdr2__promos">
+                {%- for block in section.blocks -%}
+                  {%- if block.type == 'mega_promo' and block.settings.category_index == idx -%}
+                    <a class="hdr2__promo" href="{{ block.settings.url }}" {{ block.shopify_attributes }}>
+                      <div class="hdr2__promo-text">
+                        <div class="hdr2__promo-title">{{ block.settings.title | escape }}</div>
+                        <div class="hdr2__promo-sub">{{ block.settings.subtitle | escape }}</div>
+                        <span class="hdr2__promo-link">{{ block.settings.link_label | escape }}</span>
+                      </div>
+                      {%- if block.settings.image != blank -%}
+                        <div class="hdr2__promo-img">
+                          {{ block.settings.image | image_url: width: 500 | image_tag: loading: 'lazy', alt: block.settings.title }}
+                        </div>
+                      {%- endif -%}
+                    </a>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>

@@ -58,9 +58,8 @@
 .pdp__pane img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    display: block;
-    padding: 18px
+    object-fit: cover;
+    padding: 18px;
 }
 
 .pdp__thumbs {
@@ -450,7 +449,7 @@
 .pdp__ctaStrip {
     margin-top: 18px;
     background: #e6f0ff;
-    border: 1px solid rgba(17, 24, 39, .08);
+    border: 1px solid rgba(17, 24, 39, .2);
     border-radius: 14px;
     padding: 14px;
     text-align: center;
@@ -470,7 +469,7 @@
 }
 
 .pdp__acc details {
-    border: 1px solid rgba(17, 24, 39, .12);
+    border: 1px solid rgba(17, 24, 39, .2);
     border-radius: 14px;
     background: #fff;
     overflow: hidden
@@ -499,7 +498,7 @@
 }
 
 .pdp__nutritionBox {
-    border: 1px solid rgba(17, 24, 39, .12);
+    border: 1px solid rgba(17, 24, 39, .2);
     border-radius: 12px;
     padding: 12px
 }
@@ -515,12 +514,12 @@
     left: 18px;
     bottom: 18px;
     background: #e7f5f3;
-    border: 1px solid rgba(17, 24, 39, .10);
+    border: 1px solid rgba(17, 24, 39, .2);
     border-radius: 14px;
     padding: 12px;
     max-width: 220px;
     z-index: 50;
-    box-shadow: 0 10px 30px rgba(2, 6, 23, .10);
+    box-shadow: 0 10px 30px rgba(2, 6, 23, .2);
     display: flex;
     gap: 10px;
     align-items: center;

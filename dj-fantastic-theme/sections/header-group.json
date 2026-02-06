@@ -14,6 +14,33 @@
     "main_header": {
       "type": "header",
       "blocks": {
+        "announcement_hLfiU4": {
+          "type": "announcement",
+          "settings": {
+            "text": "Hurry up! 30% OFF Sale Ends Soon",
+            "link": "shopify://collections/diary",
+            "show_countdown": false,
+            "countdown_to": "2026-12-31T23:59:59Z"
+          }
+        },
+        "announcement_dTfkkg": {
+          "type": "announcement",
+          "settings": {
+            "text": "Hurry up! 30% OFF Sale Ends Soon",
+            "link": "",
+            "show_countdown": true,
+            "countdown_to": "2026-12-31T23:59:59Z"
+          }
+        },
+        "announcement_Xqjtqm": {
+          "type": "announcement",
+          "settings": {
+            "text": "Hurry up! 30% OFF Sale Ends Soon",
+            "link": "shopify://collections/meat-poultry",
+            "show_countdown": true,
+            "countdown_to": "2026-12-31T23:59:59Z"
+          }
+        },
         "top_link_nQzjfA": {
           "type": "top_link",
           "settings": {
@@ -37,6 +64,9 @@
         }
       },
       "block_order": [
+        "announcement_hLfiU4",
+        "announcement_dTfkkg",
+        "announcement_Xqjtqm",
         "top_link_nQzjfA",
         "top_link_6fdjbN",
         "top_link_y9cDCJ"

@@ -1,0 +1,31 @@
+{%- comment -%} snippets/hdr2-announcement.liquid (NEW) {%- endcomment -%}
+<div class="announcement-bar" data-ab data-interval="{{ section.settings.announcement_interval | default: 4 | times: 1000 }}">
+  <button class="ab-arrow ab-arrow--left" type="button" aria-label="Previous" data-ab-prev>‹</button>
+
+  <div class="ab-viewport">
+    <div class="ab-track" data-ab-track>
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'announcement' -%}
+          <div class="ab-slide" data-ab-slide {{ block.shopify_attributes }}>
+            <span class="ab-text">{{ block.settings.text }}</span>
+
+            {%- if block.settings.link != blank -%}
+              <a class="ab-link" href="{{ block.settings.link }}">More</a>
+            {%- endif -%}
+
+            {%- if block.settings.show_countdown and block.settings.countdown_to != blank -%}
+              <span class="ab-countdown" data-countdown data-countdown-to="{{ block.settings.countdown_to | escape }}">
+                <span class="cd-box" data-cd-days>00</span><span class="cd-sep">:</span>
+                <span class="cd-box" data-cd-hours>00</span><span class="cd-sep">:</span>
+                <span class="cd-box" data-cd-mins>00</span><span class="cd-sep">:</span>
+                <span class="cd-box" data-cd-secs>00</span>
+              </span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+
+  <button class="ab-arrow ab-arrow--right" type="button" aria-label="Next" data-ab-next>›</button>
+</div>

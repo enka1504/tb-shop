@@ -1,0 +1,13 @@
+{%- comment -%} snippets/hdr2-pills.liquid (NEW) {%- endcomment -%}
+<div class="hdr2__pills">
+  <div class="hdr2__container">
+    <div class="hdr2__pillsgrid">
+      {%- for link in linklists[pills_menu_handle].links limit: 6 -%}
+        <a class="hdr2__pill" href="{{ link.url }}">
+          <span class="hdr2__pill-title">{{ link.title }}</span>
+          <span class="hdr2__pill-icons" aria-hidden="true">🍽️</span>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>

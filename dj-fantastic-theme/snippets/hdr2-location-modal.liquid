@@ -1,0 +1,60 @@
+{%- comment -%} snippets/hdr2-location-modal.liquid (NEW) {%- endcomment -%}
+<div class="locmodal" data-locmodal hidden>
+  <div class="locmodal__backdrop" data-locmodal-close></div>
+
+  <div class="locmodal__dialog" role="dialog" aria-modal="true" aria-label="Choose your Location">
+    <button class="locmodal__close" type="button" aria-label="Close" data-locmodal-close>✕</button>
+
+    <div class="locmodal__head">
+      <div class="locmodal__title">Choose your Location</div>
+    </div>
+
+    <div class="locmodal__body">
+      <div class="locmodal__left">
+        <div class="locmodal__list">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'location_store' -%}
+              <div class="locmodal__store">
+                <button class="locmodal__storehead" type="button" data-locmodal-acc>
+                  <span class="locmodal__storetitle">{{ block.settings.title | escape }}</span>
+                  <span class="locmodal__chev" aria-hidden="true">⌄</span>
+                </button>
+
+                <div class="locmodal__storebody" hidden>
+                  {%- if block.settings.badge != blank -%}<div class="locmodal__badge">{{ block.settings.badge | escape }}</div>{%- endif -%}
+                  {%- if block.settings.note != blank -%}<div class="locmodal__note">{{ block.settings.note | escape }}</div>{%- endif -%}
+
+                  <div class="locmodal__meta">
+                    {%- if block.settings.address != blank -%}<div class="locmodal__line">{{ block.settings.address | escape }}</div>{%- endif -%}
+                    {%- if block.settings.phone != blank -%}<div class="locmodal__line">{{ block.settings.phone | escape }}</div>{%- endif -%}
+                  </div>
+
+                  {%- if block.settings.hours != blank -%}
+                    <div class="locmodal__hours">
+                      <div class="locmodal__hourslabel">Store hours</div>
+                      <div class="locmodal__hourstext">{{ block.settings.hours }}</div>
+                    </div>
+                  {%- endif -%}
+
+                  {%- if block.settings.directions_url != blank -%}
+                    <a class="locmodal__btn" href="{{ block.settings.directions_url }}" target="_blank" rel="noopener">Get directions</a>
+                  {%- endif -%}
+                </div>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+        <button class="locmodal__primary" type="button" data-locmodal-select>Select store</button>
+      </div>
+
+      <div class="locmodal__right">
+        {%- if section.settings.map_embed != blank -%}
+          <div class="locmodal__map">{{ section.settings.map_embed }}</div>
+        {%- else -%}
+          <div class="locmodal__mapph">Add Google map iframe in Header settings → Map embed.</div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>

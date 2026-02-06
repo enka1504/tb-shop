@@ -17,6 +17,7 @@
     justify-content: space-between;
     gap: 14px;
     padding: 10px 6px 6px;
+    margin: 0 20px;
 }
 
 .phw__title {
@@ -163,8 +164,9 @@
 .phw__img {
     width: 100%;
     height: 220px;
-    object-fit: contain;
+    object-fit: cover;
     display: block;
+    border-radius: 10px;
 }
 
 .phw__img--placeholder {

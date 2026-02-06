@@ -1,7 +1,7 @@
 /* Home Various - shared styles */
 :root {
     --hv-radius: 14px;
-    --hv-border: 1px solid rgba(0, 0, 0, .08);
+    --hv-border: 1px solid rgba(0, 0, 0, .2);
     --hv-shadow: 0 6px 18px rgba(0, 0, 0, .06);
     --hv-blue: #0b4f87;
     --hv-blue2: #0a3f6a;
@@ -380,7 +380,8 @@
 .hvP__media img {
     width: 82%;
     height: 82%;
-    object-fit: contain;
+    object-fit: cover;
+    border-radius: 10px;
 }
 
 .hvP__badges {
@@ -423,6 +424,7 @@
     height: 42px;
     border-radius: 999px;
     border: 0;
+    opacity: 0.7;
     background: rgba(11, 79, 135, .95);
     color: #fff;
     cursor: pointer;
@@ -430,6 +432,8 @@
 
 .hvP__eye:hover {
     background: var(--hv-blue2);
+    opacity: 1;
+
 }
 
 .hvP__body {
@@ -607,7 +611,8 @@
 .hvCombo__imgWrap img {
     width: 92%;
     height: 92%;
-    object-fit: contain;
+    object-fit: cover;
+    border-radius: 14px;
 }
 
 @media(max-width: 990px) {
@@ -626,9 +631,9 @@
 }
 
 .hvCertRow img {
-    height: 46px;
-    object-fit: contain;
-    filter: saturate(.95);
+    object-fit: cover;
+    height: 50px;
+
 }
 
 .hvBlueBlock {

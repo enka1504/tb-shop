@@ -1,0 +1,42 @@
+{%- comment -%} snippets/hdr2-topbar.liquid (NEW) {%- endcomment -%}
+<div class="hdr2__topbar">
+  <div class="hdr2__container hdr2__topbar-inner">
+    <div class="hdr2__topbar-left">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'top_link' -%}
+          <a class="hdr2__toplink" href="{{ block.settings.url }}" {{ block.shopify_attributes }}>
+            {{ block.settings.label | escape }}
+          </a>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    <div class="hdr2__topbar-right">
+      {%- if section.settings.email != blank -%}
+        <a class="hdr2__meta" href="mailto:{{ section.settings.email | escape }}">
+          <span class="hdr2__meta-ico" aria-hidden="true">✉</span>
+          <span>{{ section.settings.email | escape }}</span>
+        </a>
+      {%- endif -%}
+
+      {%- if section.settings.phone != blank -%}
+        <a class="hdr2__meta" href="tel:{{ section.settings.phone | remove: ' ' | escape }}">
+          <span class="hdr2__meta-ico" aria-hidden="true">☎</span>
+          <span>{{ section.settings.phone | escape }}</span>
+        </a>
+      {%- endif -%}
+
+      {%- if show_localization and localization.available_countries.size > 1 -%}
+        {%- form 'localization', id: 'hdr2Localization', class: 'hdr2__locform' -%}
+          <select class="hdr2__select hdr2__locselect" name="country_code" aria-label="Country">
+            {%- for country in localization.available_countries -%}
+              <option value="{{ country.iso_code }}" {% if country.iso_code == localization.country.iso_code %}selected{% endif %}>
+                {{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})
+              </option>
+            {%- endfor -%}
+          </select>
+        {%- endform -%}
+      {%- endif -%}
+    </div>
+  </div>
+</div>

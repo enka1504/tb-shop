@@ -1,17 +1,119 @@
 {% style %}
-  .chips { padding: 18px 0; }
-  .chips__wrap { max-width: {{ section.settings.max_width }}px; margin: 0 auto; padding: 0 16px; }
-  .chips__row { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(220px, 1fr); gap: 14px; overflow-x: auto; padding-bottom: 6px; }
-  .chip { border-radius: 12px; padding: 16px 18px; display: flex; align-items: center; justify-content: space-between; text-decoration: none; border: 1px solid rgba(0,0,0,.06); }
-  .chip__title { font-weight: 700; }
-  .chip__imgs { display: flex; gap: 10px; }
-  .chip__imgs img { width: 34px; height: 34px; object-fit: contain; }
-  .chip--bg1 { background: #f2e8d5; }
-  .chip--bg2 { background: #e9e8ff; }
-  .chip--bg3 { background: #f4f2ea; }
-  .chip--bg4 { background: #e9f0ff; }
-  .chip--bg5 { background: #e8f2e8; }
-  .chip--bg6 { background: #e9f8fb; }
+  .chips {
+    padding: 18px 0;
+  }
+  .chips__wrap {
+    max-width: {{ section.settings.max_width }}px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+  .chips__row {
+    display: flex;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(220px, 1fr);
+    gap: 14px;
+    justify-content: space-between;
+    overflow-x: auto;
+    padding-bottom: 6px;
+  }
+  .chip {
+    border-radius: 12px;
+    padding: 10px 12px;
+    display: flex;
+    flex: 1;
+    width: 15%;
+    align-items: center;
+    justify-content: space-between;
+    text-decoration: none;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+
+  .chip__title {
+    font-weight: 700;
+    font-size: 1vw;
+  }
+  .chip__imgs {
+    display: flex;
+    gap: 10px;
+  }
+  .chip__imgs img {
+    width: 2.5vw;
+    height: 2.5vw;
+    object-fit: cover;
+    border-radius: 7px;
+  }
+
+  .chip--bg1 {
+    background: #f2e8d5;
+  }
+  .chip--bg2 {
+    background: #e9e8ff;
+  }
+  .chip--bg3 {
+    background: #f4f2ea;
+  }
+  .chip--bg4 {
+    background: #e9f0ff;
+  }
+  .chip--bg5 {
+    background: #e8f2e8;
+  }
+  .chip--bg6 {
+    background: #e9f8fb;
+  }
+
+  @media (max-width: 980px) {
+    .chip {
+      width: 31%;
+      flex: none;
+    }
+    .chips__row {
+      flex-wrap: wrap;
+    }
+
+    .chip__title {
+      font-size: 1.5vw;
+    }
+    .chip__imgs img {
+      width: 4vw;
+      height: 4vw;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .chip {
+      width: 45%;
+    }
+    .chips__row {
+      flex-wrap: wrap;
+    }
+
+    .chip__title {
+      font-size: 2.5vw;
+    }
+    .chip__imgs img {
+      width: 6vw;
+      height: 6vw;
+    }
+  }
+
+  @media (max-width: 300px) {
+    .chip {
+      width: 100%;
+    }
+    .chips__row {
+      flex-wrap: wrap;
+    }
+
+    .chip__title {
+      font-size: 4vw;
+    }
+    .chip__imgs img {
+      width: 10vw;
+      height: 10vw;
+    }
+  }
 {% endstyle %}
 
 <section class="chips">
@@ -35,23 +137,67 @@
 </section>
 
 {% schema %}
-{
-  "name": "Category chips",
-  "settings": [
-    { "type": "range", "id": "max_width", "label": "Max width", "min": 900, "max": 1920, "step": 20, "default": 1920 }
-  ],
-  "blocks": [
-    {
-      "type": "chip",
-      "name": "Chip",
-      "settings": [
-        { "type": "text", "id": "title", "label": "Title", "default": "Meat & Fish" },
-        { "type": "url", "id": "link", "label": "Link" },
-        { "type": "image_picker", "id": "image_1", "label": "Image 1" },
-        { "type": "image_picker", "id": "image_2", "label": "Image 2" }
-      ]
-    }
-  ],
-  "presets": [{ "name": "Category chips", "blocks": [{ "type": "chip" }, { "type": "chip" }, { "type": "chip" }, { "type": "chip" }, { "type": "chip" }, { "type": "chip" }] }]
-}
+  {
+    "name": "Category chips",
+    "settings": [
+      {
+        "type": "range",
+        "id": "max_width",
+        "label": "Max width",
+        "min": 900,
+        "max": 1920,
+        "step": 20,
+        "default": 1920
+      }
+    ],
+    "blocks": [
+      {
+        "type": "chip",
+        "name": "Chip",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Meat & Fish"
+          }, {
+            "type": "url",
+            "id": "link",
+            "label": "Link"
+          }, {
+            "type": "image_picker",
+            "id": "image_1",
+            "label": "Image 1"
+          }, {
+            "type": "image_picker",
+            "id": "image_2",
+            "label": "Image 2"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Category chips",
+        "blocks": [
+          {
+            "type": "chip"
+          },
+          {
+            "type": "chip"
+          },
+          {
+            "type": "chip"
+          },
+          {
+            "type": "chip"
+          }, {
+            "type": "chip"
+          }, {
+            "type": "chip"
+          }
+        ]
+      }
+    ]
+  }
 {% endschema %}
