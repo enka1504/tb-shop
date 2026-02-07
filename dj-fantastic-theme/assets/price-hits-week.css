@@ -238,11 +238,10 @@
 }
 
 .phw__name {
-    font-weight: 500;
+    font-weight: 900;
     text-decoration: none;
     color: inherit;
     line-height: 1.25;
-    font-size: 13px;
 }
 
 .phw__name:hover {
@@ -254,7 +253,7 @@
     display: flex;
     gap: 8px;
     align-items: center;
-    font-size: 9px;
+    font-size: 12px;
     opacity: .75;
 }
 
@@ -270,13 +269,10 @@
     display: flex;
     gap: 10px;
     align-items: baseline;
-    font-size: 14px;
-
-
 }
 
 .phw__price {
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 900;
     color: #b42318;
 }
@@ -317,7 +313,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 10px;
+    font-size: 12px;
     color: #0b5cab;
     font-weight: 800;
 }
@@ -330,7 +326,7 @@
 }
 
 .phw__ship {
-    font-size: 10px;
+    font-size: 12px;
     opacity: .85;
     background: rgba(0, 0, 0, .04);
     border: 1px solid rgba(0, 0, 0, .06);
@@ -352,7 +348,7 @@
     border: 1px solid rgba(0, 0, 0, .14);
     border-radius: 10px;
     overflow: hidden;
-    height: 35px;
+    height: 44px;
     min-width: 120px;
 }
 
@@ -362,7 +358,7 @@
     border: 0;
     background: #fff;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 18px;
 }
 
 .phw__qtyInput {
@@ -370,21 +366,19 @@
     height: 44px;
     border: 0;
     text-align: center;
-    font-weight: 500;
+    font-weight: 900;
     outline: none;
-    font-size: 13px;
 }
 
 .phw__add {
     flex: 1;
-    height: 35px;
+    height: 44px;
     border: 0;
     border-radius: 10px;
     cursor: pointer;
     background: #0b5cab;
-    font-size: 14px;
     color: #fff;
-    font-family: cursive;
+    font-weight: 900;
 }
 
 .phw__add:disabled {
