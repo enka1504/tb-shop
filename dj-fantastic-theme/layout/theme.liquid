@@ -5,11 +5,11 @@
     {% render 'css-variables' %}
 
     {% comment %} 
-                                    Font preloading: 
-                                    1. Preconnect to font CDN for faster connection 
-                                    2. Preload only the critical font variant (base weight) 
-                                    3. Additional variants load on-demand via @font-face 
-                        {% endcomment %}
+                                                            Font preloading: 
+                                                            1. Preconnect to font CDN for faster connection 
+                                                            2. Preload only the critical font variant (base weight) 
+                                                            3. Additional variants load on-demand via @font-face 
+                                        {% endcomment %}
     <script src="{{ 'theme-toggle.js' | asset_url }}" defer></script>
 
     {% unless settings.type_primary_font.system? %}
@@ -68,6 +68,7 @@
     body {
       background: var(--bg);
       color: var(--text);
+      font-family: cursive;
     }
     body {
       transition: background 200ms cubic-bezier(0.4,0,0.2,1)
@@ -97,7 +98,7 @@
   {{ content_for_header }}
 </head>
 {% comment %} {{ 'cart-drawer.css' | asset_url | stylesheet_tag }}
-              <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
+                      <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
   {% render 'cart-drawer' %} {% endcomment %}
 <body>
   {% sections 'header-group' %}

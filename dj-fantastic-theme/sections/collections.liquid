@@ -1,33 +1,37 @@
-{% comment %}
-  This section is used in the list-collections template to render a list of
-  collections.
-
-  https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
+{% comment %} 
+                                                                    This section is used in the list-collections template to render a list of
+                                                                    collections.
+                                                                   
+                                                                    https://shopify.dev/docs/storefronts/themes/architecture/templates/collection 
 {% endcomment %}
 
-<h1>{{ 'collections.title' | t }}</h1>
+<h1 style="padding: 20px; font-weight:600; font-size:20px; font-family:cursive">{{ 'collections.title' | t }}</h1>
 
-<div
-  class="collections {{ section.settings.grid_item_width }}"
-  style="--grid-gap: {{ section.settings.grid_gap }}px"
->
+<div class="collections {{ section.settings.grid_item_width }}" style="--grid-gap: {{ section.settings.grid_gap }}px">
   {% for collection in collections %}
     <a class="collection-card" href="{{ collection.url }}">
       {% if collection.featured_image %}
-        {% render 'image',
-          class: 'collection-card__image',
-          image: collection.featured_image,
-          width: 600,
-          height: 600,
-          crop: 'center'
+        {% render 'image'
+          ,
+ class: 'collection-card__image'
+          ,
+ image: collection.featured_image
+          ,
+ width: 600
+          ,
+ height: 600
+          ,
+ crop: 'center'
         %}
       {% endif %}
 
       <div class="collection-card__content">
-        <p>{{ collection.title }}</p>
-
+        <p class="collection-card-title">{{ collection.title }}
+          <span style="font-size:12px; font-weight:300">(<span style="color:red">{{ collection.all_products_count }}</span>
+            items)</span>
+        </p>
         {% if collection.description %}
-          <p>{{ collection.description | strip_html | truncatewords: 15 }}</p>
+          <p style="margin-top: 5px; font-size:11px; opacity:0.8; margin-bottom:20px">{{ collection.description | strip_html | truncatewords: 15 }}</p>
         {% endif %}
       </div>
     </a>
@@ -50,35 +54,53 @@
   .collection-card {
     display: flex;
     flex-direction: column;
+    text-decoration: none;
     width: 100%;
+  }
+  .collection-card-title {
+    font-weight: 600;
+    text-align: center;
+    font-family: cursive;
+    margin-top: 5px;
+  }
+  .collection-card-title:hover {
+    color: blue
   }
 {% endstylesheet %}
 
 {% schema %}
-{
-  "name": "t:general.collections_grid",
-  "settings": [
-    {
-      "type": "select",
-      "id": "grid_item_width",
-      "label": "t:labels.grid_item_width",
-      "options": [
-        { "value": "collections--compact", "label": "t:options.size.small" },
-        { "value": "collections--full", "label": "t:options.size.large" }
-      ],
-      "default": "collections--full"
-    },
-    {
-      "type": "range",
-      "id": "grid_gap",
-      "label": "t:labels.grid_gap",
-      "min": 0,
-      "max": 50,
-      "step": 5,
-      "unit": "px",
-      "default": 10
-    }
-  ],
-  "presets": [{ "name": "t:general.collections_grid" }]
-}
+  {
+    "name": "t:general.collections_grid",
+    "settings": [
+      {
+        "type": "select",
+        "id": "grid_item_width",
+        "label": "t:labels.grid_item_width",
+        "options": [
+          {
+            "value": "collections--compact",
+            "label": "t:options.size.small"
+          }, {
+            "value": "collections--full",
+            "label": "t:options.size.large"
+          }
+        ],
+        "default": "collections--full"
+      }, {
+        "type": "range",
+        "id": "grid_gap",
+        "label": "t:labels.grid_gap",
+        "min": 0,
+        "max": 50,
+        "step": 5,
+        "unit": "px",
+        "default": 10
+      }
+    ],
+    "presets": [
+      {
+        "name": "t:general.collections_grid"
+      }
+    ]
+  }
 {% endschema %}

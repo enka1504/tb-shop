@@ -4,8 +4,8 @@
 {% assign p = section.settings.product %}
 {% if p != blank %}
   {% assign v = p.selected_or_first_available_variant %}
-  {%if v.compare_at_price and v.compare_at_price > v.price%}
-    {% assign has_sale = v.compare_at_price%}
+  {% if v.compare_at_price and v.compare_at_price > v.price %}
+    {% assign has_sale = v.compare_at_price %}
   {% endif %}
   {% assign pct = 0 %}
   {% if has_sale %}
@@ -20,18 +20,32 @@
           <div class="hvCard__kicker">{{ p.vendor }}</div>
           <h2 class="hvCombo__h">{{ p.title }}</h2>
 
-          <div class="hvCountdown" data-hv-countdown data-end-ts="{{ section.settings.ends_at | date: '%s' }}">
+          <div
+            class="hvCountdown"
+            data-hv-countdown
+            data-end-ts="{{ section.settings.ends_at | date: '%s' }}">
             <span class="hvCountdown__label">{{ section.settings.countdown_label }}</span>
             <div class="hvTimer" aria-label="Countdown">
-              <span class="hvPill"><span data-hv-d>00</span></span><span class="hvTimerSep">:</span>
-              <span class="hvPill"><span data-hv-h>00</span></span><span class="hvTimerSep">:</span>
-              <span class="hvPill"><span data-hv-m>00</span></span><span class="hvTimerSep">:</span>
-              <span class="hvPill"><span data-hv-s>00</span></span>
+              <span class="hvPill">
+                <span data-hv-d>00</span>
+              </span>
+              <span class="hvTimerSep">:</span>
+              <span class="hvPill">
+                <span data-hv-h>00</span>
+              </span>
+              <span class="hvTimerSep">:</span>
+              <span class="hvPill">
+                <span data-hv-m>00</span>
+              </span>
+              <span class="hvTimerSep">:</span>
+              <span class="hvPill">
+                <span data-hv-s>00</span>
+              </span>
             </div>
           </div>
 
           <div class="hvP__price" style="margin-top:10px;">
-            <span style="font-size:34px;">{{ v.price | money }}</span>
+            <span style="font-size:22px;">{{ v.price | money }}</span>
             {% if has_sale %}
               <span class="hvP__compare" style="font-size:18px;">{{ v.compare_at_price | money }}</span>
               <span class="hvP__off">-{{ pct }}%</span>
@@ -43,11 +57,26 @@
           <div style="margin-top:16px;" data-variant-id="{{ v.id }}">
             <div class="hvP__actions" style="max-width:520px;">
               <div class="hvQty" data-hv-qty>
-                <button type="button" data-qty-minus aria-label="Decrease">−</button>
-                <input type="number" min="1" value="1" />
-                <button type="button" data-qty-plus aria-label="Increase">+</button>
+                <button
+                  type="button"
+                  data-qty-minus
+                  aria-label="Decrease">−</button>
+                <input
+                  type="number"
+                  min="1"
+                  value="1" />
+                <button
+                  type="button"
+                  data-qty-plus
+                  aria-label="Increase">+</button>
               </div>
-              <button class="hvAdd" type="button" data-hv-add data-variant-id="{{ v.id }}" {% unless p.available %}disabled{% endunless %}>
+              <button
+                class="hvAdd"
+                type="button"
+                data-hv-add
+                data-variant-id="{{ v.id }}"
+                {% unless p.available %}
+                disabled{% endunless %}>
                 Add to cart
               </button>
             </div>
@@ -62,7 +91,7 @@
 
         <div class="hvCombo__imgWrap">
           {% if p.featured_image %}
-            {{ p.featured_image | image_url: width: 1200 | image_tag: loading:'lazy', alt: p.title }}
+            {{ p.featured_image | image_url: width: 1200 | image_tag: loading: 'lazy', alt: p.title }}
           {% endif %}
         </div>
       </div>
@@ -71,15 +100,42 @@
 {% endif %}
 
 {% schema %}
-{
-  "name": "Featured combo hero",
-  "settings": [
-    { "type": "product", "id": "product", "label": "Product" },
-    { "type": "text", "id": "countdown_label", "label": "Countdown label", "default": "Sale ends in" },
-    { "type": "text", "id": "ends_at", "label": "Ends at (YYYY-MM-DD HH:MM)", "default": "2026-12-31 23:59" },
-    { "type": "richtext", "id": "description", "label": "Description", "default": "<p>Use this block for the combo story + key features.</p>" },
-    { "type": "checkbox", "id": "buy_now", "label": "Show Buy now button (links to product)", "default": true }
-  ],
-  "presets": [{ "name": "Featured combo hero" }]
-}
+  {
+    "name": "Featured combo hero",
+    "settings": [
+      {
+        "type": "product",
+        "id": "product",
+        "label": "Product"
+      },
+      {
+        "type": "text",
+        "id": "countdown_label",
+        "label": "Countdown label",
+        "default": "Sale ends in"
+      },
+      {
+        "type": "text",
+        "id": "ends_at",
+        "label": "Ends at (YYYY-MM-DD HH:MM)",
+        "default": "2026-12-31 23:59"
+      },
+      {
+        "type": "richtext",
+        "id": "description",
+        "label": "Description",
+        "default": "<p>Use this block for the combo story + key features.</p>"
+      }, {
+        "type": "checkbox",
+        "id": "buy_now",
+        "label": "Show Buy now button (links to product)",
+        "default": true
+      }
+    ],
+    "presets": [
+      {
+        "name": "Featured combo hero"
+      }
+    ]
+  }
 {% endschema %}

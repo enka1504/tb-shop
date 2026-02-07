@@ -1,11 +1,11 @@
 {% comment %} 
-                  Header v2 – “Various” style 
-                  - Announcement slider (+ optional countdown per slide) 
-                  - Top bar links + email/phone + localization 
-                  - Main row: Menu button + logo + search + icons 
-                  - Nav row: badges above label + chevrons 
-                  - Mega menu overlay (desktop): left categories + right cards + promos 
-                  - Mobile: category pills grid + drawer accordions 
+                                        Header v2 – “Various” style 
+                                        - Announcement slider (+ optional countdown per slide) 
+                                        - Top bar links + email/phone + localization 
+                                        - Main row: Menu button + logo + search + icons 
+                                        - Nav row: badges above label + chevrons 
+                                        - Mega menu overlay (desktop): left categories + right cards + promos 
+                                        - Mobile: category pills grid + drawer accordions 
 {% endcomment %}
 {%- comment -%} sections/header.liquid (UPDATED – split into rendered snippets) {%- endcomment -%}
 
@@ -40,7 +40,6 @@
       , section: section
       , show_localization: show_localization -%}
   {%- endif -%}
-
   {%- render 'hdr2-main'
     ,
  section: section
@@ -361,6 +360,21 @@
             "type": "url",
             "id": "directions_url",
             "label": "Directions URL"
+          }
+        ]
+      }, {
+        "type": "category_icon",
+        "name": "Category icon",
+        "settings": [
+          {
+            "type": "number",
+            "id": "category_index",
+            "label": "Category index (0 = first, 1 = second, ...)",
+            "default": 0
+          }, {
+            "type": "image_picker",
+            "id": "icon_image",
+            "label": "Icon image"
           }
         ]
       }

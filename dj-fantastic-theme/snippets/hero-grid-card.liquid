@@ -10,7 +10,7 @@
       <div class="hg__badge">{{ block.settings.badge }}</div>
     {% endif %}
 
-    <div class="hg__content">
+    <div class="hg__content {% if is_center %}hg_content_center{% endif %}">
       {% if block.settings.kicker != blank %}
         <div class="hg__kicker">{{ block.settings.kicker }}</div>
       {% endif %}

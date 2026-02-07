@@ -1,7 +1,7 @@
 {% comment %} 
-  Browse by category (responsive) 
-  - Desktop: grid/row 
-  - Mobile: horizontal swipe with snap 
+        Browse by category (responsive) 
+        - Desktop: grid/row 
+        - Mobile: horizontal swipe with snap 
 {% endcomment %}
 
 <section
@@ -74,6 +74,7 @@
       line-height: 1.2;
       font-weight: 700;
       margin: 0 0 18px;
+
     }
 
     /* Desktop layout */
@@ -129,11 +130,11 @@
 
     .bbc__item:hover .bbc__card {
       transform: translateY(-2px);
-      box-shadow: 0 10px 22px rgba(0, 0, 0, .08);
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
     }
 
     .bbc__item:focus-visible .bbc__card {
-      box-shadow: 0 0 0 3px rgba(0, 0, 0, .22);
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.22);
     }
 
     /* Mobile: swipe row like your screenshot */
@@ -197,11 +198,11 @@
       {
         "type": "range",
         "id": "title_size",
-        "min": 18,
-        "max": 48,
+        "min": 10,
+        "max": 30,
         "step": 1,
         "label": "Title size",
-        "default": 34
+        "default": 22
       },
 
       {

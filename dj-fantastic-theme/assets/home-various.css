@@ -19,14 +19,13 @@
 }
 
 .hv__title {
-    font-size: clamp(22px, 2.3vw, 34px);
+    font-size: clamp(16px, 2.3vw, 22px);
     margin: 0 0 18px;
-    font-weight: 800;
     letter-spacing: -.02em;
 }
 
 .hv__sub {
-    margin: -8px 0 18px;
+    margin: 8px 0 18px;
     color: var(--hv-muted);
 }
 
@@ -42,6 +41,7 @@
     color: var(--hv-blue);
     text-decoration: none;
     font-weight: 700;
+    font-size: 14px;
 }
 
 .hv__viewAll:hover {
@@ -53,13 +53,14 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 10px 18px;
+    font-size: 14px;
+    padding: 5px 14px;
     border-radius: 10px;
     border: 0;
     background: var(--hv-blue);
     color: #fff;
-    font-weight: 800;
     cursor: pointer;
+    height: 44px;
     text-decoration: none;
 }
 
@@ -234,22 +235,25 @@
 }
 
 .hvBundle__price {
-    font-size: 34px;
-    font-weight: 1000;
+    font-size: 22px;
+    font-weight: 500;
     margin: 0;
 }
 
-.hvBundle__desc {
+.hvBundle__desc {    
     margin: 6px 0 0;
     color: var(--hv-muted);
-    font-weight: 700;
+    /* font-weight: 700; */
+    font-size: 11px;
+    font-weight: normal;
 }
 
 .hvBundle__more {
     margin-top: 10px;
     display: inline-block;
     color: var(--hv-blue);
-    font-weight: 900;
+    font-weight: normal;
+    font-size: 13px;
 }
 
 .hvBundle__bottom {
@@ -268,19 +272,21 @@
     background: #fff;
     border: var(--hv-border);
     border-radius: 12px;
-    padding: 12px;
+    padding: 5px 12px;
     text-decoration: none;
 }
 
-.hvMini__t {
-    font-weight: 900;
+.hvMini__t {   
+     font-weight: 500;
     color: #111;
+    font-size: 12px;
 }
 
 .hvMini__img {
-    width: 56px;
-    height: 40px;
-    object-fit: contain;
+    width: 36px;
+    height: 28px;
+    object-fit: cover;
+    border-radius: 10px;
 }
 
 @media (max-width: 990px) {
@@ -299,10 +305,11 @@
 .hvTab {
     border: var(--hv-border);
     border-radius: 10px;
-    padding: 10px 14px;
+    padding: 5px 14px;
+    font-family: cursive;
     background: #fff;
     cursor: pointer;
-    font-weight: 900;
+    font-weight: 500;
 }
 
 .hvTab[aria-selected="true"] {
@@ -329,8 +336,8 @@
 }
 
 .hvPromo__h {
-    font-weight: 1000;
-    font-size: 24px;
+    font-size: 18px;
+    font-weight: 500;
     margin: 0 0 8px;
 }
 
@@ -448,7 +455,7 @@
 .hvP__title {
     display: block;
     margin-top: 6px;
-    font-weight: 1000;
+    font-size: 12px;
     text-decoration: none;
     color: #111;
 }
@@ -462,7 +469,7 @@
     display: flex;
     gap: 8px;
     align-items: baseline;
-    font-weight: 1000;
+    font-size: 15px;
 }
 
 .hvP__compare {
@@ -483,15 +490,15 @@
 .hvP__meta {
     margin-top: 8px;
     color: var(--hv-muted);
-    font-size: 12px;
+    font-size: 10px;
     display: flex;
     gap: 10px;
     align-items: center;
 }
 
 .hvDot {
-    width: 10px;
-    height: 10px;
+    width: 7px;
+    height: 7px;
     border-radius: 999px;
     background: #1b63c8;
     display: inline-block;
@@ -501,6 +508,7 @@
     margin-top: 10px;
     display: flex;
     gap: 10px;
+    height: 44px;
 }
 
 .hvQty {
@@ -509,6 +517,7 @@
     border: var(--hv-border);
     border-radius: 10px;
     overflow: hidden;
+    font-size: 12px ;
 }
 
 .hvQty button {
@@ -518,6 +527,7 @@
     background: #fff;
     cursor: pointer;
     font-weight: 1000;
+    font-size: 12px;
 }
 
 .hvQty input {
@@ -535,7 +545,9 @@
     background: var(--hv-blue);
     color: #fff;
     font-weight: 1000;
+    font-family: cursive;
     cursor: pointer;
+    font-size: 12px;
 }
 
 .hvAdd:hover {
@@ -554,14 +566,14 @@
 }
 
 .hvCombo__h {
-    font-size: 30px;
-    font-weight: 1000;
+    font-size: 22px;
     margin: 0 0 10px;
 }
 
 .hvCombo__desc {
     color: var(--hv-muted);
     line-height: 1.65;
+    font-size: 12px;
 }
 
 .hvCountdown {
@@ -572,7 +584,6 @@
 }
 
 .hvCountdown__label {
-    font-weight: 900;
     color: #333;
 }
 
@@ -633,7 +644,8 @@
 .hvCertRow img {
     object-fit: cover;
     height: 50px;
-
+    width: 68px;
+    border-radius: 8px;
 }
 
 .hvBlueBlock {
@@ -644,8 +656,7 @@
 }
 
 .hvBlueBlock__h {
-    font-size: 34px;
-    font-weight: 1000;
+    font-size: 22px;
     margin: 0;
     text-align: center;
 }
@@ -654,6 +665,7 @@
     text-align: center;
     margin: 10px 0 22px;
     opacity: .9;
+    font-size: 12px;
 }
 
 .hvStats {
@@ -670,20 +682,19 @@
 }
 
 .hvStat__n {
-    font-size: 44px;
-    font-weight: 1100;
+    font-size: 30px;
     margin: 0 0 6px;
 }
 
 .hvStat__t {
     margin: 0;
-    font-weight: 900;
+    font-size: 14px;
 }
 
 .hvStat__d {
     margin: 8px 0 0;
     opacity: .85;
-    font-size: 13px;
+    font-size: 12px;
 }
 
 @media(max-width: 990px) {
@@ -706,18 +717,22 @@
 }
 
 .hvCatCard__h {
-    font-weight: 1000;
     margin: 0 0 10px;
+    font-size: 12px;
 }
 
-.hvCatCard__top img {
+.hvCatCard__top img {    
     height: 34px;
-    object-fit: contain;
+    object-fit: cover;
+    width: 45px;
+    border-radius: 10px;
+
 }
 
 .hvCatList {
     margin: 10px 0 0;
     padding-left: 16px;
+    font-size: 12px;
     color: #222;
 }
 
@@ -786,7 +801,7 @@
 }
 
 .hvVideo__h {
-    font-size: 38px;
+    font-size: 30px;
     font-weight: 1100;
     margin: 0;
 }
@@ -794,6 +809,7 @@
 .hvVideo__p {
     margin: 10px 0 18px;
     opacity: .92;
+    font-size: 14px;
 }
 
 .hvVideo__pause {
@@ -885,18 +901,21 @@
 
 .hvCo__logo {
     height: 46px;
-    object-fit: contain;
+    width: 55px;
+    border-radius: 10px;
+    object-fit: cover;
     margin-bottom: 10px;
 }
 
 .hvCo__h {
-    font-weight: 1000;
     margin: 0 0 8px;
+    font-size: 16px;
 }
 
 .hvCo__p {
     margin: 0 0 10px;
     color: var(--hv-muted);
+    font-size: 12px;
 }
 
 @media(max-width: 1100px) {
@@ -926,9 +945,11 @@
 }
 
 .hvFeat__icon {
-    width: 28px;
-    height: 28px;
+    width: 45px;
+    height: 45px;
     margin: 0 auto 10px;
+    object-fit: cover;
+    border-radius: 10px;
     opacity: .85;
 }
 

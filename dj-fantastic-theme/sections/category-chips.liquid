@@ -18,52 +18,46 @@
   }
   .chip {
     border-radius: 12px;
-    padding: 10px 12px;
+    padding: 10px 16px;
     display: flex;
     flex: 1;
     width: 15%;
     align-items: center;
     justify-content: space-between;
     text-decoration: none;
-    border: 1px solid rgba(0, 0, 0, 0.06);
   }
 
 
   .chip__title {
-    font-weight: 700;
-    font-size: 1vw;
+    font-weight: 600;
+    font-size: 14px;
+    font-family: cursive;
   }
   .chip__imgs {
     display: flex;
     gap: 10px;
   }
   .chip__imgs img {
-    width: 2.5vw;
-    height: 2.5vw;
+    width: 2vw;
+    height: 2vw;
     object-fit: cover;
     border-radius: 7px;
   }
 
-  .chip--bg1 {
-    background: #f2e8d5;
-  }
-  .chip--bg2 {
-    background: #e9e8ff;
-  }
-  .chip--bg3 {
-    background: #f4f2ea;
-  }
-  .chip--bg4 {
-    background: #e9f0ff;
-  }
-  .chip--bg5 {
-    background: #e8f2e8;
-  }
-  .chip--bg6 {
-    background: #e9f8fb;
-  }
 
-  @media (max-width: 980px) {
+  @media (max-width: 1280px) {
+    .chip__title {
+      font-size: 12px;
+    }
+    .chip__imgs img {
+      width: 2vw;
+      height: 2vw;
+    }
+    .chip {
+      padding: 10px;
+    }
+  }
+  @media (max-width: 1035px) {
     .chip {
       width: 31%;
       flex: none;
@@ -73,7 +67,7 @@
     }
 
     .chip__title {
-      font-size: 1.5vw;
+      font-size: 14px;
     }
     .chip__imgs img {
       width: 4vw;
@@ -90,7 +84,7 @@
     }
 
     .chip__title {
-      font-size: 2.5vw;
+      font-size: 14px;
     }
     .chip__imgs img {
       width: 6vw;
@@ -113,6 +107,25 @@
       width: 10vw;
       height: 10vw;
     }
+  }
+
+  .chip--bg1 {
+    background: #f2e8d5;
+  }
+  .chip--bg2 {
+    background: #e9e8ff;
+  }
+  .chip--bg3 {
+    background: #f4f2ea;
+  }
+  .chip--bg4 {
+    background: #e9f0ff;
+  }
+  .chip--bg5 {
+    background: #e8f2e8;
+  }
+  .chip--bg6 {
+    background: #e9f8fb;
   }
 {% endstyle %}
 

@@ -69,7 +69,7 @@
     /* Top menus (3 columns) */
     .footerX__topMenus {
       display: grid;
-      grid-template-columns: repeat(5, minmax(160px, 1fr));
+      grid-template-columns: repeat(4, minmax(160px, 1fr));
       gap: 34px;
       margin-bottom: 34px;
     }
@@ -79,7 +79,10 @@
       grid-template-columns: 1.05fr 2fr;
       align-items: start;
     }
-
+   
+    .footerX__menuCol {
+      margin-left: 60px;
+    }
     .footerX__brandName {
       font-size: 36px;
       font-weight: 900;
@@ -95,7 +98,7 @@
     }
     .footerX__phone {
       margin-top: 14px;
-      font-size: 18px;
+      font-size: 14px;
       font-weight: 800;
       letter-spacing: 0.01em;
     }
@@ -113,7 +116,7 @@
     }
 
     .footerX__menuTitle {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 800;
       margin: 0 0 12px;
       letter-spacing: 0.01em;
@@ -125,6 +128,7 @@
       margin: 0;
       display: flex;
       flex-direction: column;
+      font-size: 10px;
       gap: 10px;
     }
 
@@ -153,8 +157,7 @@
       text-align: center;
     }
     .footerX__sloganInner {
-      font-size: clamp(20px, 2.2vw, 60px);
-      font-weight: 700;
+      font-size: clamp(15px, 2.2vw, 40px);
       line-height: 1.02;
       letter-spacing: -0.02em;
       opacity: .92;

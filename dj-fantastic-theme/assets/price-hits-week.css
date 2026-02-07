@@ -5,6 +5,7 @@
     background: linear-gradient(180deg, rgba(214, 242, 247, .65), rgba(214, 242, 247, .35));
     overflow: hidden;
     scrollbar-width: 0px;
+    margin: 0 20px;
 }
 
 .phw__wrap {
@@ -22,8 +23,9 @@
 
 .phw__title {
     margin: 0;
-    font-weight: 900;
+    font-weight: 700;
     font-size: clamp(22px, 2.1vw, 34px);
+    font-size: 22px;
 }
 
 .phw__right {
@@ -236,10 +238,11 @@
 }
 
 .phw__name {
-    font-weight: 900;
+    font-weight: 500;
     text-decoration: none;
     color: inherit;
     line-height: 1.25;
+    font-size: 13px;
 }
 
 .phw__name:hover {
@@ -251,7 +254,7 @@
     display: flex;
     gap: 8px;
     align-items: center;
-    font-size: 12px;
+    font-size: 9px;
     opacity: .75;
 }
 
@@ -267,10 +270,13 @@
     display: flex;
     gap: 10px;
     align-items: baseline;
+    font-size: 14px;
+
+
 }
 
 .phw__price {
-    font-size: 18px;
+    font-size: 14px;
     font-weight: 900;
     color: #b42318;
 }
@@ -311,7 +317,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 12px;
+    font-size: 10px;
     color: #0b5cab;
     font-weight: 800;
 }
@@ -324,7 +330,7 @@
 }
 
 .phw__ship {
-    font-size: 12px;
+    font-size: 10px;
     opacity: .85;
     background: rgba(0, 0, 0, .04);
     border: 1px solid rgba(0, 0, 0, .06);
@@ -346,7 +352,7 @@
     border: 1px solid rgba(0, 0, 0, .14);
     border-radius: 10px;
     overflow: hidden;
-    height: 44px;
+    height: 35px;
     min-width: 120px;
 }
 
@@ -356,7 +362,7 @@
     border: 0;
     background: #fff;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 14px;
 }
 
 .phw__qtyInput {
@@ -364,19 +370,21 @@
     height: 44px;
     border: 0;
     text-align: center;
-    font-weight: 900;
+    font-weight: 500;
     outline: none;
+    font-size: 13px;
 }
 
 .phw__add {
     flex: 1;
-    height: 44px;
+    height: 35px;
     border: 0;
     border-radius: 10px;
     cursor: pointer;
     background: #0b5cab;
+    font-size: 14px;
     color: #fff;
-    font-weight: 900;
+    font-family: cursive;
 }
 
 .phw__add:disabled {

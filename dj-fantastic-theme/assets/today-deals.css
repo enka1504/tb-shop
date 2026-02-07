@@ -11,9 +11,9 @@
 }
 
 .td__title {
-    font-size: clamp(22px, 2.2vw, 34px);
+    font-size: clamp(16px, 2.2vw, 22px);
     margin: 0 0 14px;
-    font-weight: 800;
+    font-weight: 600;
 }
 
 .td__tabs {
@@ -24,15 +24,18 @@
     background: rgba(0, 0, 0, .03);
     flex-wrap: wrap;
     justify-content: center;
+    font-family: cursive;
 }
 
-.td__tab {
+.td__tab {    
     border: 1px solid rgba(0, 0, 0, .12);
     background: #fff;
-    border-radius: 999px;
-    padding: 10px 14px;
-    font-weight: 700;
+    border-radius: 10px;
+    padding: 8px 15px;
+    font-size: 11px;
+    /* font-weight: 700; */
     cursor: pointer;
+    font-family: cursive;
 }
 
 .td__tab[data-active="true"],

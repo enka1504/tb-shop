@@ -1,5 +1,4 @@
 .hdr2 {
-  --max: 1400px;
   --blue: #0b4ea2;
   --text: #0d1620;
   --muted: rgba(0, 0, 0, .62);
@@ -15,9 +14,8 @@
 
 
 .hdr2__container {
-  max-width: var(--max);
   margin: 0 auto;
-  padding: 0 16px
+  padding: 0 20px
 }
 
 /* Announcement */
@@ -59,10 +57,10 @@
 }
 
 .ab-track {
-  display: flex;
   height: 100%;
   transition: transform .45s ease;
-  will-change: transform
+  will-change: transform;
+  display: flex;
 }
 
 .ab-slide {
@@ -71,9 +69,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 14px;
+  font-family: cursive;
   white-space: nowrap;
   padding: 0 10px;
   cursor: grab;
@@ -82,7 +80,8 @@
 .ab-link {
   color: #ffc56a !important;
   text-decoration: none;
-  font-weight: 900
+  font-weight: 900;
+  margin-left:10px
 }
 
 .ab-countdown {
@@ -114,6 +113,7 @@
 /* Top bar */
 .hdr2__topbar {
   background: #fff;
+  padding: 0 20px;
   border-bottom: 1px solid var(--line)
 }
 
@@ -175,25 +175,27 @@
   grid-template-columns: auto auto 1fr auto;
   align-items: center;
   gap: 16px;
-  padding: 16px 0;
+  padding: 16px 20px;
 }
 
 /* Menu button */
 .hdr2__menu {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  border: 0;
-  background: var(--blue);
-  color: #fff;
-  padding: 11px 16px;
-  border-radius: 14px;
-  cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    border: 0;
+    background: var(--blue);
+    color: #f7c41f;
+    padding: 7px 12px;
+    border-radius: 6px;
+    cursor: pointer;
 }
 
 .hdr2__menu-text {
-  font-weight: 900;
-  font-size: 14px
+  font-weight: 500;
+  font-size: 13px;
+  color : #f7c41f;
+  font-family: cursive;
 }
 
 .hdr2__burger {
@@ -210,7 +212,7 @@
   left: 0;
   right: 0;
   height: 2px;
-  background: #fff;
+  background: #f7c41f;
   border-radius: 2px
 }
 
@@ -266,26 +268,28 @@
   display: grid;
   grid-template-columns: auto 1fr auto auto;
   align-items: center;
-  gap: 10px;
   background: #fff;
   border: 1px solid rgba(0, 0, 0, .12);
   border-radius: 14px;
-  padding: 8px 10px;
+  padding: 2px 5px;
 }
 
 .hdr2__catselect {
-  background: #f6f8fc;
+  background: #e7f8e4;
   border: 0;
   border-radius: 12px;
-  padding: 10px 12px
+  font-size: 10px;
+  font-family: cursive;
+  padding: 5px 5px
 }
 
 .hdr2__input {
   border: 0;
   outline: 0;
   background: transparent;
-  font-size: 14px;
-  padding: 10px 6px;
+  font-size: 10px;
+  padding: 5px 10px;
+  font-family: cursive;
   width: 100%
 }
 
@@ -294,7 +298,7 @@
   background: transparent;
   cursor: pointer;
   font-size: 16px;
-  padding: 10px;
+  padding: 5px;
   border-radius: 12px
 }
 
@@ -314,7 +318,6 @@
 }
 
 .hdr2__iconbtn--round {
-  border: 1px solid rgba(0, 0, 0, .12);
   width: 40px;
   height: 40px;
   display: grid;
@@ -346,8 +349,8 @@
 
 /* Theme toggle pill */
 .hdr2__toggle {
-  width: 86px;
-  height: 40px;
+  width: 63px;
+  height: 28px;
   border-radius: 999px;
   border: 1px solid rgba(0, 0, 0, .12);
   background: #fff;
@@ -515,7 +518,7 @@
 
 .hdr2__drawer-panel {
   position: absolute;
-  top: 0;
+  top: 92px;
   left: 0;
   height: 100%;
   width: min(1020px, 92vw);
@@ -612,9 +615,11 @@
 }
 
 .hdr2__drawer-section-title {
-  font-weight: 950;
+  font-weight: 750;
   margin: 6px 0 10px;
   display: flex;
+  opacity: 0.8;
+  font-family: cursive;
   gap: 8px;
   align-items: center
 }
@@ -700,15 +705,17 @@
 }
 
 /* Right panel cards */
-.hdr2__panel-title {
-  font-size: 22px;
-  font-weight: 950;
-  margin-bottom: 14px
+.hdr2__panel-title {   
+    font-size: 19px;
+    font-weight: 750;
+    font-family: cursive;
+    margin-bottom: 14px;
+    opacity: 0.8;
 }
 
 .hdr2__cardgrid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 18px
 }
 
@@ -739,7 +746,11 @@
 
 .hdr2__card-label {
   margin-top: 10px;
-  font-weight: 900
+  font-weight: 500;
+  font-size: 14px;
+  font-family: cursive;
+  opacity: 0.8;
+
 }
 
 /* Promo row */
@@ -767,21 +778,27 @@
 }
 
 .hdr2__promo-title {
-  font-weight: 950;
-  font-size: 18px
+  font-weight: 650;
+  font-size: 14px;
+  opacity: 0.8;
+  font-family: cursive;
 }
 
 .hdr2__promo-sub {
   opacity: .75;
-  margin-top: 4px
+  margin-top: 5px;
+  font-size: 11px;
+  font-family: cursive;
 }
 
 .hdr2__promo-link {
   display: inline-block;
   margin-top: 12px;
   color: var(--blue);
-  font-weight: 950;
-  text-decoration: underline
+  font-weight: 500;
+  font-family: cursive;
+  text-decoration: underline;
+
 }
 
 .hdr2__promo-img {
@@ -894,16 +911,21 @@
 }
 
 .hdr2__mega-title {
-  font-size: 18px;
-  font-weight: 950;
   margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: 600 !important;
+  opacity: 0.8;
+  font-family: cursive;
 }
 
 .hdr2__mega-links {
   list-style: none;
-  margin: 0;
+  margin: 5px 0px 0px 5px;
   padding: 0;
   display: grid;
+  font-size: 12px;
+  font-family: cursive;
+  font-weight: 500;
   gap: 10px;
 }
 
@@ -1198,7 +1220,12 @@ html.theme-dark .hdr2__catbar-link:hover {
   color: var(--muted);
 }
 
-
+ .hdr2__drawerrow-title {
+    font-size: 12px;
+    font-weight: 600 !important;
+    opacity: 0.8;
+    font-family: cursive;
+  }
 /* assets/header-v2.css (UPDATED – mobile: ONLY Main menu in drawer; desktop keeps right panel) */
 
 /* mobile drawer layout */
@@ -1210,6 +1237,12 @@ html.theme-dark .hdr2__catbar-link:hover {
   .hdr2__main-inner {
     grid-template-columns: auto 1fr auto;
     gap: 12px
+  }
+
+
+  .hdr2__drawer-panel {
+    top: 50px;
+    bottom: 20px;
   }
 
   .hdr2__brand {
@@ -1233,7 +1266,7 @@ html.theme-dark .hdr2__catbar-link:hover {
   }
 
   .hdr2__drawer-panel {
-    width: min(520px, 92vw)
+    width: min(300px, 92vw)
   }
 
   .hdr2__drawer-body {
@@ -1245,6 +1278,13 @@ html.theme-dark .hdr2__catbar-link:hover {
     display: none
   }
 
+ 
+  .hdr2__drawer-emoji {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    object-fit: cover;
+  }
 
   .hdr2__drawer-right {
     display: none !important;
@@ -1294,4 +1334,15 @@ html.theme-dark .hdr2__catbar-link:hover {
   .hdr2__drawer-section--main {
     display: none !important;
   }
+}
+.hdr2__catbar-label {
+    font-size: 15px;
+    font-weight: 600;
+    font-family: cursive;
+}
+.hdr2__chev {
+    display: flex;
+    font-weight: 500;
+    align-items: center;
+    font-size: 13px;
 }

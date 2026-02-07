@@ -1,13 +1,24 @@
 {%- comment -%} snippets/hdr2-drawer.liquid (UPDATED – mobile shows ONLY Main menu; desktop keeps categories + promos) {%- endcomment -%}
-<div class="hdr2__drawer" data-hdr2-drawer hidden>
+<div
+  class="hdr2__drawer"
+  data-hdr2-drawer
+  hidden>
   <div class="hdr2__drawer-bg" data-hdr2-close></div>
 
-  <div class="hdr2__drawer-panel" role="dialog" aria-modal="true" aria-label="Menu">
+  <div
+    class="hdr2__drawer-panel"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Menu">
     <div class="hdr2__drawer-head">
       <div class="hdr2__drawer-topline">
         <span class="hdr2__drawer-welcome">{{ section.settings.drawer_welcome | escape }}</span>
       </div>
-      <button class="hdr2__iconbtn hdr2__iconbtn--close" type="button" aria-label="Close" data-hdr2-close>✕</button>
+      <button
+        class="hdr2__iconbtn hdr2__iconbtn--close"
+        type="button"
+        aria-label="Close"
+        data-hdr2-close>✕</button>
     </div>
 
     <div class="hdr2__drawer-body">
@@ -20,27 +31,49 @@
             <ul class="hdr2__drawerlist" data-hdr2-cats>
               {%- for link in linklists[category_menu_handle].links -%}
                 <li class="hdr2__draweritem">
-                  <button class="hdr2__drawerrow" type="button"
+                  <button
+                    class="hdr2__drawerrow"
+                    type="button"
                     data-hdr2-cat-btn
                     data-target="hdr2-cat-{{ forloop.index0 }}"
                     aria-controls="hdr2-cat-{{ forloop.index0 }}"
                     aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}">
                     <span class="hdr2__drawerrow-left">
-                      <span class="hdr2__drawer-emoji" aria-hidden="true">🍽️</span>
+                      {%- liquid
+                        assign icon_img = blank
+                        for b in section.blocks
+                          if b.type == 'category_icon' and b.settings.category_index == forloop.index0
+                            assign icon_img = b.settings.icon_image
+                            break
+                          endif
+                        endfor
+                      -%}
+
+                      {%- if icon_img != blank -%}
+                        <img
+                          class="hdr2__drawer-emoji"
+                          src="{{ icon_img | image_url: width: 64 }}"
+                          width="24"
+                          height="24"
+                          loading="lazy"
+                          alt="{{ link.title | escape }}">
+                      {%- else -%}
+                        <span class="hdr2__drawer-emoji" aria-hidden="true"></span>
+                      {%- endif -%}
                       <span class="hdr2__drawerrow-title">{{ link.title }}</span>
                     </span>
                     <span class="hdr2__drawerrow-right" aria-hidden="true">›</span>
                   </button>
 
-                  {% comment %} {%- if link.links.size > 0 -%}
-                    <div class="hdr2__drawer-sub" id="hdr2-cat-{{ forloop.index0 }}" {% unless forloop.first %}hidden{% endunless %}>
-                      <ul class="hdr2__sublist">
-                        {%- for sub in link.links -%}
-                          <li><a class="hdr2__sublink" href="{{ sub.url }}">{{ sub.title }}</a></li>
-                        {%- endfor -%}
-                      </ul>
-                    </div>
-                  {%- endif -%} {% endcomment %}
+                {% comment %} {%- if link.links.size > 0 -%}
+                                      <div class="hdr2__drawer-sub" id="hdr2-cat-{{ forloop.index0 }}" {% unless forloop.first %}hidden{% endunless %}>
+                                        <ul class="hdr2__sublist">
+                                          {%- for sub in link.links -%}
+                                            <li><a class="hdr2__sublink" href="{{ sub.url }}">{{ sub.title }}</a></li>
+                                          {%- endfor -%}
+                                        </ul>
+                                      </div>
+                                  {%- endif -%} {% endcomment %}
                 </li>
               {%- endfor -%}
             </ul>
@@ -55,14 +88,20 @@
               {%- for link in linklists[drawer_menu_handle].links -%}
                 <li class="hdr2__draweritem">
                   {%- if link.links.size > 0 -%}
-                    <button class="hdr2__drawerrow hdr2__drawerrow--accordion" type="button" data-hdr2-acc-btn aria-expanded="false">
+                    <button
+                      class="hdr2__drawerrow hdr2__drawerrow--accordion"
+                      type="button"
+                      data-hdr2-acc-btn
+                      aria-expanded="false">
                       <span class="hdr2__drawerrow-title">{{ link.title }}</span>
                       <span class="hdr2__drawerrow-right" aria-hidden="true">⌄</span>
                     </button>
                     <div class="hdr2__acc" hidden>
                       <ul class="hdr2__sublist">
                         {%- for sub in link.links -%}
-                          <li><a class="hdr2__sublink" href="{{ sub.url }}">{{ sub.title }}</a></li>
+                          <li>
+                            <a class="hdr2__sublink" href="{{ sub.url }}">{{ sub.title }}</a>
+                          </li>
                         {%- endfor -%}
                       </ul>
                     </div>
@@ -81,7 +120,12 @@
         {%- if category_menu_handle != blank -%}
           {%- for link in linklists[category_menu_handle].links -%}
             {%- assign idx = forloop.index0 -%}
-            <div class="hdr2__panel" data-hdr2-panel data-panel="hdr2-cat-{{ idx }}" {% unless forloop.first %}hidden{% endunless %}>
+            <div
+              class="hdr2__panel"
+              data-hdr2-panel
+              data-panel="hdr2-cat-{{ idx }}"
+              {% unless forloop.first %}
+              hidden{% endunless %}>
               <div class="hdr2__panel-title">{{ link.title }}</div>
 
               <div class="hdr2__cardgrid">
@@ -108,7 +152,10 @@
               <div class="hdr2__promos">
                 {%- for block in section.blocks -%}
                   {%- if block.type == 'mega_promo' and block.settings.category_index == idx -%}
-                    <a class="hdr2__promo" href="{{ block.settings.url }}" {{ block.shopify_attributes }}>
+                    <a
+                      class="hdr2__promo"
+                      href="{{ block.settings.url }}"
+                      {{ block.shopify_attributes }}>
                       <div class="hdr2__promo-text">
                         <div class="hdr2__promo-title">{{ block.settings.title | escape }}</div>
                         <div class="hdr2__promo-sub">{{ block.settings.subtitle | escape }}</div>

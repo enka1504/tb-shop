@@ -1,7 +1,7 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "42a15b220e6b6b16d4954a323f9e7d59"
-name = "dj-fantasic-app"
+client_id = "78f3a01b4b4e6cd311d2eb8a03a533ba"
+name = "modern-subsidiary-app"
 application_url = "https://example.com"
 embedded = true
 
@@ -13,12 +13,12 @@ include_config_on_deploy = true
 api_version = "2026-04"
 
   [[webhooks.subscriptions]]
-  topics = [ "app/scopes_update" ]
-  uri = "/webhooks/app/scopes_update"
-
-  [[webhooks.subscriptions]]
   topics = [ "app/uninstalled" ]
   uri = "/webhooks/app/uninstalled"
+
+  [[webhooks.subscriptions]]
+  topics = [ "app/scopes_update" ]
+  uri = "/webhooks/app/scopes_update"
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
