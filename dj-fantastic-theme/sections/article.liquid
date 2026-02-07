@@ -1,9 +1,9 @@
-{% comment %}
+{% comment %} 
   This section is used in the article template to render the article page, which
   displays the full content of the blog post and can optionally include a
   comments section for customers (not shown in this example).
-
-  https://shopify.dev/docs/storefronts/themes/architecture/templates/article
+ 
+  https://shopify.dev/docs/storefronts/themes/architecture/templates/article 
 {% endcomment %}
 
 {% if article.image %}
@@ -36,24 +36,38 @@
     {% endpaginate %}
   </div>
 
-  {% form 'new_comment', article %}
+  {% form 'new_comment'
+    , article %}
     <h2>{{ 'blog.comment_form_title' | t }}</h2>
 
     {{ form.errors | default_errors }}
 
     <div>
       <label for="author">{{ 'blog.comment_form_name' | t }}</label>
-      <input type="text" name="comment[author]" id="author" value="{{ form.author }}" required>
+      <input
+        type="text"
+        name="comment[author]"
+        id="author"
+        value="{{ form.author }}"
+        required>
     </div>
 
     <div>
       <label for="email">{{ 'blog.comment_form_email' | t }}</label>
-      <input type="email" name="comment[email]" id="email" value="{{ form.email }}" required>
+      <input
+        type="email"
+        name="comment[email]"
+        id="email"
+        value="{{ form.email }}"
+        required>
     </div>
 
     <div>
       <label for="body">{{ 'blog.comment_form_body' | t }}</label>
-      <textarea name="comment[body]" id="body" required>{{ form.body }}</textarea>
+      <textarea
+        name="comment[body]"
+        id="body"
+        required>{{ form.body }}</textarea>
     </div>
 
     <input type="submit" value="{{ 'blog.comment_form_submit' | t }}">
@@ -61,8 +75,8 @@
 {% endif %}
 
 {% schema %}
-{
-  "name": "t:general.article",
-  "settings": []
-}
+  {
+    "name": "t:general.article",
+    "settings": []
+  }
 {% endschema %}

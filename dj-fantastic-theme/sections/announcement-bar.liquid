@@ -1,7 +1,7 @@
-{% comment %}
-  Rotating Announcement Bar (Skeleton / header-group friendly)
-  - Rotates blocks every N seconds (default: 3)
-  - Optional countdown chips
+{% comment %} 
+  Rotating Announcement Bar (Skeleton / header-group friendly) 
+  - Rotates blocks every N seconds (default: 3) 
+  - Optional countdown chips 
 {% endcomment %}
 {{ 'announcement-bar.css' | asset_url | stylesheet_tag }}
 {{ 'announcement-bar.js' | asset_url | script_tag }}
@@ -15,52 +15,123 @@
       --annbar-text: {{ section.settings.text_color }};
       --chip-bg: {{ section.settings.chip_bg }};
       --chip-text: {{ section.settings.chip_text }};
-    "
-  >
-    <button class="annbar__nav annbar__nav--left" type="button" aria-label="Previous announcement" data-annbar-prev>
+    ">
+    <button
+      class="annbar__nav annbar__nav--left"
+      type="button"
+      aria-label="Previous announcement"
+      data-annbar-prev>
       <span aria-hidden="true">‹</span>
     </button>
 
     <div class="annbar__viewport" aria-live="polite">
       <div class="annbar__track" data-annbar-track>
         {% for block in section.blocks %}
-          {% render 'announcement-slide', block: block %}
+          {% render 'announcement-slide'
+            , block: block %}
         {% endfor %}
       </div>
     </div>
 
-    <button class="annbar__nav annbar__nav--right" type="button" aria-label="Next announcement" data-annbar-next>
+    <button
+      class="annbar__nav annbar__nav--right"
+      type="button"
+      aria-label="Next announcement"
+      data-annbar-next>
       <span aria-hidden="true">›</span>
     </button>
   </div>
 {% endif %}
 {% schema %}
-{
-  "name": "Announcement bar",
-  "settings": [
-    { "type": "checkbox", "id": "enabled", "label": "Enable", "default": true },
-    { "type": "range", "id": "interval", "label": "Rotate every (seconds)", "min": 2, "max": 10, "step": 1, "default": 3 },
-    { "type": "color", "id": "bg_color", "label": "Background", "default": "#0B5CAB" },
-    { "type": "color", "id": "text_color", "label": "Text color", "default": "#FFFFFF" },
-    { "type": "color", "id": "chip_bg", "label": "Countdown chip background", "default": "#FFB020" },
-    { "type": "color", "id": "chip_text", "label": "Countdown chip text", "default": "#0B0F1A" }
-  ],
-  "blocks": [
-    {
-      "type": "slide",
-      "name": "Announcement",
-      "settings": [
-        { "type": "text", "id": "text", "label": "Text", "default": "Hurry up! 30% OFF Sale Ends Soon" },
-        { "type": "url", "id": "link", "label": "Link" },
-        { "type": "text", "id": "link_label", "label": "Link label", "default": "https://dj-fantastic/collections" },
-        { "type": "checkbox", "id": "show_countdown", "label": "Show countdown", "default": false },
-        { "type": "text", "id": "countdown_end", "label": "Countdown end (ISO datetime)", "default": "2026-12-31T23:59:59Z" }
-      ]
-    }
-  ],
-  "max_blocks": 10,
-  "presets": [
-    { "name": "Announcement bar", "blocks": [{ "type": "slide" }, { "type": "slide" }] }
-  ]
-}
+  {
+    "name": "Announcement bar",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enabled",
+        "label": "Enable",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "interval",
+        "label": "Rotate every (seconds)",
+        "min": 2,
+        "max": 10,
+        "step": 1,
+        "default": 3
+      },
+      {
+        "type": "color",
+        "id": "bg_color",
+        "label": "Background",
+        "default": "#0B5CAB"
+      },
+      {
+        "type": "color",
+        "id": "text_color",
+        "label": "Text color",
+        "default": "#FFFFFF"
+      }, {
+        "type": "color",
+        "id": "chip_bg",
+        "label": "Countdown chip background",
+        "default": "#FFB020"
+      }, {
+        "type": "color",
+        "id": "chip_text",
+        "label": "Countdown chip text",
+        "default": "#0B0F1A"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "slide",
+        "name": "Announcement",
+        "settings": [
+          {
+            "type": "text",
+            "id": "text",
+            "label": "Text",
+            "default": "Hurry up! 30% OFF Sale Ends Soon"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Link"
+          },
+          {
+            "type": "text",
+            "id": "link_label",
+            "label": "Link label",
+            "default": "https://dj-fantastic/collections"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_countdown",
+            "label": "Show countdown",
+            "default": false
+          }, {
+            "type": "text",
+            "id": "countdown_end",
+            "label": "Countdown end (ISO datetime)",
+            "default": "2026-12-31T23:59:59Z"
+          }
+        ]
+      }
+    ],
+    "max_blocks": 10,
+    "presets": [
+      {
+        "name": "Announcement bar",
+        "blocks": [
+          {
+            "type": "slide"
+          }, {
+            "type": "slide"
+          }
+        ]
+      }
+    ]
+  }
 {% endschema %}

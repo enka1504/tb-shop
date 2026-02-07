@@ -1,13 +1,13 @@
-{% comment %}
-  Styled Cart Section (for /cart page)
-  - Responsive layout
-  - Quantity stepper (- / +)
-  - Line item price + compare-at + discounts
-  - Cart note + subtotal + checkout
+{% comment %} 
+  Styled Cart Section (for /cart page) 
+  - Responsive layout 
+  - Quantity stepper (- / +) 
+  - Line item price + compare-at + discounts 
+  - Cart note + subtotal + checkout 
 {% endcomment %}
 
 
-{{ 'cart.css' |  asset_url |  stylesheet_tag }}
+{{ 'cart.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'cart.js' |  asset_url }}" defer></script>
 
 <section class="cart-page" data-cart-page>
@@ -42,7 +42,11 @@
       </div>
     {% else %}
 
-      <form action="{{ routes.cart_url }}" method="post" novalidate data-cart-form>
+      <form
+        action="{{ routes.cart_url }}"
+        method="post"
+        novalidate
+        data-cart-form>
         <div class="cart-grid">
           <!-- LEFT: ITEMS -->
           <div class="cart-card">
@@ -50,7 +54,10 @@
               <h2>Items</h2>
               <div class="cart-actions">
                 <a class="btn btn--ghost" href="{{ routes.all_products_collection_url }}">Continue shopping</a>
-                <button class="btn update-hidden" type="submit" name="update">
+                <button
+                  class="btn update-hidden"
+                  type="submit"
+                  name="update">
                   {{ 'cart.update' | t }}
                 </button>
               </div>
@@ -59,7 +66,10 @@
             <div class="cart-items">
               {% for item in cart.items %}
                 <div class="cart-item" data-line="{{ forloop.index }}">
-                  <a class="cart-item__img" href="{{ item.url }}" aria-label="{{ item.product.title | escape }}">
+                  <a
+                    class="cart-item__img"
+                    href="{{ item.url }}"
+                    aria-label="{{ item.product.title | escape }}">
                     {% if item.image %}
                       <img
                         src="{{ item.image | image_url: width: 220 }}"
@@ -72,8 +82,7 @@
                         width="92"
                         height="92"
                         loading="lazy"
-                        alt="{{ item.image.alt | default: item.product.title | escape }}"
-                      >
+                        alt="{{ item.image.alt | default: item.product.title | escape }}">
                     {% endif %}
                   </a>
 
@@ -81,9 +90,9 @@
                     <h3 class="cart-item__title">
                       <a href="{{ item.url }}">{{ item.product.title }}</a>
                     </h3>
-                    
+
                     <p style="color:rgb(131, 114, 114)">
-                      {{ item.product.description  }}
+                      {{ item.product.description }}
                     </p>
 
                     {% if item.variant.title and item.variant.title != 'Default Title' %}
@@ -138,8 +147,15 @@
                     </div>
 
                     <div>
-                      <div class="qty" role="group" aria-label="Quantity controls">
-                        <button type="button" class="qty-btn" data-qty-minus aria-label="Decrease quantity">−</button>
+                      <div
+                        class="qty"
+                        role="group"
+                        aria-label="Quantity controls">
+                        <button
+                          type="button"
+                          class="qty-btn"
+                          data-qty-minus
+                          aria-label="Decrease quantity">−</button>
                         <input
                           type="number"
                           inputmode="numeric"
@@ -147,9 +163,12 @@
                           value="{{ item.quantity }}"
                           min="0"
                           aria-label="Quantity"
-                          data-qty-input
-                        >
-                        <button type="button" class="qty-btn" data-qty-plus aria-label="Increase quantity">+</button>
+                          data-qty-input>
+                        <button
+                          type="button"
+                          class="qty-btn"
+                          data-qty-plus
+                          aria-label="Increase quantity">+</button>
                       </div>
 
                       <div class="item-links">
@@ -199,17 +218,26 @@
 
               <div class="note">
                 <label for="CartNote">Order note (optional)</label>
-                <textarea id="CartNote" name="note" placeholder="Add instructions for your order...">{{ cart.note }}</textarea>
+                <textarea
+                  id="CartNote"
+                  name="note"
+                  placeholder="Add instructions for your order...">{{ cart.note }}</textarea>
               </div>
 
               <div class="checkout-actions">
-                <button class="btn btn--primary" type="submit" name="checkout">
+                <button
+                  class="btn btn--primary"
+                  type="submit"
+                  name="checkout">
                   {{ 'cart.checkout' | t }}
                 </button>
 
-                <button class="btn" type="submit" name="update">
+                <button
+                  class="btn"
+                  type="submit"
+                  name="update">
                   {{ 'cart.update' | t }}
-                </button> 
+                </button>
 
                 {% if additional_checkout_buttons %}
                   <div class="additional-checkout-buttons">
@@ -224,14 +252,13 @@
       </form>
 
 
-
     {% endif %}
   </div>
 </section>
 
 {% schema %}
-{
-  "name": "t:general.cart",
-  "settings": []
-}
+  {
+    "name": "t:general.cart",
+    "settings": []
+  }
 {% endschema %}

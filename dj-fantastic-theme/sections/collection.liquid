@@ -1,5 +1,5 @@
-{% comment %}
-  Main collection with Grid/List toggle
+{% comment %} 
+  Main collection with Grid/List toggle 
 {% endcomment %}
 
 {{ 'collection-toggle.css' | asset_url | stylesheet_tag }}
@@ -16,17 +16,19 @@
 -%}
 
 {{ 'cart-drawer.css' | asset_url | stylesheet_tag }}
-  <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
-  {% render 'cart-drawer' %} 
+<script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
+{% render 'cart-drawer' %}
 <div
   class="ct-collection"
   data-collection-toggle
-  data-default-view="{{ layout_default }}"
->
+  data-default-view="{{ layout_default }}">
   <div class="ct-toolbar">
     <div class="ct-toolbar__left">
       {%- if section.settings.show_filter_button -%}
-        <button type="button" class="ct-btn ct-btn--ghost ct-filter-btn" data-open-filters>
+        <button
+          type="button"
+          class="ct-btn ct-btn--ghost ct-filter-btn"
+          data-open-filters>
           <span class="ct-icon" aria-hidden="true">⎘</span>
           <span>Filter</span>
         </button>
@@ -45,9 +47,16 @@
       {%- if section.settings.show_sort -%}
         <div class="ct-sort">
           <label class="ct-sort__label" for="SortBy">Sort by:</label>
-          <select id="SortBy" class="ct-sort__select" name="sort_by" data-sort-by>
+          <select
+            id="SortBy"
+            class="ct-sort__select"
+            name="sort_by"
+            data-sort-by>
             {%- for option in collection.sort_options -%}
-              <option value="{{ option.value }}" {% if option.value == collection.sort_by %}selected{% endif %}>
+              <option
+                value="{{ option.value }}"
+                {% if option.value == collection.sort_by %}
+                selected{% endif %}>
                 {{ option.name }}
               </option>
             {%- endfor -%}
@@ -61,16 +70,49 @@
           class="ct-view__btn"
           aria-label="List view"
           aria-pressed="false"
-          data-view-btn="list"
-        >
+          data-view-btn="list">
           <!-- list icon -->
-          <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
-            <rect x="2" y="3" width="3" height="3" rx="0.6"></rect>
-            <rect x="7" y="3.6" width="9" height="1.8" rx="0.9"></rect>
-            <rect x="2" y="7.5" width="3" height="3" rx="0.6"></rect>
-            <rect x="7" y="8.1" width="9" height="1.8" rx="0.9"></rect>
-            <rect x="2" y="12" width="3" height="3" rx="0.6"></rect>
-            <rect x="7" y="12.6" width="9" height="1.8" rx="0.9"></rect>
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 18 18"
+            aria-hidden="true">
+            <rect
+              x="2"
+              y="3"
+              width="3"
+              height="3"
+              rx="0.6"></rect>
+            <rect
+              x="7"
+              y="3.6"
+              width="9"
+              height="1.8"
+              rx="0.9"></rect>
+            <rect
+              x="2"
+              y="7.5"
+              width="3"
+              height="3"
+              rx="0.6"></rect>
+            <rect
+              x="7"
+              y="8.1"
+              width="9"
+              height="1.8"
+              rx="0.9"></rect>
+            <rect
+              x="2"
+              y="12"
+              width="3"
+              height="3"
+              rx="0.6"></rect>
+            <rect
+              x="7"
+              y="12.6"
+              width="9"
+              height="1.8"
+              rx="0.9"></rect>
           </svg>
         </button>
 
@@ -79,14 +121,37 @@
           class="ct-view__btn"
           aria-label="Grid view"
           aria-pressed="true"
-          data-view-btn="grid"
-        >
+          data-view-btn="grid">
           <!-- grid icon -->
-          <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
-            <rect x="2" y="2" width="6" height="6" rx="1"></rect>
-            <rect x="10" y="2" width="6" height="6" rx="1"></rect>
-            <rect x="2" y="10" width="6" height="6" rx="1"></rect>
-            <rect x="10" y="10" width="6" height="6" rx="1"></rect>
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 18 18"
+            aria-hidden="true">
+            <rect
+              x="2"
+              y="2"
+              width="6"
+              height="6"
+              rx="1"></rect>
+            <rect
+              x="10"
+              y="2"
+              width="6"
+              height="6"
+              rx="1"></rect>
+            <rect
+              x="2"
+              y="10"
+              width="6"
+              height="6"
+              rx="1"></rect>
+            <rect
+              x="10"
+              y="10"
+              width="6"
+              height="6"
+              rx="1"></rect>
           </svg>
         </button>
       </div>
@@ -97,7 +162,10 @@
 
     <div class="ct-products" data-products-container>
       {%- for product in collection.products -%}
-        <article class="ct-card" data-product-card data-product-handle="{{ product.handle }}">
+        <article
+          class="ct-card"
+          data-product-card
+          data-product-handle="{{ product.handle }}">
           <a class="ct-card__media" href="{{ product.url }}">
             {%- if product.featured_image -%}
               {{ product.featured_image | image_url: width: 900 | image_tag: loading: 'lazy', class: 'ct-card__img', alt: product.title }}
@@ -154,24 +222,54 @@
 
               <div class="ct-stock">
                 <span class="ct-dot {% if product.available %}ct-dot--in{% else %}ct-dot--out{% endif %}"></span>
-                <span>{% if product.available %}In stock{% else %}Out of stock{% endif %}</span>
+                <span>
+                  {% if product.available %}In stock{% else %}Out of stock{% endif %}
+                </span>
               </div>
             </div>
 
             <div class="ct-card__actions">
               <div class="ct-qty" aria-label="Quantity selector">
-                <button class="ct-qty__btn" type="button" data-qty-minus aria-label="Decrease quantity">−</button>
-                <input class="ct-qty__input" type="number" min="1" value="1" inputmode="numeric" data-qty-input aria-label="Quantity">
-                <button class="ct-qty__btn" type="button" data-qty-plus aria-label="Increase quantity">+</button>
+                <button
+                  class="ct-qty__btn"
+                  type="button"
+                  data-qty-minus
+                  aria-label="Decrease quantity">−</button>
+                <input
+                  class="ct-qty__input"
+                  type="number"
+                  min="1"
+                  value="1"
+                  inputmode="numeric"
+                  data-qty-input
+                  aria-label="Quantity">
+                <button
+                  class="ct-qty__btn"
+                  type="button"
+                  data-qty-plus
+                  aria-label="Increase quantity">+</button>
               </div>
 
               {%- if product.available == false -%}
-                <button class="ct-btn ct-btn--primary" type="button" disabled>Sold out</button>
+                <button
+                  class="ct-btn ct-btn--primary"
+                  type="button"
+                  disabled>Sold out</button>
               {%- else -%}
                 {%- if product.has_only_default_variant -%}
-                  <form method="post" action="/cart/add" class="ct-atc">
-                    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-                    <input type="hidden" name="quantity" value="1" data-form-qty>
+                  <form
+                    method="post"
+                    action="/cart/add"
+                    class="ct-atc">
+                    <input
+                      type="hidden"
+                      name="id"
+                      value="{{ product.selected_or_first_available_variant.id }}">
+                    <input
+                      type="hidden"
+                      name="quantity"
+                      value="1"
+                      data-form-qty>
                     <button type="submit" class="ct-btn ct-btn--primary">Add to cart</button>
                   </form>
                 {%- else -%}
@@ -180,7 +278,11 @@
               {%- endif -%}
 
               {%- if section.settings.show_quick_view -%}
-                <button type="button" class="ct-btn ct-btn--secondary" data-quick-view data-product-url="{{ product.url }}">Quick view</button>
+                <button
+                  type="button"
+                  class="ct-btn ct-btn--secondary"
+                  data-quick-view
+                  data-product-url="{{ product.url }}">Quick view</button>
               {%- endif -%}
             </div>
           </div>
@@ -189,7 +291,10 @@
     </div>
 
     {%- if paginate.pages > 1 -%}
-      <nav class="ct-pagination" role="navigation" aria-label="Pagination">
+      <nav
+        class="ct-pagination"
+        role="navigation"
+        aria-label="Pagination">
         {%- if paginate.previous -%}
           <a class="ct-page" href="{{ paginate.previous.url }}">←</a>
         {%- else -%}
@@ -219,12 +324,17 @@
 <!-- Related Collections Section -->
 <div class="related-collections">
   <h2 class="related-collections__title">Related collections</h2>
-  
+
   <div class="related-collections__list">
     {%- for collection in collections -%}
       <div class="related-collections__item">
         <a href="{{ collection.url }}" class="related-collections__link">
-          <img src="{{ collection.image | img_url: 'medium' }}" alt="{{ collection.title }}" class="related-collections__image" width="100%" height="200px"/>
+          <img
+            src="{{ collection.image | img_url: 'medium' }}"
+            alt="{{ collection.title }}"
+            class="related-collections__image"
+            width="100%"
+            height="200px" />
           <div class="related-collections__details">
             <span class="related-collections__name">{{ collection.title }}</span>
             <span class="related-collections__item-count">{{ collection.products_count }} items</span>
@@ -257,12 +367,12 @@
   </div>
   <div class="promotional-banner__image">
     {% if section.blocks.settings.mini_img_1 != blank %}
-        {{ section.block.settings.mini_img_1 | image_url: width: 120 | image_tag: class: 'hvMini__img', loading: 'lazy' }}
+      {{ section.block.settings.mini_img_1 | image_url: width: 120 | image_tag: class: 'hvMini__img', loading: 'lazy' }}
     {% endif %}
   </div>
 </div>
 <style>
-    /* Related Collections Section */
+  /* Related Collections Section */
   .related-collections {
     margin: 40px 0;
     padding: 20px;
@@ -398,26 +508,26 @@
       const qtyInput = card.querySelector('[data-qty-input]');
       const formQty = card.querySelector('form.ct-atc [data-form-qty]');
       if (!qtyInput || !formQty) return;
-
+  
       const q = Math.max(1, parseInt(qtyInput.value || '1', 10));
       qtyInput.value = String(q);
       formQty.value = String(q);
     };
-
+  
     // Plus / minus buttons
     document.addEventListener('click', (e) => {
       const card = e.target.closest('[data-product-card]');
       if (!card) return;
-
+  
       const qtyInput = card.querySelector('[data-qty-input]');
       if (!qtyInput) return;
-
+  
       if (e.target.matches('[data-qty-plus]')) {
         e.preventDefault();
         qtyInput.value = String((parseInt(qtyInput.value || '1', 10) || 1) + 1);
         syncQtyToForm(card);
       }
-
+  
       if (e.target.matches('[data-qty-minus]')) {
         e.preventDefault();
         const next = (parseInt(qtyInput.value || '1', 10) || 1) - 1;
@@ -425,14 +535,14 @@
         syncQtyToForm(card);
       }
     });
-
+  
     // Typing directly into qty input
     document.addEventListener('input', (e) => {
       if (!e.target.matches('[data-qty-input]')) return;
       const card = e.target.closest('[data-product-card]');
       syncQtyToForm(card);
     });
-
+  
     // Before submit, ensure the hidden quantity matches (important)
     document.addEventListener('submit', (e) => {
       const form = e.target;
@@ -443,33 +553,82 @@
   });
 </script>
 {% schema %}
-{
-  "name": "Main collection",
-  "settings": [
-    { "type": "range", "id": "products_per_page", "min": 8, "max": 48, "step": 4, "default": 12, "label": "Products per page" },
-    { "type": "select", "id": "default_view", "label": "Default view", "default": "grid",
-      "options": [
-        { "value": "grid", "label": "Grid" },
-        { "value": "list", "label": "List" }
-      ]
-    },
-    { "type": "checkbox", "id": "show_sort", "default": true, "label": "Show sort dropdown" },
-    { "type": "checkbox", "id": "show_filter_button", "default": true, "label": "Show filter button (UI only)" },
-    { "type": "checkbox", "id": "show_excerpt", "default": true, "label": "Show description excerpt (list looks better with this)" },
-    { "type": "checkbox", "id": "show_quick_view", "default": true, "label": "Show quick view button (UI only)" },
-    { "type": "image_picker", "id": "mini_img_1", "label": "Mini 1 image" },
-  ],
-  "blocks": [
-    {
-      "type": "bundle",
-      "name": "Bundle tile",
-      "settings": [
-        { "type": "image_picker", "id": "mini_img_1", "label": "Mini 1 image" },
-      ]
-    }
-  ],
-  "presets": [
-    { "name": "Main collection", "blocks": [{ "type": "bundle" }] }
-  ]
-}
+  {
+    "name": "Main collection",
+    "settings": [
+      {
+        "type": "range",
+        "id": "products_per_page",
+        "min": 8,
+        "max": 48,
+        "step": 4,
+        "default": 12,
+        "label": "Products per page"
+      },
+      {
+        "type": "select",
+        "id": "default_view",
+        "label": "Default view",
+        "default": "grid",
+        "options": [
+          {
+            "value": "grid",
+            "label": "Grid"
+          }, {
+            "value": "list",
+            "label": "List"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "show_sort",
+        "default": true,
+        "label": "Show sort dropdown"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_filter_button",
+        "default": true,
+        "label": "Show filter button (UI only)"
+      }, {
+        "type": "checkbox",
+        "id": "show_excerpt",
+        "default": true,
+        "label": "Show description excerpt (list looks better with this)"
+      }, {
+        "type": "checkbox",
+        "id": "show_quick_view",
+        "default": true,
+        "label": "Show quick view button (UI only)"
+      }, {
+        "type": "image_picker",
+        "id": "mini_img_1",
+        "label": "Mini 1 image"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "bundle",
+        "name": "Bundle tile",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "mini_img_1",
+            "label": "Mini 1 image"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Main collection",
+        "blocks": [
+          {
+            "type": "bundle"
+          }
+        ]
+      }
+    ]
+  }
 {% endschema %}

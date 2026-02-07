@@ -6,8 +6,15 @@
     <h2 class="hv__title" style="text-align:center;">{{ section.settings.heading | escape }}</h2>
 
     <div class="hvSlider">
-      <button class="hvNav hvNav--prev" type="button" data-hv-prev aria-label="Previous">‹</button>
-      <div class="hvTrack" data-hv-track style="grid-auto-columns:minmax(260px, 1fr);">
+      <button
+        class="hvNav hvNav--prev"
+        type="button"
+        data-hv-prev
+        aria-label="Previous">‹</button>
+      <div
+        class="hvTrack"
+        data-hv-track
+        style="grid-auto-columns:minmax(260px, 1fr);">
         {% for block in section.blocks %}
           {% if block.type == 'cat' %}
             <div class="hvSlide">
@@ -16,7 +23,7 @@
                   <h3 class="hvCatCard__h">{{ block.settings.title | escape }}</h3>
 
                   {% if block.settings.imagestrip != blank %}
-                    {{ block.settings.imagestrip | image_url: width: 520 | image_tag: loading:'lazy' }}
+                    {{ block.settings.imagestrip | image_url: width: 520 | image_tag: loading: 'lazy' }}
                   {% endif %}
 
                   {% if block.settings.links != blank %}
@@ -36,45 +43,100 @@
           {% endif %}
         {% endfor %}
       </div>
-      <button class="hvNav hvNav--next" type="button" data-hv-next aria-label="Next">›</button>
+      <button
+        class="hvNav hvNav--next"
+        type="button"
+        data-hv-next
+        aria-label="Next">›</button>
     </div>
   </div>
 </section>
 
 {% schema %}
-{
-  "name": "Category cards carousel",
-  "settings": [
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Shop conveniently in the online supermarket" }
-  ],
-  "blocks": [
-    {
-      "type": "cat",
-      "name": "Category card",
-      "settings": [
-        { "type": "text", "id": "title", "label": "Title", "default": "Fruit & Vegetables" },
-        { "type": "image_picker", "id": "imagestrip", "label": "Top small images strip" },
-        {
-          "type": "select",
-          "id": "bg",
-          "label": "Background style",
-          "default": "a",
-          "options": [
-            { "value": "a", "label": "Blue" },
-            { "value": "b", "label": "Beige" },
-            { "value": "c", "label": "Green" },
-            { "value": "d", "label": "Mint" },
-            { "value": "e", "label": "Lavender" },
-            { "value": "f", "label": "Light blue" }
-          ]
-        },
-        { "type": "richtext", "id": "links", "label": "Bullet links (use <ul><li>..)", "default": "<ul><li><a href=\"#\">Item</a></li><li><a href=\"#\">Item</a></li></ul>" },
-        { "type": "url", "id": "link", "label": "More button link" }
-      ]
-    }
-  ],
-  "presets": [
-    { "name": "Category cards carousel", "blocks": [{ "type": "cat" }, { "type": "cat" }, { "type": "cat" }, { "type": "cat" }] }
-  ]
-}
+  {
+    "name": "Category cards carousel",
+    "settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading",
+        "default": "Shop conveniently in the online supermarket"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "cat",
+        "name": "Category card",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Fruit & Vegetables"
+          },
+          {
+            "type": "image_picker",
+            "id": "imagestrip",
+            "label": "Top small images strip"
+          },
+          {
+            "type": "select",
+            "id": "bg",
+            "label": "Background style",
+            "default": "a",
+            "options": [
+              {
+                "value": "a",
+                "label": "Blue"
+              },
+              {
+                "value": "b",
+                "label": "Beige"
+              },
+              {
+                "value": "c",
+                "label": "Green"
+              },
+              {
+                "value": "d",
+                "label": "Mint"
+              }, {
+                "value": "e",
+                "label": "Lavender"
+              }, {
+                "value": "f",
+                "label": "Light blue"
+              }
+            ]
+          },
+          {
+            "type": "richtext",
+            "id": "links",
+            "label": "Bullet links (use <ul><li>..)",
+            "default": "<ul><li><a href=\"#\">Item</a></li><li><a href=\"#\">Item</a></li></ul>"
+          }, {
+            "type": "url",
+            "id": "link",
+            "label": "More button link"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Category cards carousel",
+        "blocks": [
+          {
+            "type": "cat"
+          }, {
+            "type": "cat"
+          }, {
+            "type": "cat"
+          }, {
+            "type": "cat"
+          }
+        ]
+      }
+    ]
+  }
 {% endschema %}
