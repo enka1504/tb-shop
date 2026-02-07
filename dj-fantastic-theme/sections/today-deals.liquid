@@ -1,8 +1,8 @@
-{% comment %}
+{% comment %} 
   Today's Deals (Tabbed Collections + Carousel + Quick View Modal)
-  Requires:
-  - assets/todays-deals.css
-  - assets/todays-deals.js
+  Requires: 
+  - assets/todays-deals.css 
+  - assets/todays-deals.js 
 {% endcomment %}
 
 {{ 'today-deals.css' | asset_url | stylesheet_tag }}
@@ -13,14 +13,20 @@
   assign limit = section.settings.products_limit | default: 12
 -%}
 
-<section class="td" data-td-section data-section-id="{{ section_id }}">
+<section
+  class="td"
+  data-td-section
+  data-section-id="{{ section_id }}">
   <div class="page-width td__wrap">
     <header class="td__header">
       {%- if section.settings.heading != blank -%}
         <h2 class="td__title">{{ section.settings.heading | escape }}</h2>
       {%- endif -%}
 
-      <div class="td__tabs" role="tablist" aria-label="Today's deals tabs">
+      <div
+        class="td__tabs"
+        role="tablist"
+        aria-label="Today's deals tabs">
         {%- for block in section.blocks -%}
           {%- if block.type == 'tab' and block.settings.collection != blank -%}
             <button
@@ -32,8 +38,9 @@
               id="td-tab-{{ section_id }}-{{ block.id }}"
               data-td-tab
               data-target="td-panel-{{ section_id }}-{{ block.id }}"
-              {% if forloop.first %}data-active="true"{% endif %}
-            >
+              {% if forloop.first %}
+              data-active="true"
+              {% endif %}>
               {{ block.settings.label | default: block.settings.collection.title | escape }}
             </button>
           {%- endif -%}
@@ -51,11 +58,17 @@
             class="td__panel"
             role="tabpanel"
             aria-labelledby="td-tab-{{ section_id }}-{{ block.id }}"
-            {% if forloop.first %}data-active="true"{% else %}hidden{% endif %}
-            data-td-panel
-          >
+            {% if forloop.first %}
+            data-active="true"
+            {% else %}
+            hidden{% endif %}
+            data-td-panel>
             <div class="td__carousel" data-td-carousel>
-              <button class="td__nav td__nav--prev" type="button" aria-label="Previous" data-td-prev>
+              <button
+                class="td__nav td__nav--prev"
+                type="button"
+                aria-label="Previous"
+                data-td-prev>
                 ‹
               </button>
 
@@ -91,8 +104,7 @@
                     class="td__card"
                     data-product-handle="{{ product.handle }}"
                     data-product-url="{{ product.url }}"
-                    data-initial-variant="{{ v.id }}"
-                  >
+                    data-initial-variant="{{ v.id }}">
                     <div class="td__media">
                       {%- if badge_text != blank -%}
                         <span class="td__badge {% if badge_text == 'Deal' %}td__badge--deal{% endif %}">
@@ -106,19 +118,21 @@
                         class="td__eye"
                         type="button"
                         aria-label="Quick view"
-                        data-td-eye
-                      >
+                        data-td-eye>
                         <!-- simple eye icon -->
-                        <svg viewBox="0 0 24 24" aria-hidden="true" class="td__eyeIcon">
-                          <path d="M12 5c5.5 0 9.7 4.5 10.9 6.1.1.1.1.3 0 .4C21.7 13.1 17.5 17.6 12 17.6S2.3 13.1 1.1 11.5c-.1-.1-.1-.3 0-.4C2.3 9.5 6.5 5 12 5Zm0 2c-3.9 0-7.2 3-8.6 4.8C4.8 13.6 8.1 16.6 12 16.6s7.2-3 8.6-4.8C19.2 10 15.9 7 12 7Zm0 1.8a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 1.6a1.4 1.4 0 1 0 0 2.8 1.4 1.4 0 0 0 0-2.8Z"/>
+                        <svg
+                          viewBox="0 0 24 24"
+                          aria-hidden="true"
+                          class="td__eyeIcon">
+                          <path d="M12 5c5.5 0 9.7 4.5 10.9 6.1.1.1.1.3 0 .4C21.7 13.1 17.5 17.6 12 17.6S2.3 13.1 1.1 11.5c-.1-.1-.1-.3 0-.4C2.3 9.5 6.5 5 12 5Zm0 2c-3.9 0-7.2 3-8.6 4.8C4.8 13.6 8.1 16.6 12 16.6s7.2-3 8.6-4.8C19.2 10 15.9 7 12 7Zm0 1.8a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 1.6a1.4 1.4 0 1 0 0 2.8 1.4 1.4 0 0 0 0-2.8Z" />
                         </svg>
                       </button>
 
                       <a class="td__mediaLink" href="{{ product.url }}">
                         {%- if product.featured_image -%}
                           {{ product.featured_image
-                            | image_url: width: 900
-                            | image_tag: loading: 'lazy', class: 'td__img', alt: product.title
+ | image_url: width: 900
+ | image_tag: loading: 'lazy', class: 'td__img', alt: product.title
                           }}
                         {%- else -%}
                           <div class="td__img td__img--placeholder"></div>
@@ -166,15 +180,30 @@
                         </div>
 
                         {%- if section.settings.show_shipping_note -%}
-                          <div class="td__ship">Receives in <strong>{{ section.settings.shipping_days }}</strong>.</div>
+                          <div class="td__ship">Receives in
+                            <strong>{{ section.settings.shipping_days }}</strong>.</div>
                         {%- endif -%}
                       </div>
 
                       <div class="td__actions">
                         <div class="td__qty" data-td-qty>
-                          <button class="td__qtyBtn" type="button" data-qty-minus aria-label="Decrease quantity">−</button>
-                          <input class="td__qtyInput" type="number" min="1" value="1" inputmode="numeric" aria-label="Quantity">
-                          <button class="td__qtyBtn" type="button" data-qty-plus aria-label="Increase quantity">+</button>
+                          <button
+                            class="td__qtyBtn"
+                            type="button"
+                            data-qty-minus
+                            aria-label="Decrease quantity">−</button>
+                          <input
+                            class="td__qtyInput"
+                            type="number"
+                            min="1"
+                            value="1"
+                            inputmode="numeric"
+                            aria-label="Quantity">
+                          <button
+                            class="td__qtyBtn"
+                            type="button"
+                            data-qty-plus
+                            aria-label="Increase quantity">+</button>
                         </div>
 
                         <button
@@ -182,13 +211,16 @@
                           type="button"
                           data-td-add
                           data-variant-id="{{ v.id }}"
-                          {% unless available %}disabled{% endunless %}
-                        >
+                          {% unless available %}
+                          disabled{% endunless %}>
                           Add to cart
                         </button>
                       </div>
 
-                      <div class="td__msg" aria-live="polite" data-td-msg></div>
+                      <div
+                        class="td__msg"
+                        aria-live="polite"
+                        data-td-msg></div>
                     </div>
                   </article>
                 {%- else -%}
@@ -196,7 +228,11 @@
                 {%- endfor -%}
               </div>
 
-              <button class="td__nav td__nav--next" type="button" aria-label="Next" data-td-next>
+              <button
+                class="td__nav td__nav--next"
+                type="button"
+                aria-label="Next"
+                data-td-next>
                 ›
               </button>
             </div>
@@ -207,22 +243,44 @@
   </div>
 
   <!-- QUICK VIEW MODAL (one per section) -->
-  <div class="tdqv" data-tdqv hidden>
+  <div
+    class="tdqv"
+    data-tdqv
+    hidden>
     <div class="tdqv__overlay" data-tdqv-close></div>
 
-    <div class="tdqv__panel" role="dialog" aria-modal="true" aria-label="Quick view">
-      <button class="tdqv__close" type="button" aria-label="Close" data-tdqv-close>×</button>
+    <div
+      class="tdqv__panel"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Quick view">
+      <button
+        class="tdqv__close"
+        type="button"
+        aria-label="Close"
+        data-tdqv-close>×</button>
 
       <div class="tdqv__content">
         <div class="tdqv__left">
           <div class="tdqv__mainImgWrap">
-            <img class="tdqv__mainImg" alt="" data-tdqv-main-img>
+            <img
+              class="tdqv__mainImg"
+              alt=""
+              data-tdqv-main-img>
           </div>
 
           <div class="tdqv__thumbRow">
-            <button class="tdqv__thumbNav" type="button" aria-label="Previous image" data-tdqv-prev>‹</button>
+            <button
+              class="tdqv__thumbNav"
+              type="button"
+              aria-label="Previous image"
+              data-tdqv-prev>‹</button>
             <div class="tdqv__thumbs" data-tdqv-thumbs></div>
-            <button class="tdqv__thumbNav" type="button" aria-label="Next image" data-tdqv-next>›</button>
+            <button
+              class="tdqv__thumbNav"
+              type="button"
+              aria-label="Next image"
+              data-tdqv-next>›</button>
           </div>
         </div>
 
@@ -237,31 +295,69 @@
 
           <div class="tdqv__priceRow">
             <span class="tdqv__price" data-tdqv-price></span>
-            <span class="tdqv__compare" data-tdqv-compare hidden></span>
-            <span class="tdqv__off" data-tdqv-off hidden></span>
+            <span
+              class="tdqv__compare"
+              data-tdqv-compare
+              hidden></span>
+            <span
+              class="tdqv__off"
+              data-tdqv-off
+              hidden></span>
           </div>
 
-          <div class="tdqv__variantRow" data-tdqv-variant-row hidden>
+          <div
+            class="tdqv__variantRow"
+            data-tdqv-variant-row
+            hidden>
             <label class="tdqv__label" for="tdqvVariant">Variant</label>
-            <select id="tdqvVariant" class="tdqv__select" data-tdqv-variant></select>
+            <select
+              id="tdqvVariant"
+              class="tdqv__select"
+              data-tdqv-variant></select>
           </div>
 
           <div class="tdqv__ctaRow">
             <div class="tdqv__qty" data-tdqv-qty>
-              <button class="tdqv__qtyBtn" type="button" data-tdqv-minus aria-label="Decrease quantity">−</button>
-              <input class="tdqv__qtyInput" type="number" min="1" value="1" inputmode="numeric" aria-label="Quantity">
-              <button class="tdqv__qtyBtn" type="button" data-tdqv-plus aria-label="Increase quantity">+</button>
+              <button
+                class="tdqv__qtyBtn"
+                type="button"
+                data-tdqv-minus
+                aria-label="Decrease quantity">−</button>
+              <input
+                class="tdqv__qtyInput"
+                type="number"
+                min="1"
+                value="1"
+                inputmode="numeric"
+                aria-label="Quantity">
+              <button
+                class="tdqv__qtyBtn"
+                type="button"
+                data-tdqv-plus
+                aria-label="Increase quantity">+</button>
             </div>
 
-            <button class="tdqv__add" type="button" data-tdqv-add>Add to cart</button>
+            <button
+              class="tdqv__add"
+              type="button"
+              data-tdqv-add>Add to cart</button>
           </div>
 
-          <button class="tdqv__buy" type="button" data-tdqv-buy>Buy it now</button>
+          <button
+            class="tdqv__buy"
+            type="button"
+            data-tdqv-buy>Buy it now</button>
 
           <div class="tdqv__desc" data-tdqv-desc></div>
-          <a class="tdqv__viewLink" href="#" data-tdqv-link>View full details →</a>
+          <a
+            class="tdqv__viewLink"
+            href="#"
+            data-tdqv-link>View full details →</a>
 
-          <div class="tdqv__msg" aria-live="polite" data-tdqv-msg></div>
+          <div
+            class="tdqv__msg"
+            aria-live="polite"
+            data-tdqv-msg></div>
         </div>
       </div>
     </div>
@@ -269,26 +365,65 @@
 </section>
 
 {% schema %}
-{
-  "name": "Today's Deals",
-  "settings": [
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Today's Deals" },
-    { "type": "range", "id": "products_limit", "label": "Products per tab", "min": 6, "max": 24, "step": 1, "default": 12 },
-    { "type": "checkbox", "id": "show_rating", "label": "Show rating placeholder", "default": true },
-    { "type": "checkbox", "id": "show_shipping_note", "label": "Show shipping note", "default": true },
-    { "type": "text", "id": "shipping_days", "label": "Shipping text (example: 5 days)", "default": "5 days" }
-  ],
-  "blocks": [
-    {
-      "type": "tab",
-      "name": "Tab (collection)",
-      "limit": 5,
-      "settings": [
-        { "type": "text", "id": "label", "label": "Tab label", "default": "Cookies" },
-        { "type": "collection", "id": "collection", "label": "Collection" }
-      ]
-    }
-  ],
-  "presets": [{ "name": "Today's Deals" }]
-}
+  {
+    "name": "Today's Deals",
+    "settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading",
+        "default": "Today's Deals"
+      },
+      {
+        "type": "range",
+        "id": "products_limit",
+        "label": "Products per tab",
+        "min": 6,
+        "max": 24,
+        "step": 1,
+        "default": 12
+      },
+      {
+        "type": "checkbox",
+        "id": "show_rating",
+        "label": "Show rating placeholder",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_shipping_note",
+        "label": "Show shipping note",
+        "default": true
+      }, {
+        "type": "text",
+        "id": "shipping_days",
+        "label": "Shipping text (example: 5 days)",
+        "default": "5 days"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "tab",
+        "name": "Tab (collection)",
+        "limit": 5,
+        "settings": [
+          {
+            "type": "text",
+            "id": "label",
+            "label": "Tab label",
+            "default": "Cookies"
+          }, {
+            "type": "collection",
+            "id": "collection",
+            "label": "Collection"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Today's Deals"
+      }
+    ]
+  }
 {% endschema %}

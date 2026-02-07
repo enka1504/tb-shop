@@ -6,7 +6,9 @@
     <div class="hv__topRow">
       <div>
         <h2 class="hv__title" style="margin:0;">{{ section.settings.heading | escape }}</h2>
-        {% if section.settings.sub != blank %}<div class="hv__sub">{{ section.settings.sub }}</div>{% endif %}
+        {% if section.settings.sub != blank %}
+          <div class="hv__sub">{{ section.settings.sub }}</div>
+        {% endif %}
       </div>
       {% if section.settings.view_all != blank %}
         <a class="hv__viewAll" href="{{ section.settings.view_all }}">View All »</a>
@@ -16,13 +18,20 @@
     {% assign b = section.settings.blog %}
     {% if b != blank %}
       <div class="hvSlider">
-        <button class="hvNav hvNav--prev" type="button" data-hv-prev aria-label="Previous">‹</button>
-        <div class="hvTrack" data-hv-track style="grid-auto-columns:minmax(300px, 1fr);">
+        <button
+          class="hvNav hvNav--prev"
+          type="button"
+          data-hv-prev
+          aria-label="Previous">‹</button>
+        <div
+          class="hvTrack"
+          data-hv-track
+          style="grid-auto-columns:minmax(300px, 1fr);">
           {% for article in b.articles limit: section.settings.limit %}
             <div class="hvSlide">
               <article class="hvRecipe">
                 {% if article.image %}
-                  {{ article.image | image_url: width: 1200 | image_tag: class:'hvRecipe__img', loading:'lazy', alt: article.title }}
+                  {{ article.image | image_url: width: 1200 | image_tag: class: 'hvRecipe__img', loading: 'lazy', alt: article.title }}
                 {% endif %}
                 <div class="hvRecipe__body">
                   <h3 class="hvCard__h">{{ article.title }}</h3>
@@ -43,7 +52,11 @@
             </div>
           {% endfor %}
         </div>
-        <button class="hvNav hvNav--next" type="button" data-hv-next aria-label="Next">›</button>
+        <button
+          class="hvNav hvNav--next"
+          type="button"
+          data-hv-next
+          aria-label="Next">›</button>
       </div>
     {% else %}
       <div class="hvCard hvCard__pad">Select a blog in this section settings.</div>
@@ -52,20 +65,64 @@
 </section>
 
 {% schema %}
-{
-  "name": "Recipe carousel",
-  "settings": [
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Recipes" },
-    { "type": "text", "id": "sub", "label": "Subheading", "default": "Subheading" },
-    { "type": "blog", "id": "blog", "label": "Blog (recipes)" },
-    { "type": "range", "id": "limit", "label": "Articles", "min": 4, "max": 12, "step": 1, "default": 5 },
-    { "type": "url", "id": "view_all", "label": "View all link" },
-
-    { "type": "checkbox", "id": "show_time_chips", "label": "Show time chips (static)", "default": true },
-    { "type": "text", "id": "prep_default", "label": "Prep default", "default": "15 mins" },
-    { "type": "text", "id": "cook_default", "label": "Cook default", "default": "20 mins" },
-    { "type": "text", "id": "total_default", "label": "Total default", "default": "35 mins" }
-  ],
-  "presets": [{ "name": "Recipe carousel" }]
-}
+  {
+    "name": "Recipe carousel",
+    "settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading",
+        "default": "Recipes"
+      },
+      {
+        "type": "text",
+        "id": "sub",
+        "label": "Subheading",
+        "default": "Subheading"
+      },
+      {
+        "type": "blog",
+        "id": "blog",
+        "label": "Blog (recipes)"
+      },
+      {
+        "type": "range",
+        "id": "limit",
+        "label": "Articles",
+        "min": 4,
+        "max": 12,
+        "step": 1,
+        "default": 5
+      }, {
+        "type": "url",
+        "id": "view_all",
+        "label": "View all link"
+      }, {
+        "type": "checkbox",
+        "id": "show_time_chips",
+        "label": "Show time chips (static)",
+        "default": true
+      }, {
+        "type": "text",
+        "id": "prep_default",
+        "label": "Prep default",
+        "default": "15 mins"
+      }, {
+        "type": "text",
+        "id": "cook_default",
+        "label": "Cook default",
+        "default": "20 mins"
+      }, {
+        "type": "text",
+        "id": "total_default",
+        "label": "Total default",
+        "default": "35 mins"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Recipe carousel"
+      }
+    ]
+  }
 {% endschema %}

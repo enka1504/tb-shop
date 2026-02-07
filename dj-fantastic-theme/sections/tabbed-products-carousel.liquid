@@ -10,10 +10,15 @@
       {% endif %}
     </div>
 
-    <div class="hvTabsRow" role="tablist" aria-label="Product tabs">
+    <div
+      class="hvTabsRow"
+      role="tablist"
+      aria-label="Product tabs">
       {% for block in section.blocks %}
         {% if block.type == 'tab' and block.settings.collection != blank %}
-          <button class="hvTab" type="button"
+          <button
+            class="hvTab"
+            type="button"
             data-hv-tab="{{ block.id }}"
             aria-selected="false"
             {{ block.shopify_attributes }}>
@@ -35,7 +40,7 @@
           {% endif %}
         </div>
         {% if section.settings.promo_image != blank %}
-          {{ section.settings.promo_image | image_url: width: 900 | image_tag: class:'hvPromo__img', loading:'lazy' }}
+          {{ section.settings.promo_image | image_url: width: 900 | image_tag: class: 'hvPromo__img', loading: 'lazy' }}
         {% endif %}
       </div>
 
@@ -45,13 +50,17 @@
             {% assign col = block.settings.collection %}
             <div data-hv-panel="{{ block.id }}" hidden>
               <div class="hvSlider">
-                <button class="hvNav hvNav--prev" type="button" data-hv-prev aria-label="Previous">‹</button>
+                <button
+                  class="hvNav hvNav--prev"
+                  type="button"
+                  data-hv-prev
+                  aria-label="Previous">‹</button>
                 <div class="hvTrack" data-hv-track>
                   {% for product in col.products limit: section.settings.limit %}
                     {% assign v = product.selected_or_first_available_variant %}
                     {% if v.compare_at_price and v.compare_at_price > v.price %}
                       {% assign has_sale = v.compare_at_price %}
-                    {%endif%}
+                    {% endif %}
                     {% assign pct = 0 %}
                     {% if has_sale %}
                       {% assign diff = v.compare_at_price | minus: v.price %}
@@ -59,10 +68,13 @@
                     {% endif %}
 
                     <div class="hvSlide">
-                      <article class="hvP"
-                        data-product-url="{{ product.url }}">
+                      <article class="hvP" data-product-url="{{ product.url }}">
                         <div class="hvP__media">
-                          <button class="hvP__eye" type="button" aria-label="Quick view" data-hv-eye>👁</button>
+                          <button
+                            class="hvP__eye"
+                            type="button"
+                            aria-label="Quick view"
+                            data-hv-eye>👁</button>
 
                           {% if block.settings.badge_1 != blank or block.settings.badge_2 != blank %}
                             <div class="hvP__badges">
@@ -80,7 +92,7 @@
                           {% endif %}
 
                           {% if product.featured_image %}
-                            {{ product.featured_image | image_url: width: 800 | image_tag: loading:'lazy', alt: product.title }}
+                            {{ product.featured_image | image_url: width: 800 | image_tag: loading: 'lazy', alt: product.title }}
                           {% endif %}
                         </div>
 
@@ -98,7 +110,9 @@
 
                           <div class="hvP__meta">
                             <span class="hvDot"></span>
-                            <span>{% if product.available %}In stock{% else %}Sold out{% endif %}</span>
+                            <span>
+                              {% if product.available %}In stock{% else %}Sold out{% endif %}
+                            </span>
                             {% if section.settings.shipping_note != blank %}
                               <span>• {{ section.settings.shipping_note }}</span>
                             {% endif %}
@@ -106,11 +120,26 @@
 
                           <div class="hvP__actions">
                             <div class="hvQty" data-hv-qty>
-                              <button type="button" data-qty-minus aria-label="Decrease">−</button>
-                              <input type="number" min="1" value="1" />
-                              <button type="button" data-qty-plus aria-label="Increase">+</button>
+                              <button
+                                type="button"
+                                data-qty-minus
+                                aria-label="Decrease">−</button>
+                              <input
+                                type="number"
+                                min="1"
+                                value="1" />
+                              <button
+                                type="button"
+                                data-qty-plus
+                                aria-label="Increase">+</button>
                             </div>
-                            <button class="hvAdd" type="button" data-hv-add data-variant-id="{{ v.id }}" {% unless product.available %}disabled{% endunless %}>
+                            <button
+                              class="hvAdd"
+                              type="button"
+                              data-hv-add
+                              data-variant-id="{{ v.id }}"
+                              {% unless product.available %}
+                              disabled{% endunless %}>
                               Add to cart
                             </button>
                           </div>
@@ -119,7 +148,11 @@
                     </div>
                   {% endfor %}
                 </div>
-                <button class="hvNav hvNav--next" type="button" data-hv-next aria-label="Next">›</button>
+                <button
+                  class="hvNav hvNav--next"
+                  type="button"
+                  data-hv-next
+                  aria-label="Next">›</button>
               </div>
             </div>
           {% endif %}
@@ -130,56 +163,129 @@
 </section>
 
 {% schema %}
-{
-  "name": "Tabbed products carousel",
-  "settings": [
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Fruit & Vegetables" },
-    { "type": "url", "id": "view_all", "label": "View all link" },
-    { "type": "range", "id": "limit", "label": "Products per tab", "min": 4, "max": 12, "step": 1, "default": 8 },
-    { "type": "text", "id": "shipping_note", "label": "Shipping note", "default": "Receives in 5 days." },
-
-    { "type": "text", "id": "promo_title", "label": "Left promo title", "default": "Fresh Vegetables for Everyday Wellness" },
-    { "type": "text", "id": "promo_text", "label": "Left promo text", "default": "promo" },
-    { "type": "text", "id": "promo_button", "label": "Left promo button", "default": "Shop All" },
-    { "type": "url", "id": "promo_link", "label": "Left promo link" },
-    { "type": "image_picker", "id": "promo_image", "label": "Left promo image" }
-  ],
-  "blocks": [
-    {
-      "type": "tab",
-      "name": "Tab (collection)",
-      "settings": [
-        { "type": "collection", "id": "collection", "label": "Collection" },
-        { "type": "text", "id": "label", "label": "Tab label (optional)" },
-        {
-          "type": "select",
-          "id": "badge_1",
-          "label": "Badge 1",
-          "default": "Highly rated",
-          "options": [
-            { "value": "", "label": "None" },
-            { "value": "Highly rated", "label": "Highly rated" },
-            { "value": "Best Buy", "label": "Best Buy" },
-            { "value": "Deal", "label": "Deal" }
-          ]
-        },
-        {
-          "type": "select",
-          "id": "badge_2",
-          "label": "Badge 2",
-          "default": "",
-          "options": [
-            { "value": "", "label": "None" },
-            { "value": "Highly rated", "label": "Highly rated" },
-            { "value": "Best Buy", "label": "Best Buy" },
-            { "value": "Deal", "label": "Deal" }
-          ]
-        }
-      ]
-    }
-  ],
-  "presets": [
-    { "name": "Tabbed products carousel", "blocks": [{ "type": "tab" }, { "type": "tab" }, { "type": "tab" }] }
-  ]
-}
+  {
+    "name": "Tabbed products carousel",
+    "settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading",
+        "default": "Fruit & Vegetables"
+      },
+      {
+        "type": "url",
+        "id": "view_all",
+        "label": "View all link"
+      },
+      {
+        "type": "range",
+        "id": "limit",
+        "label": "Products per tab",
+        "min": 4,
+        "max": 12,
+        "step": 1,
+        "default": 8
+      },
+      {
+        "type": "text",
+        "id": "shipping_note",
+        "label": "Shipping note",
+        "default": "Receives in 5 days."
+      }, {
+        "type": "text",
+        "id": "promo_title",
+        "label": "Left promo title",
+        "default": "Fresh Vegetables for Everyday Wellness"
+      }, {
+        "type": "text",
+        "id": "promo_text",
+        "label": "Left promo text",
+        "default": "promo"
+      }, {
+        "type": "text",
+        "id": "promo_button",
+        "label": "Left promo button",
+        "default": "Shop All"
+      }, {
+        "type": "url",
+        "id": "promo_link",
+        "label": "Left promo link"
+      }, {
+        "type": "image_picker",
+        "id": "promo_image",
+        "label": "Left promo image"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "tab",
+        "name": "Tab (collection)",
+        "settings": [
+          {
+            "type": "collection",
+            "id": "collection",
+            "label": "Collection"
+          }, {
+            "type": "text",
+            "id": "label",
+            "label": "Tab label (optional)"
+          }, {
+            "type": "select",
+            "id": "badge_1",
+            "label": "Badge 1",
+            "default": "Highly rated",
+            "options": [
+              {
+                "value": "",
+                "label": "None"
+              }, {
+                "value": "Highly rated",
+                "label": "Highly rated"
+              }, {
+                "value": "Best Buy",
+                "label": "Best Buy"
+              }, {
+                "value": "Deal",
+                "label": "Deal"
+              }
+            ]
+          }, {
+            "type": "select",
+            "id": "badge_2",
+            "label": "Badge 2",
+            "default": "",
+            "options": [
+              {
+                "value": "",
+                "label": "None"
+              }, {
+                "value": "Highly rated",
+                "label": "Highly rated"
+              }, {
+                "value": "Best Buy",
+                "label": "Best Buy"
+              }, {
+                "value": "Deal",
+                "label": "Deal"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Tabbed products carousel",
+        "blocks": [
+          {
+            "type": "tab"
+          }, {
+            "type": "tab"
+          }, {
+            "type": "tab"
+          }
+        ]
+      }
+    ]
+  }
 {% endschema %}
