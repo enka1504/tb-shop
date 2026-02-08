@@ -4,12 +4,6 @@
     {% # Inlined CSS Variables %}
     {% render 'css-variables' %}
 
-    {% comment %} 
-                                                            Font preloading: 
-                                                            1. Preconnect to font CDN for faster connection 
-                                                            2. Preload only the critical font variant (base weight) 
-                                                            3. Additional variants load on-demand via @font-face 
-                                        {% endcomment %}
     <script src="{{ 'theme-toggle.js' | asset_url }}" defer></script>
 
     {% unless settings.type_primary_font.system? %}
@@ -98,7 +92,7 @@
   {{ content_for_header }}
 </head>
 {% comment %} {{ 'cart-drawer.css' | asset_url | stylesheet_tag }}
-                      <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
+                        <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
   {% render 'cart-drawer' %} {% endcomment %}
 <body>
   {% sections 'header-group' %}
