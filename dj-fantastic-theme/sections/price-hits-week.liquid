@@ -1,12 +1,12 @@
-{% comment %}
-  Price hits of the week
-  - Individual product pickers (blocks)
-  - Carousel + arrows
-  - Eye icon opens quick view modal (gallery + description + add/buy)
-  - Countdown
-  Requires:
-  - assets/price-hits-week.css
-  - assets/price-hits-week.js
+{% comment %} 
+              Price hits of the week 
+              - Individual product pickers (blocks) 
+              - Carousel + arrows 
+              - Eye icon opens quick view modal (gallery + description + add/buy) 
+              - Countdown
+              Requires: 
+              - assets/price-hits-week.css 
+              - assets/price-hits-week.js 
 {% endcomment %}
 
 {{ 'price-hits-week.css' | asset_url | stylesheet_tag }}
@@ -16,23 +16,37 @@
   assign sid = section.id
 -%}
 
-<section class="phw" data-phw-section data-section-id="{{ sid }}">
+<section
+  class="phw"
+  data-phw-section
+  data-section-id="{{ sid }}">
   <div class="page-width phw__wrap">
     <header class="phw__header">
       <h2 class="phw__title">{{ section.settings.heading | escape }}</h2>
 
       <div class="phw__right">
-        <div class="phw__countdown" data-phw-countdown data-end-ts="{{ section.settings.ends_at | date: '%s' }}">
+        <div
+          class="phw__countdown"
+          data-phw-countdown
+          data-end-ts="{{ section.settings.ends_at | date: '%s' }}">
           <span class="phw__gone">{{ section.settings.countdown_label | escape }}</span>
 
           <div class="phw__timer" aria-label="Countdown timer">
-            <span class="phw__pill"><span data-phw-d>00</span></span>
+            <span class="phw__pill">
+              <span data-phw-d>00</span>
+            </span>
             <span class="phw__sep">:</span>
-            <span class="phw__pill"><span data-phw-h>00</span></span>
+            <span class="phw__pill">
+              <span data-phw-h>00</span>
+            </span>
             <span class="phw__sep">:</span>
-            <span class="phw__pill"><span data-phw-m>00</span></span>
+            <span class="phw__pill">
+              <span data-phw-m>00</span>
+            </span>
             <span class="phw__sep">:</span>
-            <span class="phw__pill"><span data-phw-s>00</span></span>
+            <span class="phw__pill">
+              <span data-phw-s>00</span>
+            </span>
           </div>
         </div>
 
@@ -43,7 +57,11 @@
     </header>
 
     <div class="phw__carousel" data-phw-carousel>
-      <button class="phw__nav phw__nav--prev" type="button" aria-label="Previous" data-phw-prev>‹</button>
+      <button
+        class="phw__nav phw__nav--prev"
+        type="button"
+        aria-label="Previous"
+        data-phw-prev>‹</button>
 
       <div class="phw__track" data-phw-track>
         {%- assign rendered = 0 -%}
@@ -79,16 +97,23 @@
               endif
             -%}
 
-            <article class="phw__card"
+            <article
+              class="phw__card"
               {{ block.shopify_attributes }}
               data-product-handle="{{ product.handle }}"
               data-product-url="{{ product.url }}"
-              data-initial-variant="{{ v.id }}"
-            >
+              data-initial-variant="{{ v.id }}">
               <div class="phw__media">
-                <button class="phw__eye" type="button" aria-label="Quick view" data-phw-eye>
-                  <svg viewBox="0 0 24 24" aria-hidden="true" class="phw__eyeIcon">
-                    <path d="M12 5c5.5 0 9.7 4.5 10.9 6.1.1.1.1.3 0 .4C21.7 13.1 17.5 17.6 12 17.6S2.3 13.1 1.1 11.5c-.1-.1-.1-.3 0-.4C2.3 9.5 6.5 5 12 5Zm0 2c-3.9 0-7.2 3-8.6 4.8C4.8 13.6 8.1 16.6 12 16.6s7.2-3 8.6-4.8C19.2 10 15.9 7 12 7Zm0 1.8a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 1.6a1.4 1.4 0 1 0 0 2.8 1.4 1.4 0 0 0 0-2.8Z"/>
+                <button
+                  class="phw__eye"
+                  type="button"
+                  aria-label="Quick view"
+                  data-phw-eye>
+                  <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    class="phw__eyeIcon">
+                    <path d="M12 5c5.5 0 9.7 4.5 10.9 6.1.1.1.1.3 0 .4C21.7 13.1 17.5 17.6 12 17.6S2.3 13.1 1.1 11.5c-.1-.1-.1-.3 0-.4C2.3 9.5 6.5 5 12 5Zm0 2c-3.9 0-7.2 3-8.6 4.8C4.8 13.6 8.1 16.6 12 16.6s7.2-3 8.6-4.8C19.2 10 15.9 7 12 7Zm0 1.8a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 1.6a1.4 1.4 0 1 0 0 2.8 1.4 1.4 0 0 0 0-2.8Z" />
                   </svg>
                 </button>
 
@@ -115,8 +140,8 @@
                 <a class="phw__mediaLink" href="{{ product.url }}">
                   {%- if product.featured_image -%}
                     {{ product.featured_image
-                      | image_url: width: 900
-                      | image_tag: loading: 'lazy', class: 'phw__img', alt: product.title
+ | image_url: width: 900
+ | image_tag: loading: 'lazy', class: 'phw__img', alt: product.title
                     }}
                   {%- else -%}
                     <div class="phw__img phw__img--placeholder"></div>
@@ -160,19 +185,36 @@
                 <div class="phw__meta">
                   <div class="phw__stock">
                     <span class="phw__dot"></span>
-                    <span>{% if available %}In stock{% else %}Sold out{% endif %}</span>
+                    <span>
+                      {% if available %}In stock{% else %}Sold out{% endif %}
+                    </span>
                   </div>
 
                   {%- if section.settings.show_shipping_note -%}
-                    <div class="phw__ship">Receives in <strong>{{ section.settings.shipping_days }}</strong>.</div>
+                    <div class="phw__ship">Receives in
+                      <strong>{{ section.settings.shipping_days }}</strong>.</div>
                   {%- endif -%}
                 </div>
 
                 <div class="phw__actions">
                   <div class="phw__qty" data-phw-qty>
-                    <button class="phw__qtyBtn" type="button" data-qty-minus aria-label="Decrease quantity">−</button>
-                    <input class="phw__qtyInput" type="number" min="1" value="1" inputmode="numeric" aria-label="Quantity">
-                    <button class="phw__qtyBtn" type="button" data-qty-plus aria-label="Increase quantity">+</button>
+                    <button
+                      class="phw__qtyBtn"
+                      type="button"
+                      data-qty-minus
+                      aria-label="Decrease quantity">−</button>
+                    <input
+                      class="phw__qtyInput"
+                      type="number"
+                      min="1"
+                      value="1"
+                      inputmode="numeric"
+                      aria-label="Quantity">
+                    <button
+                      class="phw__qtyBtn"
+                      type="button"
+                      data-qty-plus
+                      aria-label="Increase quantity">+</button>
                   </div>
 
                   <button
@@ -180,13 +222,16 @@
                     type="button"
                     data-phw-add
                     data-variant-id="{{ v.id }}"
-                    {% unless available %}disabled{% endunless %}
-                  >
+                    {% unless available %}
+                    disabled{% endunless %}>
                     Add to cart
                   </button>
                 </div>
 
-                <div class="phw__msg" aria-live="polite" data-phw-msg></div>
+                <div
+                  class="phw__msg"
+                  aria-live="polite"
+                  data-phw-msg></div>
               </div>
             </article>
 
@@ -199,27 +244,55 @@
         {%- endif -%}
       </div>
 
-      <button class="phw__nav phw__nav--next" type="button" aria-label="Next" data-phw-next>›</button>
+      <button
+        class="phw__nav phw__nav--next"
+        type="button"
+        aria-label="Next"
+        data-phw-next>›</button>
     </div>
   </div>
 
   <!-- Quick View Modal -->
-  <div class="phwqv" data-phwqv hidden>
+  <div
+    class="phwqv"
+    data-phwqv
+    hidden>
     <div class="phwqv__overlay" data-phwqv-close></div>
 
-    <div class="phwqv__panel" role="dialog" aria-modal="true" aria-label="Quick view">
-      <button class="phwqv__close" type="button" aria-label="Close" data-phwqv-close>×</button>
+    <div
+      class="phwqv__panel"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Quick view">
+      <button
+        class="phwqv__close"
+        type="button"
+        aria-label="Close"
+        data-phwqv-close>×</button>
 
       <div class="phwqv__content">
         <div class="phwqv__left">
           <div class="phwqv__mainImgWrap">
-            <img class="phwqv__mainImg" alt="" data-phwqv-main-img >
+            <img
+              class="phwqv__mainImg"
+              alt=""
+              data-phwqv-main-img
+              width="200"
+              height="200">
           </div>
 
           <div class="phwqv__thumbRow">
-            <button class="phwqv__thumbNav" type="button" aria-label="Previous image" data-phwqv-prev>‹</button>
+            <button
+              class="phwqv__thumbNav"
+              type="button"
+              aria-label="Previous image"
+              data-phwqv-prev>‹</button>
             <div class="phwqv__thumbs" data-phwqv-thumbs></div>
-            <button class="phwqv__thumbNav" type="button" aria-label="Next image" data-phwqv-next>›</button>
+            <button
+              class="phwqv__thumbNav"
+              type="button"
+              aria-label="Next image"
+              data-phwqv-next>›</button>
           </div>
         </div>
 
@@ -234,31 +307,69 @@
 
           <div class="phwqv__priceRow">
             <span class="phwqv__price" data-phwqv-price></span>
-            <span class="phwqv__compare" data-phwqv-compare hidden></span>
-            <span class="phwqv__off" data-phwqv-off hidden></span>
+            <span
+              class="phwqv__compare"
+              data-phwqv-compare
+              hidden></span>
+            <span
+              class="phwqv__off"
+              data-phwqv-off
+              hidden></span>
           </div>
 
-          <div class="phwqv__variantRow" data-phwqv-variant-row hidden>
+          <div
+            class="phwqv__variantRow"
+            data-phwqv-variant-row
+            hidden>
             <label class="phwqv__label" for="phwqvVariant">Variant</label>
-            <select id="phwqvVariant" class="phwqv__select" data-phwqv-variant></select>
+            <select
+              id="phwqvVariant"
+              class="phwqv__select"
+              data-phwqv-variant></select>
           </div>
 
           <div class="phwqv__ctaRow">
             <div class="phwqv__qty">
-              <button class="phwqv__qtyBtn" type="button" data-phwqv-minus aria-label="Decrease quantity">−</button>
-              <input class="phwqv__qtyInput" type="number" min="1" value="1" inputmode="numeric" aria-label="Quantity">
-              <button class="phwqv__qtyBtn" type="button" data-phwqv-plus aria-label="Increase quantity">+</button>
+              <button
+                class="phwqv__qtyBtn"
+                type="button"
+                data-phwqv-minus
+                aria-label="Decrease quantity">−</button>
+              <input
+                class="phwqv__qtyInput"
+                type="number"
+                min="1"
+                value="1"
+                inputmode="numeric"
+                aria-label="Quantity">
+              <button
+                class="phwqv__qtyBtn"
+                type="button"
+                data-phwqv-plus
+                aria-label="Increase quantity">+</button>
             </div>
 
-            <button class="phwqv__add" type="button" data-phwqv-add>Add to cart</button>
+            <button
+              class="phwqv__add"
+              type="button"
+              data-phwqv-add>Add to cart</button>
           </div>
 
-          <button class="phwqv__buy" type="button" data-phwqv-buy>Buy it now</button>
+          <button
+            class="phwqv__buy"
+            type="button"
+            data-phwqv-buy>Buy it now</button>
 
           <div class="phwqv__desc" data-phwqv-desc></div>
-          <a class="phwqv__viewLink" href="#" data-phwqv-link>View full details →</a>
+          <a
+            class="phwqv__viewLink"
+            href="#"
+            data-phwqv-link>View full details →</a>
 
-          <div class="phwqv__msg" aria-live="polite" data-phwqv-msg></div>
+          <div
+            class="phwqv__msg"
+            aria-live="polite"
+            data-phwqv-msg></div>
         </div>
       </div>
     </div>
@@ -266,68 +377,138 @@
 </section>
 
 {% schema %}
-{
-  "name": "Price hits of the week",
-  "settings": [
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Price hits of the week" },
+  {
+    "name": "Price hits of the week",
+    "settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading",
+        "default": "Price hits of the week"
+      },
 
-    { "type": "checkbox", "id": "show_rating", "label": "Show rating placeholder", "default": true },
-    { "type": "checkbox", "id": "show_shipping_note", "label": "Show shipping note", "default": true },
-    { "type": "text", "id": "shipping_days", "label": "Shipping text", "default": "5 days" },
-
-    { "type": "text", "id": "countdown_label", "label": "Countdown label", "default": "Gone in 24 Hours" },
-    { "type": "text", "id": "ends_at", "label": "Ends at (YYYY-MM-DD HH:MM)", "default": "2026-12-31 23:59" },
-
-    { "type": "url", "id": "view_all_link", "label": "View All link (optional)" }
-  ],
-  "blocks": [
-    {
-      "type": "product",
-      "name": "Product",
-      "limit": 12,
-      "settings": [
-        { "type": "product", "id": "product", "label": "Choose product" },
-        {
-          "type": "select",
-          "id": "badge_1",
-          "label": "Badge 1",
-          "default": "",
-          "options": [
-            { "value": "", "label": "None" },
-            { "value": "Highly rated", "label": "Highly rated" },
-            { "value": "Best Buy", "label": "Best Buy" },
-            { "value": "Deal", "label": "Deal" }
-          ]
-        },
-        {
-          "type": "select",
-          "id": "badge_2",
-          "label": "Badge 2",
-          "default": "",
-          "options": [
-            { "value": "", "label": "None" },
-            { "value": "Highly rated", "label": "Highly rated" },
-            { "value": "Best Buy", "label": "Best Buy" },
-            { "value": "Deal", "label": "Deal" }
-          ]
-        },
-        {
-          "type": "select",
-          "id": "badge_3",
-          "label": "Badge 3",
-          "default": "",
-          "options": [
-            { "value": "", "label": "None" },
-            { "value": "Highly rated", "label": "Highly rated" },
-            { "value": "Best Buy", "label": "Best Buy" },
-            { "value": "Deal", "label": "Deal" }
-          ]
-        }
-      ]
-    }
-  ],
-  "presets": [
-    { "name": "Price hits of the week", "blocks": [{ "type": "product" }, { "type": "product" }, { "type": "product" }, { "type": "product" }] }
-  ]
-}
+      {
+        "type": "checkbox",
+        "id": "show_rating",
+        "label": "Show rating placeholder",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_shipping_note",
+        "label": "Show shipping note",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "shipping_days",
+        "label": "Shipping text",
+        "default": "5 days"
+      }, {
+        "type": "text",
+        "id": "countdown_label",
+        "label": "Countdown label",
+        "default": "Gone in 24 Hours"
+      }, {
+        "type": "text",
+        "id": "ends_at",
+        "label": "Ends at (YYYY-MM-DD HH:MM)",
+        "default": "2026-12-31 23:59"
+      }, {
+        "type": "url",
+        "id": "view_all_link",
+        "label": "View All link (optional)"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "product",
+        "name": "Product",
+        "limit": 12,
+        "settings": [
+          {
+            "type": "product",
+            "id": "product",
+            "label": "Choose product"
+          }, {
+            "type": "select",
+            "id": "badge_1",
+            "label": "Badge 1",
+            "default": "",
+            "options": [
+              {
+                "value": "",
+                "label": "None"
+              }, {
+                "value": "Highly rated",
+                "label": "Highly rated"
+              }, {
+                "value": "Best Buy",
+                "label": "Best Buy"
+              }, {
+                "value": "Deal",
+                "label": "Deal"
+              }
+            ]
+          }, {
+            "type": "select",
+            "id": "badge_2",
+            "label": "Badge 2",
+            "default": "",
+            "options": [
+              {
+                "value": "",
+                "label": "None"
+              }, {
+                "value": "Highly rated",
+                "label": "Highly rated"
+              }, {
+                "value": "Best Buy",
+                "label": "Best Buy"
+              }, {
+                "value": "Deal",
+                "label": "Deal"
+              }
+            ]
+          }, {
+            "type": "select",
+            "id": "badge_3",
+            "label": "Badge 3",
+            "default": "",
+            "options": [
+              {
+                "value": "",
+                "label": "None"
+              }, {
+                "value": "Highly rated",
+                "label": "Highly rated"
+              }, {
+                "value": "Best Buy",
+                "label": "Best Buy"
+              }, {
+                "value": "Deal",
+                "label": "Deal"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Price hits of the week",
+        "blocks": [
+          {
+            "type": "product"
+          }, {
+            "type": "product"
+          }, {
+            "type": "product"
+          }, {
+            "type": "product"
+          }
+        ]
+      }
+    ]
+  }
 {% endschema %}
